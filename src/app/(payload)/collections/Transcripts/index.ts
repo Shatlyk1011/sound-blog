@@ -21,11 +21,12 @@ const Transcripts: CollectionConfig = {
   fields: [
     {
       name: 'userId',
-      label: 'User (Supabase ID)',
-      type: 'text',
+      label: 'User',
+      type: 'relationship',
+      relationTo: 'users',
       required: true,
       admin: {
-        description: 'The Supabase UUID of the user who owns this transcript.',
+        description: 'The application user who owns this transcript.',
       },
     },
 
