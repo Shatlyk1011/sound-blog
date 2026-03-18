@@ -3,7 +3,8 @@ import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { fileURLToPath } from 'node:url'
 import { buildConfig } from 'payload'
 import AdminUsers from './app/(payload)/collections/AdminUsers'
-// collections
+import Users from './app/(payload)/collections/Users'
+import VoiceRecords from './app/(payload)/collections/VoiceRecords'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -20,10 +21,10 @@ export default buildConfig({
     },
   },
 
-  // Define and configure your collections in this array
   collections: [
-
     AdminUsers,
+    Users,
+    VoiceRecords,
   ],
 
   // Your Payload secret - should be a complex and secure string, unguessable

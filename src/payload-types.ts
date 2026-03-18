@@ -68,6 +68,8 @@ export interface Config {
   blocks: {};
   collections: {
     adminUsers: AdminUser;
+    users: User;
+    'voice-records': VoiceRecord;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -76,6 +78,8 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     adminUsers: AdminUsersSelect<false> | AdminUsersSelect<true>;
+    users: UsersSelect<false> | UsersSelect<true>;
+    'voice-records': VoiceRecordsSelect<false> | VoiceRecordsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -147,6 +151,63 @@ export interface AdminUser {
   collection: 'adminUsers';
 }
 /**
+ * Stores application users authenticated via Supabase. Each record links a Supabase user (by ID) to their plan, credits, and auth provider.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: string;
+  /**
+   * The unique user ID issued by Supabase.
+   */
+  userId: string;
+  email?: string | null;
+  plan: 'free' | 'paid';
+  /**
+   * Number of credits available for the user.
+   */
+  credits: number;
+  authProvider: 'n/a' | 'email' | 'google' | 'github';
+  /**
+   * When enabled, this user is blocked from accessing the application.
+   */
+  isBlocked?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Stores user-uploaded voice recordings. Each record links to the uploading user and references the audio file hosted in Supabase Storage.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "voice-records".
+ */
+export interface VoiceRecord {
+  id: string;
+  /**
+   * The application user who uploaded this voice recording.
+   */
+  userId: string | User;
+  /**
+   * The public URL of the audio file stored in Supabase Storage.
+   */
+  fileUrl: string;
+  /**
+   * The original name of the uploaded audio file.
+   */
+  fileName: string;
+  /**
+   * The duration of the audio recording in seconds.
+   */
+  duration?: number | null;
+  /**
+   * The current processing state of this voice recording.
+   */
+  status: 'uploaded' | 'processing' | 'completed' | 'failed';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -169,10 +230,19 @@ export interface PayloadKv {
  */
 export interface PayloadLockedDocument {
   id: string;
-  document?: {
-    relationTo: 'adminUsers';
-    value: string | AdminUser;
-  } | null;
+  document?:
+    | ({
+        relationTo: 'adminUsers';
+        value: string | AdminUser;
+      } | null)
+    | ({
+        relationTo: 'users';
+        value: string | User;
+      } | null)
+    | ({
+        relationTo: 'voice-records';
+        value: string | VoiceRecord;
+      } | null);
   globalSlug?: string | null;
   user: {
     relationTo: 'adminUsers';
@@ -240,6 +310,33 @@ export interface AdminUsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users_select".
+ */
+export interface UsersSelect<T extends boolean = true> {
+  userId?: T;
+  email?: T;
+  plan?: T;
+  credits?: T;
+  authProvider?: T;
+  isBlocked?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "voice-records_select".
+ */
+export interface VoiceRecordsSelect<T extends boolean = true> {
+  userId?: T;
+  fileUrl?: T;
+  fileName?: T;
+  duration?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
