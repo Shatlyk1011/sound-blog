@@ -70,6 +70,8 @@ export interface Config {
     adminUsers: AdminUser;
     users: User;
     'voice-records': VoiceRecord;
+    transcripts: Transcript;
+    blogs: Blog;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -80,6 +82,8 @@ export interface Config {
     adminUsers: AdminUsersSelect<false> | AdminUsersSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'voice-records': VoiceRecordsSelect<false> | VoiceRecordsSelect<true>;
+    transcripts: TranscriptsSelect<false> | TranscriptsSelect<true>;
+    blogs: BlogsSelect<false> | BlogsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -208,6 +212,76 @@ export interface VoiceRecord {
   createdAt: string;
 }
 /**
+ * Stores transcripts generated from user-uploaded voice recordings. Each transcript links to its source audio and the uploading user.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "transcripts".
+ */
+export interface Transcript {
+  id: string;
+  /**
+   * The Supabase UUID of the user who owns this transcript.
+   */
+  userId: string;
+  /**
+   * The voice recording this transcript was generated from.
+   */
+  audioId: string | VoiceRecord;
+  /**
+   * The unprocessed transcription text as returned by the speech-to-text service.
+   */
+  rawText?: string | null;
+  /**
+   * The refined, human-readable version of the transcript after post-processing.
+   */
+  cleanedText?: string | null;
+  /**
+   * The detected or specified language of the transcript (e.g. "en", "tr").
+   */
+  language?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Stores AI-generated blog posts created from user voice recordings. Each blog links to its source audio, transcript, and the authoring user.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blogs".
+ */
+export interface Blog {
+  id: string;
+  /**
+   * The Supabase UUID of the user who owns this blog post.
+   */
+  userId: string;
+  /**
+   * The voice recording this blog was generated from.
+   */
+  audioId: string | VoiceRecord;
+  /**
+   * The transcript this blog post was generated from.
+   */
+  transcriptId: string | Transcript;
+  /**
+   * The title of the generated blog post.
+   */
+  title: string;
+  /**
+   * The AI-generated blog content in Markdown format.
+   */
+  content?: string | null;
+  /**
+   * The current state of the blog post in the content pipeline.
+   */
+  status: 'draft' | 'generated' | 'edited';
+  /**
+   * The writing tone used when generating this blog post with GPT.
+   */
+  tone?: ('professional' | 'casual' | 'friendly' | 'formal' | 'humorous' | 'inspirational') | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -242,6 +316,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'voice-records';
         value: string | VoiceRecord;
+      } | null)
+    | ({
+        relationTo: 'transcripts';
+        value: string | Transcript;
+      } | null)
+    | ({
+        relationTo: 'blogs';
+        value: string | Blog;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -335,6 +417,34 @@ export interface VoiceRecordsSelect<T extends boolean = true> {
   fileName?: T;
   duration?: T;
   status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "transcripts_select".
+ */
+export interface TranscriptsSelect<T extends boolean = true> {
+  userId?: T;
+  audioId?: T;
+  rawText?: T;
+  cleanedText?: T;
+  language?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blogs_select".
+ */
+export interface BlogsSelect<T extends boolean = true> {
+  userId?: T;
+  audioId?: T;
+  transcriptId?: T;
+  title?: T;
+  content?: T;
+  status?: T;
+  tone?: T;
   updatedAt?: T;
   createdAt?: T;
 }

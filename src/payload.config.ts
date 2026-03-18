@@ -5,6 +5,8 @@ import { buildConfig } from 'payload'
 import AdminUsers from './app/(payload)/collections/AdminUsers'
 import Users from './app/(payload)/collections/Users'
 import VoiceRecords from './app/(payload)/collections/VoiceRecords'
+import Transcripts from './app/(payload)/collections/Transcripts'
+import Blogs from './app/(payload)/collections/Blogs'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -25,6 +27,8 @@ export default buildConfig({
     AdminUsers,
     Users,
     VoiceRecords,
+    Transcripts,
+    Blogs,
   ],
 
   // Your Payload secret - should be a complex and secure string, unguessable
