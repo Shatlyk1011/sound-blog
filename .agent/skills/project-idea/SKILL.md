@@ -4,13 +4,13 @@ description: This project is a SaaS application that transforms raw audio record
 ---
 
 Users can upload audio files (such as voice notes, podcasts, or meetings), which are automatically processed through a pipeline that:
+
 1. Cleans and trims audio
 2. Converts speech to text
 3. Transforms text into a well-written blog post using AI
 4. Allows editing and exporting of the generated content
 
 The goal is to simplify content creation and enable users to turn spoken ideas into publishable written material with minimal effort.
-
 
 ## ⚙️ Core Features
 
@@ -27,20 +27,26 @@ The goal is to simplify content creation and enable users to turn spoken ideas i
 ## 🧠 Key Concepts & Architecture
 
 ### 1. Processing Pipeline
+
 A structured pipeline ensures scalability and clarity:
 Audio → Processing → Transcription → AI Generation → Output
 
 ### 2. Asynchronous Workflows
+
 Heavy tasks (audio processing, AI calls) are handled in background jobs to maintain fast user experience.
 
 ### 3. Data Modeling
+
 Separation of concerns across:
+
 - Audio uploads
 - Transcripts
 - Generated content
 
 ### 4. AI Integration
+
 Use of large language models to:
+
 - Reformat raw transcripts
 - Improve readability
 - Generate structured blog content
@@ -48,45 +54,54 @@ Use of large language models to:
 ## 🛠️ Technical Skills Demonstrated
 
 ### Frontend Development
+
 - Building responsive UI with modern frameworks
 - File upload UX (drag & drop, progress states)
 - State management and async UI handling
 - Rich text editor integration
 
 ### Backend Development
+
 - API design and route structuring
 - Handling file uploads and storage
 - Background job processing
 - Error handling and retries
 
 ### Database Design
+
 - Schema design for scalable content systems
 - Relationship modeling (users, audio, transcripts, blogs)
 - Efficient querying and indexing
 
 ### Cloud & Storage
+
 - Object storage integration for media files
 - Secure file handling and access control
 
 ### Audio Processing
+
 - Working with audio formats and transformations
 - Using tools for trimming, normalization, conversion
 
 ### AI & Machine Learning Integration
+
 - Speech-to-text API usage
 - Prompt engineering for content generation
 - Managing token usage and costs
 
 ### System Design
+
 - Designing scalable pipelines
 - Separating synchronous vs asynchronous operations
 - Building for extensibility and future features
 
 ### Authentication & Security
+
 - User authentication flows
 - Data protection and access control
 
 ### SaaS & Product Thinking
+
 - Usage-based pricing models
 - Feature gating (free vs paid tiers)
 - Performance and cost optimization

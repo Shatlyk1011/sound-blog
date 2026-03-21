@@ -36,7 +36,8 @@ const VoiceRecords: CollectionConfig = {
       type: 'text',
       required: true,
       admin: {
-        description: 'The public URL of the audio file stored in Supabase Storage.',
+        description:
+          'The public URL of the audio file stored in Supabase Storage.',
       },
     },
 

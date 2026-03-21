@@ -5,7 +5,14 @@ const Users: CollectionConfig = {
   slug: 'users',
 
   admin: {
-    defaultColumns: ['email', 'userId', 'plan', 'credits', 'authProvider', 'isBlocked'],
+    defaultColumns: [
+      'email',
+      'userId',
+      'plan',
+      'credits',
+      'authProvider',
+      'isBlocked',
+    ],
     useAsTitle: 'email',
     description:
       'Stores application users authenticated via Supabase. Each record links a Supabase user (by ID) to their plan, credits, and auth provider.',
@@ -86,7 +93,8 @@ const Users: CollectionConfig = {
       required: false,
       defaultValue: false,
       admin: {
-        description: 'When enabled, this user is blocked from accessing the application.',
+        description:
+          'When enabled, this user is blocked from accessing the application.',
       },
     },
   ],

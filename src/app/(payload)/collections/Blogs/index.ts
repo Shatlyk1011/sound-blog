@@ -84,7 +84,8 @@ const Blogs: CollectionConfig = {
         { label: 'Edited', value: 'edited' },
       ],
       admin: {
-        description: 'The current state of the blog post in the content pipeline.',
+        description:
+          'The current state of the blog post in the content pipeline.',
       },
     },
 
@@ -102,7 +103,8 @@ const Blogs: CollectionConfig = {
         { label: 'Inspirational', value: 'inspirational' },
       ],
       admin: {
-        description: 'The writing tone used when generating this blog post with GPT.',
+        description:
+          'The writing tone used when generating this blog post with GPT.',
       },
     },
   ],

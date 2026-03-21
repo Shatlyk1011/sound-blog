@@ -1,10 +1,14 @@
 'use client'
 
 import { useState } from 'react'
+import { getUserInitials } from '@/composables/utils'
+import { LogoutSquare01Icon, Menu05Icon } from '@hugeicons/core-free-icons'
+import { HugeiconsIcon } from '@hugeicons/react'
 import { useScroll, useMotionValueEvent } from 'motion/react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
+import { useUser } from '@/hooks/use-user'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
@@ -16,10 +20,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import ThemeToggle from '@/components/ui/theme-toggle'
-import { getUserInitials } from '@/composables/utils'
-import { useUser } from '@/hooks/use-user'
-import { HugeiconsIcon } from '@hugeicons/react'
-import { LogoutSquare01Icon, Menu05Icon } from '@hugeicons/core-free-icons'
 
 const { home, motionComponents, gsapComponents } = {
   home: '/',
@@ -52,13 +52,13 @@ const Header = () => {
       <header
         className={cn(
           'fixed top-0 z-20 mx-auto flex h-14 w-full items-center justify-between border-b px-8 py-2 font-sans max-md:px-4',
-          isScrolled && 'bg-background/90 backdrop-blur-sm',
+          isScrolled && 'bg-background/90 backdrop-blur-sm'
         )}
       >
         <Link
           href='/'
           className={cn(
-            'z-50 w-max max-sm:mr-4 max-sm:max-w-max max-sm:min-w-8',
+            'z-50 w-max max-sm:mr-4 max-sm:max-w-max max-sm:min-w-8'
           )}
         >
           logo

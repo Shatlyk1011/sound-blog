@@ -47,7 +47,8 @@ const Transcripts: CollectionConfig = {
       type: 'textarea',
       required: false,
       admin: {
-        description: 'The unprocessed transcription text as returned by the speech-to-text service.',
+        description:
+          'The unprocessed transcription text as returned by the speech-to-text service.',
       },
     },
 
@@ -57,7 +58,8 @@ const Transcripts: CollectionConfig = {
       type: 'textarea',
       required: false,
       admin: {
-        description: 'The refined, human-readable version of the transcript after post-processing.',
+        description:
+          'The refined, human-readable version of the transcript after post-processing.',
       },
     },
 
@@ -67,7 +69,8 @@ const Transcripts: CollectionConfig = {
       type: 'text',
       required: false,
       admin: {
-        description: 'The detected or specified language of the transcript (e.g. "en", "tr").',
+        description:
+          'The detected or specified language of the transcript (e.g. "en", "tr").',
       },
     },
   ],
