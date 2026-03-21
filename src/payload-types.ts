@@ -67,11 +67,11 @@ export interface Config {
   };
   blocks: {};
   collections: {
-    adminUsers: AdminUser;
-    users: User;
     'voice-records': VoiceRecord;
     transcripts: Transcript;
     blogs: Blog;
+    users: User;
+    adminUsers: AdminUser;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -79,11 +79,11 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
-    adminUsers: AdminUsersSelect<false> | AdminUsersSelect<true>;
-    users: UsersSelect<false> | UsersSelect<true>;
     'voice-records': VoiceRecordsSelect<false> | VoiceRecordsSelect<true>;
     transcripts: TranscriptsSelect<false> | TranscriptsSelect<true>;
     blogs: BlogsSelect<false> | BlogsSelect<true>;
+    users: UsersSelect<false> | UsersSelect<true>;
+    adminUsers: AdminUsersSelect<false> | AdminUsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -124,63 +124,6 @@ export interface AdminUserAuthOperations {
   };
 }
 /**
- * Manage admin panel users and their access permissions. Configure user roles (admin, moderator, guest) to control who can create, edit, and delete content.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "adminUsers".
- */
-export interface AdminUser {
-  id: string;
-  name?: string | null;
-  phone?: string | null;
-  isBlocked?: boolean | null;
-  roles?: ('admin' | 'moderator' | 'guest')[] | null;
-  updatedAt: string;
-  createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  sessions?:
-    | {
-        id: string;
-        createdAt?: string | null;
-        expiresAt: string;
-      }[]
-    | null;
-  password?: string | null;
-  collection: 'adminUsers';
-}
-/**
- * Stores application users authenticated via Supabase. Each record links a Supabase user (by ID) to their plan, credits, and auth provider.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
- */
-export interface User {
-  id: string;
-  /**
-   * The unique user ID issued by Supabase.
-   */
-  userId: string;
-  email?: string | null;
-  plan: 'free' | 'paid';
-  /**
-   * Number of credits available for the user.
-   */
-  credits: number;
-  authProvider: 'n/a' | 'email' | 'google' | 'github';
-  /**
-   * When enabled, this user is blocked from accessing the application.
-   */
-  isBlocked?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
  * Stores user-uploaded voice recordings. Each record links to the uploading user and references the audio file hosted in Supabase Storage.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -212,6 +155,32 @@ export interface VoiceRecord {
   createdAt: string;
 }
 /**
+ * Stores application users authenticated via Supabase. Each record links a Supabase user (by ID) to their plan, credits, and auth provider.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: string;
+  /**
+   * The unique user ID issued by Supabase.
+   */
+  userId: string;
+  email?: string | null;
+  plan: 'free' | 'paid';
+  /**
+   * Number of credits available for the user.
+   */
+  credits: number;
+  authProvider: 'n/a' | 'email' | 'google' | 'github';
+  /**
+   * When enabled, this user is blocked from accessing the application.
+   */
+  isBlocked?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * Stores transcripts generated from user-uploaded voice recordings. Each transcript links to its source audio and the uploading user.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -220,9 +189,9 @@ export interface VoiceRecord {
 export interface Transcript {
   id: string;
   /**
-   * The Supabase UUID of the user who owns this transcript.
+   * The application user who owns this transcript.
    */
-  userId: string;
+  userId: string | User;
   /**
    * The voice recording this transcript was generated from.
    */
@@ -251,9 +220,9 @@ export interface Transcript {
 export interface Blog {
   id: string;
   /**
-   * The Supabase UUID of the user who owns this blog post.
+   * The application user who owns this blog post.
    */
-  userId: string;
+  userId: string | User;
   /**
    * The voice recording this blog was generated from.
    */
@@ -282,6 +251,37 @@ export interface Blog {
   createdAt: string;
 }
 /**
+ * Manage admin panel users and their access permissions. Configure user roles (admin, moderator, guest) to control who can create, edit, and delete content.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "adminUsers".
+ */
+export interface AdminUser {
+  id: string;
+  name?: string | null;
+  phone?: string | null;
+  isBlocked?: boolean | null;
+  roles?: ('admin' | 'moderator' | 'guest')[] | null;
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+      }[]
+    | null;
+  password?: string | null;
+  collection: 'adminUsers';
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -306,14 +306,6 @@ export interface PayloadLockedDocument {
   id: string;
   document?:
     | ({
-        relationTo: 'adminUsers';
-        value: string | AdminUser;
-      } | null)
-    | ({
-        relationTo: 'users';
-        value: string | User;
-      } | null)
-    | ({
         relationTo: 'voice-records';
         value: string | VoiceRecord;
       } | null)
@@ -324,6 +316,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'blogs';
         value: string | Blog;
+      } | null)
+    | ({
+        relationTo: 'users';
+        value: string | User;
+      } | null)
+    | ({
+        relationTo: 'adminUsers';
+        value: string | AdminUser;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -369,46 +369,6 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "adminUsers_select".
- */
-export interface AdminUsersSelect<T extends boolean = true> {
-  name?: T;
-  phone?: T;
-  isBlocked?: T;
-  roles?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  email?: T;
-  resetPasswordToken?: T;
-  resetPasswordExpiration?: T;
-  salt?: T;
-  hash?: T;
-  loginAttempts?: T;
-  lockUntil?: T;
-  sessions?:
-    | T
-    | {
-        id?: T;
-        createdAt?: T;
-        expiresAt?: T;
-      };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users_select".
- */
-export interface UsersSelect<T extends boolean = true> {
-  userId?: T;
-  email?: T;
-  plan?: T;
-  credits?: T;
-  authProvider?: T;
-  isBlocked?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "voice-records_select".
  */
 export interface VoiceRecordsSelect<T extends boolean = true> {
@@ -447,6 +407,46 @@ export interface BlogsSelect<T extends boolean = true> {
   tone?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users_select".
+ */
+export interface UsersSelect<T extends boolean = true> {
+  userId?: T;
+  email?: T;
+  plan?: T;
+  credits?: T;
+  authProvider?: T;
+  isBlocked?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "adminUsers_select".
+ */
+export interface AdminUsersSelect<T extends boolean = true> {
+  name?: T;
+  phone?: T;
+  isBlocked?: T;
+  roles?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  email?: T;
+  resetPasswordToken?: T;
+  resetPasswordExpiration?: T;
+  salt?: T;
+  hash?: T;
+  loginAttempts?: T;
+  lockUntil?: T;
+  sessions?:
+    | T
+    | {
+        id?: T;
+        createdAt?: T;
+        expiresAt?: T;
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

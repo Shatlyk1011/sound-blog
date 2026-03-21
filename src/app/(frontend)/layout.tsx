@@ -3,6 +3,9 @@
 import type { Metadata } from "next";
 import { Poppins, Libre_Baskerville, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "next-themes";
+import Header from "@/components/layout/header";
+import { UserProvider } from "../_providers/user-provider";
 
 const fontSans = Poppins({
   subsets: ["latin"],
@@ -33,8 +36,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${fontSans.variable} ${fontSerif.variable} ${fontMono.variable} dark antialiased`}>
-        {children}
+      <body className={`${fontSans.variable} ${fontSerif.variable} ${fontMono.variable} antialiased`}>
+        <UserProvider>
+
+          <ThemeProvider
+            attribute='class'
+            defaultTheme='system'
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Header />
+            {children}
+          </ThemeProvider>
+        </UserProvider>
       </body>
     </html>
   );

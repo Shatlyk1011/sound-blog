@@ -13,7 +13,7 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   typescript: {
-    outputFile: path.resolve(dirname, '../src/payload-types.ts'),
+    outputFile: path.resolve(dirname, "../src/payload-types.ts"),
   },
 
   admin: {
@@ -23,19 +23,13 @@ export default buildConfig({
     },
   },
 
-  collections: [
-    AdminUsers,
-    Users,
-    VoiceRecords,
-    Transcripts,
-    Blogs,
-  ],
+  collections: [VoiceRecords, Transcripts, Blogs, Users, AdminUsers],
 
   // Your Payload secret - should be a complex and secure string, unguessable
-  secret: process.env.PAYLOAD_SECRET || '',
+  secret: process.env.PAYLOAD_SECRET || "",
   // Whichever Database Adapter you're using should go here
   // Mongoose is shown as an example, but you can also use Postgres
   db: mongooseAdapter({
-    url: process.env.DATABASE_URI || '',
+    url: process.env.DATABASE_URI || "",
   }),
-})
+});
