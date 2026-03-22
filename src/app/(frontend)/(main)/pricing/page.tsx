@@ -4,7 +4,7 @@ import PricingSection from '@/components/PricingSection'
 
 export const metadata: Metadata = {
   title: 'Pricing',
-  description:" siteConfig.description",
+  description: ' siteConfig.description',
 }
 
 export default function PricingPage() {

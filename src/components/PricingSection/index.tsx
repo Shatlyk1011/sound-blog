@@ -80,13 +80,13 @@ const PricingSection = () => {
         <p className='relative flex'>
           <span
             className={cn(
-              'transition-colors ',
+              'transition-colors',
               !isAnnual && 'text-muted-foreground'
             )}
           >
             Annual
           </span>
-          <span className='tracking-one w-max flex items-center rounded-full bg-blue-400/20 px-1.5 py-0.5 text-xs text-[10px] font-medium text-nowrap text-blue-400'>
+          <span className='tracking-one flex w-max items-center rounded-full bg-blue-400/20 px-1.5 py-0.5 text-xs text-[10px] font-medium text-nowrap text-blue-400'>
             Save 20%
           </span>
         </p>

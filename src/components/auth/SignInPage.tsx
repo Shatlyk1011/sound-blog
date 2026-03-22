@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import { AxiosError } from 'axios'
+import { Github01Icon } from '@hugeicons/core-free-icons'
+import { HugeiconsIcon } from '@hugeicons/react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { loginSchema } from '@/lib/login-schema'
@@ -9,8 +11,6 @@ import { createClient } from '@/lib/supabase-client'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { HugeiconsIcon } from '@hugeicons/react'
-import { Github01Icon } from '@hugeicons/core-free-icons'
 import { AuthProviders } from './SignUpPage'
 
 interface Props {
@@ -124,11 +124,16 @@ export default function SignInPage({
   return (
     <div
       className={cn(
-        'relative flex min-h-screen items-center justify-center  overflow-hidden max-sm:items-start max-sm:pt-12',
+        'relative flex min-h-screen items-center justify-center overflow-hidden max-sm:items-start max-sm:pt-12',
         isModal && 'max-h-max min-h-auto py-6'
       )}
     >
-      <div className={cn('relative  max-w- z-10 w-full max-w-md rounded-4xl space-y-8 py-8 px-6 max-md:space-y-5 max-sm:p-5', !isModal && 'border shadow-md')}>
+      <div
+        className={cn(
+          'max-w- relative z-10 w-full max-w-md space-y-8 rounded-4xl px-6 py-8 max-md:space-y-5 max-sm:p-5',
+          !isModal && 'border shadow-md'
+        )}
+      >
         <Link
           href='/'
           className='block text-center text-xl font-bold max-md:text-2xl'
@@ -245,9 +250,9 @@ export default function SignInPage({
 
           <Button
             type='submit'
-            variant={"default"}
+            variant={'default'}
             disabled={loading}
-            className=' h-10 w-full border'
+            className='h-10 w-full border'
           >
             {loading ? 'Sending...' : 'Continue with Email'}
           </Button>

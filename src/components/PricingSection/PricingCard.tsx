@@ -1,9 +1,12 @@
 'use client'
+import {
+  CheckmarkCircle01Icon,
+  LegalHammerIcon,
+} from '@hugeicons/core-free-icons'
+import { HugeiconsIcon } from '@hugeicons/react'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import { Button } from '../ui/button'
-import { HugeiconsIcon } from '@hugeicons/react'
-import { CheckmarkCircle01Icon, LegalHammerIcon } from '@hugeicons/core-free-icons'
 
 export interface PricingTier {
   name: 'Hobby' | 'Pro' | 'Enterprise'
@@ -100,7 +103,11 @@ export function PricingCard({
           {item.features.map((feature) => (
             <li key={feature} className='flex items-start gap-2'>
               {!isEnterprice && (
-                <HugeiconsIcon icon={CheckmarkCircle01Icon} className='text-muted-foreground h-4 w-4' aria-hidden='true' />
+                <HugeiconsIcon
+                  icon={CheckmarkCircle01Icon}
+                  className='text-muted-foreground h-4 w-4'
+                  aria-hidden='true'
+                />
               )}
               <span className='text-foreground/70 text-sm'>{feature}</span>
             </li>
@@ -111,7 +118,7 @@ export function PricingCard({
         // overlay
         <div className='bg-background/70 absolute top-0 left-0 z-2 flex h-full w-full items-center justify-center'>
           <div className='relative -bottom-16 flex flex-col items-center text-neutral-500'>
-            <HugeiconsIcon icon={LegalHammerIcon} size="28" className='mb-2' />
+            <HugeiconsIcon icon={LegalHammerIcon} size='28' className='mb-2' />
             <span className='tracking-one gap-1 text-center text-sm font-medium'>
               Enterprice API <br /> Under Development <br />{' '}
             </span>
