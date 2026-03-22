@@ -21,10 +21,8 @@ import {
 } from '@/components/ui/dropdown-menu'
 import ThemeToggle from '@/components/ui/theme-toggle'
 
-const { home, motionComponents, gsapComponents } = {
-  home: '/',
-  motionComponents: '/docs',
-  gsapComponents: '/docs/gsap',
+const { pricing } = {
+  pricing: '/pricing',
 }
 
 const Header = () => {
@@ -72,50 +70,13 @@ const Header = () => {
           <ul className='-tracking-one max-md:bg-secondary flex items-center text-sm font-medium max-md:w-full max-md:flex-col max-md:gap-3 max-md:pt-40 max-md:text-base'>
             <li>
               <Link
-                href={`${home}#website-inspirations`}
+                href={pricing}
                 onClick={closeMenu}
                 className={cn(
                   'hover:text-foreground min-h-10 rounded-md px-3 py-2 text-nowrap transition ease-out max-sm:px-2'
                 )}
               >
-                Website Inspiration
-              </Link>
-            </li>
-            <li className='max-md:hidden'>
-              <DropdownMenu>
-                <DropdownMenuContent align='end' className='w-48'>
-                  <DropdownMenuItem asChild>
-                    <Link href={motionComponents} className='cursor-pointer'>
-                      Motion Components
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild>
-                    <Link href={gsapComponents} className='cursor-pointer'>
-                      GSAP Components
-                    </Link>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </li>
-            <li>
-              <Link
-                href={motionComponents}
-                className={cn(
-                  'hover:text-foreground hidden rounded-md px-3 py-2 text-nowrap transition ease-out max-md:inline max-sm:px-2'
-                )}
-              >
-                Motion Components
-              </Link>
-            </li>
-            <li>
-              <Link
-                href={gsapComponents}
-                className={cn(
-                  'hover:text-foreground hidden rounded-md px-3 py-2 text-nowrap transition ease-out max-md:inline max-sm:px-2'
-                )}
-              >
-                Gsap Components
+                Pricing
               </Link>
             </li>
             <span className='mx-1 opacity-50 max-md:hidden'>|</span>
