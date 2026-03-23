@@ -1,12 +1,11 @@
-import { FC } from 'react'
 import AIVoice from './ai-voice'
 
 
 const Hero = () => {
   return (
-    <div className=''>
+    <section className=''>
       <AIVoice />
-    </div>
+    </section>
   )
 }
 export default Hero

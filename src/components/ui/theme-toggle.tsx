@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { MoonIcon, Sun02Icon } from '@hugeicons/core-free-icons'
+import { Moon02Icon, MoonIcon, Sun02Icon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { useTheme } from 'next-themes'
 import { Button } from '@/components/ui/button'
@@ -30,7 +30,7 @@ function ThemeToggle() {
       {isDark ? (
         <HugeiconsIcon icon={Sun02Icon} />
       ) : (
-        <HugeiconsIcon icon={MoonIcon} />
+          <HugeiconsIcon icon={Moon02Icon} />
       )}
       <span className='sr-only'>Toggle theme</span>
     </Button>
