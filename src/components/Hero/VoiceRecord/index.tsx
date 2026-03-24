@@ -1,6 +1,6 @@
 'use client'
 
-import { Check, Mic01Icon, PauseIcon, PlayCircle02Icon, Refresh03Icon, Upload01Icon } from '@hugeicons/core-free-icons'
+import { Check, Mic01Icon, PauseIcon, PlayCircle02Icon, Refresh03Icon, StopCircleIcon, Upload01Icon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -89,7 +89,7 @@ export default function VoiceRecord() {
           <p className="text-xl font-semibold text-primary">Drop audio file here</p>
         </div>
       )}
-      <form onSubmit={handleSubmit} className='relative min-w-64 mx-auto flex w-full max-w-xl flex-col items-center gap-2.5'>
+      <form onSubmit={handleSubmit} className='relative min-w-66 mx-auto flex w-full max-w-xl flex-col items-center gap-2.5'>
 
         {/* Hidden audio element for playback */}
         {audioUrl && (
@@ -110,6 +110,7 @@ export default function VoiceRecord() {
               className='group flex h-20 w-20 items-center justify-center'
                   type='button'
                   variant="outline"
+
                   onClick={startRecording}
                   aria-label='Start recording'
                 >
@@ -134,6 +135,7 @@ export default function VoiceRecord() {
                 <Button
                   type='button'
                 onClick={startRecording}
+                size="lg"
                   aria-label='Start recording'
                 >
                 <HugeiconsIcon
@@ -181,10 +183,12 @@ export default function VoiceRecord() {
                 {/* Stop button */}
                 <Button
                   type='button'
+                size="lg"
                   variant="destructive"
                   onClick={stopRecording}
                 className='w-full'
                 >
+                <HugeiconsIcon icon={StopCircleIcon} className='size-4' />
                   Stop Recording
                 </Button>
             </div>
@@ -228,12 +232,13 @@ export default function VoiceRecord() {
             </p>
 
             {/* Actions */}
-              <div className='flex w-full items-center gap-3'>
+              <div className='flex w-full items-center gap-2'>
               <Button
                 type='button'
                 variant="outline"
                 onClick={resetRecording}
-                  className='flex items-center w-30 gap-1.5'
+                  size="lg"
+                  className='flex items-center w-32 gap-1.5'
                 aria-label='Reset recording'
               >
                 <HugeiconsIcon icon={Refresh03Icon} className='size-4' />
@@ -243,7 +248,8 @@ export default function VoiceRecord() {
               <Button
                 type='submit'
                 disabled={isUploading}
-                  className='flex items-center gap-1.5 min-w-30'
+                  size="lg"
+                  className='flex items-center w-32 gap-1.5 min-w-30'
                 aria-label='Use recording'
               >
                 {isUploading ? (

@@ -6,7 +6,7 @@ const SoundWave = ({ isStatic = false, containerClasses, classes }: { isStatic?:
   const animations = ['wave1', 'wave2', 'wave3', 'wave4', 'wave5', 'wave6'];
 
     return (
-      <div className={cn('h-3 flex', containerClasses)}>
+      <div className={cn('h-3.5 flex', containerClasses)}>
         <div className={cn('relative flex h-full items-center justify-center gap-[3px] overflow-hidden', classes)}>
           {[...Array(BAR_COUNT)].map((_, i) => {
             const animationName = isStatic ? 'none' : animations[i % animations.length];
