@@ -16,14 +16,15 @@ export function useAudioRecorder() {
       const file = acceptedFiles[0]
       const url = URL.createObjectURL(file)
       setAudioUrl(url)
-      setStatus('recorded')
+      console.log('url', url)
     }
   }, [])
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: { 'audio/*': [] },
-    maxFiles: 1
+    maxFiles: 1,
+    noClick: true,
   })
 
   // MediaRecorder refs
@@ -74,7 +75,9 @@ export function useAudioRecorder() {
       }, 1000)
     } catch (err) {
       console.error('Microphone error:', err)
-      alert('Could not access microphone. Please grant permission and try again.')
+      alert(
+        'Could not access microphone. Please grant permission and try again.'
+      )
     }
   }
 
@@ -115,7 +118,7 @@ export function useAudioRecorder() {
   const handleTimeUpdate = () => {
     if (audioRef.current) {
       setPlaybackProgress(
-        (audioRef.current.currentTime / audioRef.current.duration) * 100,
+        (audioRef.current.currentTime / audioRef.current.duration) * 100
       )
     }
   }
@@ -157,6 +160,6 @@ export function useAudioRecorder() {
     handleLoadedMetadata,
     handleEnded,
     formatTime,
-    totalDuration
+    totalDuration,
   }
 }

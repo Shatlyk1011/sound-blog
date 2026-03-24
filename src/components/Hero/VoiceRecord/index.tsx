@@ -4,25 +4,11 @@ import { Check, Mic01Icon, PauseIcon, PlayCircle02Icon, Refresh03Icon, Upload01I
 import { HugeiconsIcon } from '@hugeicons/react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { useAudioRecorder } from '@/hooks/use-audio-recorder'
 import SoundWave from './SoundWave'
-import { useState } from 'react'
-
-const TabItems = [
-  {
-    title: 'Record',
-    value: 'record'
-  }, 
-  {
-    title: 'Upload',
-    value: 'upload'
-  }
-]
+import { SubmitEventHandler } from 'react'
 
 export default function VoiceRecord() {
-  const [tab, setTab] = useState<'record' | 'upload'>('record')
-
   const {
     status,
     recordingTime,
@@ -44,12 +30,27 @@ export default function VoiceRecord() {
     totalDuration
   } = useAudioRecorder()
 
-  const handleSubmit = () => {
+  const handleSubmit: SubmitEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault()
     console.log('submit')
+    console.log('audioUrl', audioUrl)
   }
 
   return (
-    <div className='w-full py-4'>
+    <div
+      {...getRootProps()}
+      className={cn(
+        'w-full py-4 relative rounded-xl transition-colors',
+        isDragActive ? 'bg-primary/5 border-2 border-dashed border-primary' : 'border-2 border-transparent'
+      )}
+    >
+      <input {...getInputProps()} />
+      {isDragActive && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/80 backdrop-blur-sm z-50 rounded-xl">
+          <HugeiconsIcon icon={Upload01Icon} className="size-12 text-primary mb-4 animate-bounce" />
+          <p className="text-xl font-semibold text-primary">Drop audio file here</p>
+        </div>
+      )}
       <form onSubmit={handleSubmit} className='relative mx-auto flex w-full max-w-xl flex-col items-center gap-2.5'>
 
         {/* Hidden audio element for playback */}
@@ -65,113 +66,86 @@ export default function VoiceRecord() {
         )}
 
         {/* ── IDLE ───────────────────────────── */}
-        {status === 'idle' && (
-          <Tabs defaultValue="record" onValueChange={(value) => setTab(value as 'record' | 'upload')} className="w-full flex flex-col items-center">
-            <TabsList className="mb-4 w-48" >
-              {TabItems.map(({title, value}) => (
-                <TabsTrigger key={value} disabled={status !== 'idle'} value={value} className={cn(tab === value ? 'text-foreground! ' : 'text-foreground/60! hover:text-foreground! ')}>{title}</TabsTrigger>
-              ))}
-            </TabsList>
-            
-            <TabsContent  value="record" className="w-full flex flex-col items-center gap-2.5">
-              <Button
-                className='group flex h-20 w-20 items-center justify-center transition-colors '
-                type='button'
-                variant="outline"
-                onClick={startRecording}
-                aria-label='Start recording'
-              >
-                <HugeiconsIcon
-                  icon={Mic01Icon}
-                  className='size-6 text-foreground/90 group-hover:scale-108 group-hover:-translate-y-0.5 transition duration-300'
-                />
-              </Button>
+            {status === 'idle' && (
+              <>
+                <Button
+                  className='group flex h-20 w-20 items-center justify-center transition-colors '
+                  type='button'
+                  variant="outline"
+                  onClick={startRecording}
+                  aria-label='Start recording'
+                >
+                  <HugeiconsIcon
+                    icon={Mic01Icon}
+                    className='size-6 text-foreground/90 group-hover:scale-108 group-hover:-translate-y-0.5 transition duration-300'
+                  />
+                </Button>
 
-              <span className='font-mono text-sm text-foreground/70'>
-                00:00
-              </span>
+                <span className='font-mono text-sm text-foreground/70'>
+                  00:00
+                </span>
 
-              {/* Static flat waveform */}
-              <SoundWave isStatic />
+                {/* Static flat waveform */}
+                <SoundWave isStatic />
 
-              <p className='text-xs text-foreground/70'>
-                Click to speak
-              </p>
-
-              <Button
-                type='button'
-                onClick={startRecording}
-                variant="secondary"
-                aria-label='Start recording'
-              >
-                Start Recording
-              </Button>
-            </TabsContent>
-
-            <TabsContent data-active={tab === 'upload'} value="upload" className="w-full flex flex-col items-center gap-2.5">
-              <div 
-                {...getRootProps()} 
-                className={cn(
-                  "flex flex-col items-center justify-center w-full max-w-sm h-40 border-2 border-dashed rounded-lg cursor-pointer transition-colors px-6 text-center",
-                  isDragActive ? "border-primary bg-primary/5" : "border-muted-foreground/25 hover:border-primary/50 hover:bg-muted/50"
-                )}
-              >
-                <input {...getInputProps()} />
-                <HugeiconsIcon icon={Upload01Icon} className="size-8 text-muted-foreground mb-3" />
-                <p className="text-sm text-foreground/80 font-medium">
-                  {isDragActive ? "Drop audio file here..." : "Drag & drop audio here"}
+                <p className='text-xs text-foreground/70'>
+                  Click to speak
                 </p>
-                <p className="text-xs text-muted-foreground mt-1">
-                  or click to browse
+
+                <Button
+                  type='button'
+                  onClick={startRecording}
+                  variant="secondary"
+                  aria-label='Start recording'
+                >
+                  Start Recording
+                </Button>
+              </>
+            )}
+
+            {/* ── RECORDING ──────────────────────── */}
+            {status === 'recording' && (
+              <>
+                {/* Pulsing stop button */}
+                <Button
+                  className='group flex h-20 w-20 items-center justify-center transition-colors '
+                  type='button'
+                  variant="outline"
+                  onClick={stopRecording}
+                  aria-label='Stop recording'
+                >
+                  <div
+                    className='h-6 w-6 bg-foreground/85 rounded-md animate-spin group-hover:scale-108 transition duration-300'
+                    style={{ animationDuration: '3s' }}
+                  />
+                </Button>
+
+                {/* Live timer */}
+                <span className='font-mono text-sm text-foreground/70'>
+                  {formatTime(recordingTime)}
+                </span>
+
+                {/* Animated waveform bars */}
+                <SoundWave />
+
+                <p className='text-xs text-foreground/70 '>
+                  Listening…
                 </p>
-              </div>
-            </TabsContent>
-          </Tabs>
-        )}
 
-        {/* ── RECORDING ──────────────────────── */}
-        {status === 'recording' && (
-          <>
-            {/* Pulsing stop button */}
-            <Button
-              className='group flex h-20 w-20 items-center justify-center transition-colors '
-              type='button'
-              variant="outline"
-              onClick={stopRecording}
-              aria-label='Stop recording'
-            >
-              <div
-                className='h-6 w-6 bg-foreground/85 rounded-md animate-spin group-hover:scale-108 transition duration-300'
-                style={{ animationDuration: '3s' }}
-              />
-            </Button>
+                {/* Stop button */}
+                <Button
+                  type='button'
+                  variant="destructive"
+                  onClick={stopRecording}
+                >
+                  Stop Recording
+                </Button>
+              </>
+            )}
 
-            {/* Live timer */}
-            <span className='font-mono text-sm text-foreground/70'>
-              {formatTime(recordingTime)}
-            </span>
-
-            {/* Animated waveform bars */}
-            <SoundWave/>
-
-            <p className='text-xs text-foreground/70 '>
-              Listening…
-            </p>
-
-            {/* Stop button */}
-            <Button
-              type='button'
-              variant="destructive"
-              onClick={stopRecording}
-            >
-              Stop Recording
-            </Button>
-          </>
-        )}
-
-        {/* ── RECORDED ───────────────────────── */}
-        {status === 'recorded' && (
-          <>
+            {/* ── RECORDED ───────────────────────── */}
+            {status === 'recorded' && (
+              <>
             {/* Play / Pause button */}
             <Button
               className='group flex h-20 w-20 items-center justify-center transition-colors '
@@ -183,7 +157,7 @@ export default function VoiceRecord() {
               {isPlaying ? (
                 <HugeiconsIcon icon={PauseIcon} className='size-6 text-foreground/90 transition duration-300' />
               ) : (
-                  <HugeiconsIcon icon={PlayCircle02Icon} className='size-6 text-foreground/90 transition duration-300' />
+                      <HugeiconsIcon icon={PlayCircle02Icon} className='size-6 text-foreground/90 transition duration-300' />
               )}
             </Button>
 
@@ -198,7 +172,7 @@ export default function VoiceRecord() {
 
             <SoundWave isStatic={!isPlaying} containerClasses={cn(!isPlaying && 'items-end')} classes={cn(isPlaying ? 'h-auto' : 'max-h-1 items-end')} />
 
-            <p className='h-4 text-xs text-foreground/70 '>
+                <p className='h-4 text-xs text-foreground/70'>
               Recording ready
             </p>
 
@@ -226,9 +200,7 @@ export default function VoiceRecord() {
             </div>
           </>
         )}
-
       </form>
     </div>
   )
 }
-
