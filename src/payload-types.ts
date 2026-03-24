@@ -71,18 +71,24 @@ export interface Config {
     transcripts: Transcript;
     blogs: Blog;
     users: User;
+    'credit-history': CreditHistory;
     adminUsers: AdminUser;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {};
+  collectionsJoins: {
+    users: {
+      creditHistory: 'credit-history';
+    };
+  };
   collectionsSelect: {
     'voice-records': VoiceRecordsSelect<false> | VoiceRecordsSelect<true>;
     transcripts: TranscriptsSelect<false> | TranscriptsSelect<true>;
     blogs: BlogsSelect<false> | BlogsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    'credit-history': CreditHistorySelect<false> | CreditHistorySelect<true>;
     adminUsers: AdminUsersSelect<false> | AdminUsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -167,16 +173,59 @@ export interface User {
    */
   userId: string;
   email?: string | null;
-  plan: 'free' | 'paid';
+  plan?: ('free' | 'paid') | null;
   /**
    * Number of credits available for the user.
    */
-  credits: number;
-  authProvider: 'n/a' | 'email' | 'google' | 'github';
+  credits?: number | null;
+  authProvider?: ('n/a' | 'email' | 'google' | 'github') | null;
+  /**
+   * All credit transactions for this user
+   */
+  creditHistory?: {
+    docs?: (string | CreditHistory)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   /**
    * When enabled, this user is blocked from accessing the application.
    */
   isBlocked?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "credit-history".
+ */
+export interface CreditHistory {
+  id: string;
+  client?: (string | null) | User;
+  user?: (string | null) | User;
+  /**
+   * Supabase user ID
+   */
+  userId: string;
+  /**
+   * Number of credits
+   */
+  creditAmount: number;
+  /**
+   * Type of credit allocation
+   */
+  source: 'purchased' | 'signup_bonus';
+  /**
+   * Status of the credit
+   */
+  status: 'active' | 'expired' | 'used';
+  /**
+   * Amount of credits spent from this allocation
+   */
+  creditsSpent?: number | null;
+  /**
+   * Date when these credits expire
+   */
+  expirationDate: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -322,6 +371,10 @@ export interface PayloadLockedDocument {
         value: string | User;
       } | null)
     | ({
+        relationTo: 'credit-history';
+        value: string | CreditHistory;
+      } | null)
+    | ({
         relationTo: 'adminUsers';
         value: string | AdminUser;
       } | null);
@@ -418,7 +471,24 @@ export interface UsersSelect<T extends boolean = true> {
   plan?: T;
   credits?: T;
   authProvider?: T;
+  creditHistory?: T;
   isBlocked?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "credit-history_select".
+ */
+export interface CreditHistorySelect<T extends boolean = true> {
+  client?: T;
+  user?: T;
+  userId?: T;
+  creditAmount?: T;
+  source?: T;
+  status?: T;
+  creditsSpent?: T;
+  expirationDate?: T;
   updatedAt?: T;
   createdAt?: T;
 }

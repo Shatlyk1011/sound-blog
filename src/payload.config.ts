@@ -1,10 +1,11 @@
-import path from 'path'
-import { mongooseAdapter } from '@payloadcms/db-mongodb'
-import { fileURLToPath } from 'node:url'
-import { buildConfig } from 'payload'
-import AdminUsers from './app/(payload)/collections/AdminUsers'
-import Blogs from './app/(payload)/collections/Blogs'
-import Transcripts from './app/(payload)/collections/Transcripts'
+import path from 'path';
+import { mongooseAdapter } from '@payloadcms/db-mongodb';
+import { fileURLToPath } from 'node:url';
+import { buildConfig } from 'payload';
+import AdminUsers from './app/(payload)/collections/AdminUsers';
+import Blogs from './app/(payload)/collections/Blogs';
+import CreditHistory from './app/(payload)/collections/CreditHistory';
+import Transcripts from './app/(payload)/collections/Transcripts';
 import Users from './app/(payload)/collections/Users'
 import VoiceRecords from './app/(payload)/collections/VoiceRecords'
 
@@ -23,7 +24,14 @@ export default buildConfig({
     },
   },
 
-  collections: [VoiceRecords, Transcripts, Blogs, Users, AdminUsers],
+  collections: [
+    VoiceRecords,
+    Transcripts,
+    Blogs,
+    Users,
+    CreditHistory,
+    AdminUsers,
+  ],
 
   // Your Payload secret - should be a complex and secure string, unguessable
   secret: process.env.PAYLOAD_SECRET || '',

@@ -3,9 +3,9 @@
 import type { Metadata } from 'next'
 import { ThemeProvider } from 'next-themes'
 import { Poppins, Libre_Baskerville, IBM_Plex_Mono } from 'next/font/google'
-import Header from '@/components/layout/header'
 import { UserProvider } from '../_providers/user-provider'
 import './globals.css'
+import TanstackQueryProvider from '../_providers/tanstack-query'
 
 const fontSans = Poppins({
   subsets: ['latin'],
@@ -48,8 +48,10 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            {children}
-            {modal}
+            <TanstackQueryProvider>
+              {children}
+              {modal}
+            </TanstackQueryProvider>
           </ThemeProvider>
         </UserProvider>
       </body>
