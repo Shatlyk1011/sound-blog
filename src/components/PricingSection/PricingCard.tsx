@@ -39,7 +39,7 @@ export function PricingCard({
   return (
     <div
       className={cn(
-        'border-border bg-background relative flex w-full flex-col overflow-hidden rounded-xl border p-7 shadow-sm transition-shadow hover:shadow-md',
+        'border-border bg-background relative flex w-full flex-col overflow-hidden rounded-4xl border p-7 shadow-sm transition-shadow hover:shadow-md',
         classes,
         isEnterprice && 'max-md:hidden'
       )}
@@ -52,7 +52,7 @@ export function PricingCard({
       </div>
 
       <div className='mb-6'>
-        <div className='flex items-end'>
+        <div className='flex items-center'>
           <span className='-tracking-two font-mono text-3xl leading-8 font-medium'>
             {isAnnual
               ? getPricingLabel(item.priceYearly)
@@ -75,8 +75,7 @@ export function PricingCard({
       {isAuth && !isEnterprice ? (
         <Button
           className={cn(
-            'w-full text-sm font-semibold text-white shadow-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2',
-            'bg-foreground text-background hover:bg-foreground/80'
+            'w-full text-sm border border-secondary font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2',
           )}
         >
           {item.ctaText}
@@ -84,8 +83,7 @@ export function PricingCard({
       ) : (
         <Button
           className={cn(
-            'w-full text-sm font-semibold text-white shadow-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2',
-            'bg-foreground text-background hover:bg-foreground/80'
+            'w-full text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2',
           )}
           asChild
         >
@@ -117,7 +115,7 @@ export function PricingCard({
       {isEnterprice && (
         // overlay
         <div className='bg-background/70 absolute top-0 left-0 z-2 flex h-full w-full items-center justify-center'>
-          <div className='relative -bottom-16 flex flex-col items-center text-neutral-500'>
+          <div className='relative -bottom-16 flex flex-col items-center text-muted-foreground'>
             <HugeiconsIcon icon={LegalHammerIcon} size='28' className='mb-2' />
             <span className='tracking-one gap-1 text-center text-sm font-medium'>
               Enterprice API <br /> Under Development <br />{' '}

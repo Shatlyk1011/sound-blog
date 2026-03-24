@@ -77,7 +77,7 @@ const PricingSection = () => {
           checked={isAnnual}
           onCheckedChange={(checked) => setAnnual(checked)}
         />
-        <p className='relative flex'>
+        <p className='relative '>
           <span
             className={cn(
               'transition-colors',
@@ -86,7 +86,7 @@ const PricingSection = () => {
           >
             Annual
           </span>
-          <span className='tracking-one flex w-max items-center rounded-full bg-blue-400/20 px-1.5 py-0.5 text-xs text-[10px] font-medium text-nowrap text-blue-400'>
+          <span className='tracking-one absolute -right-[135%] top-1/2 -translate-y-1/2 flex w-max items-center rounded-full bg-secondary px-1.5 py-0.5 text-xs border text-[10px] font-medium text-nowrap text-secondary-foreground'>
             Save 20%
           </span>
         </p>

@@ -1,5 +1,13 @@
-import type { CollectionConfig } from 'payload'
-import { admins } from '../../utils/admins'
+import type { CollectionConfig } from 'payload';
+import { admins } from '../../utils/admins';
+
+
+
+
+
+
+
+
 
 const Users: CollectionConfig = {
   slug: 'users',
@@ -52,7 +60,7 @@ const Users: CollectionConfig = {
       name: 'plan',
       label: 'Plan',
       type: 'select',
-      required: true,
+      required: false,
       defaultValue: 'free',
       options: [
         { label: 'Free', value: 'free' },
@@ -64,7 +72,7 @@ const Users: CollectionConfig = {
       name: 'credits',
       label: 'Credits',
       type: 'number',
-      required: true,
+      required: false,
       defaultValue: 10,
       min: 0,
       admin: {
@@ -76,7 +84,7 @@ const Users: CollectionConfig = {
       name: 'authProvider',
       label: 'Auth Provider',
       type: 'select',
-      required: true,
+      required: false,
       defaultValue: 'n/a',
       options: [
         { label: 'N/A', value: 'n/a' },
@@ -84,6 +92,17 @@ const Users: CollectionConfig = {
         { label: 'Google', value: 'google' },
         { label: 'GitHub', value: 'github' },
       ],
+    },
+
+    {
+      name: 'creditHistory',
+      label: 'Credit History',
+      type: 'join',
+      collection: 'credit-history',
+      on: 'client',
+      admin: {
+        description: 'All credit transactions for this user',
+      },
     },
 
     {

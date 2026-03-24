@@ -79,7 +79,17 @@ const Header = () => {
                 Pricing
               </Link>
             </li>
-            <span className='mx-1 opacity-50 max-md:hidden'>|</span>
+            <li>
+              <Link
+                href={'/profile'}
+                onClick={closeMenu}
+                className={cn(
+                  'hover:text-foreground min-h-10 rounded-md px-3 py-2 text-nowrap transition ease-out max-sm:px-2'
+                )}
+              >
+                Profile (temp)
+              </Link>
+            </li>
           </ul>
         </nav>
 

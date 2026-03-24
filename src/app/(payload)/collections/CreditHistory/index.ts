@@ -1,0 +1,155 @@
+import { CollectionConfig } from 'payload';
+import { admins } from '../../utils/admins';
+
+const CreditHistory: CollectionConfig = {
+  slug: 'credit-history',
+  access: {
+    // Only admins can create via admin panel
+    // INVESTIGATE
+    create: ({ req }) => {
+      // Allow if user is authenticated through Supabase and has userId
+      if (req.user && req.context?.userId) {
+        return true
+      }
+      // Allow admins
+      return !!req.user
+    },
+    update: admins,
+    delete: admins,
+    read: ({ req }) => {
+      // Allow users to read only their own credit history
+      if (req.user && req.context?.userId) {
+        return {
+          userId: {
+            equals: req.context.userId,
+          },
+        }
+      }
+      // Admins can read all
+      return !!req.user
+    },
+  },
+  admin: {
+    defaultColumns: ['userId', 'createdAt', 'creditAmount', 'type'],
+    useAsTitle: 'userId',
+  },
+
+  hooks: {
+    beforeChange: [
+      async ({ data, req, operation }) => {
+        if (operation === 'create' && data.userId) {
+          try {
+            const client = await req.payload.find({
+              collection: 'users',
+              where: {
+                userId: {
+                  equals: data.userId,
+                },
+              },
+            })
+
+            if (client.docs.length > 0) {
+              data.client = client.docs[0].id
+            }
+          } catch (error) {
+            console.error('Error linking credit history to client:', error)
+          }
+        }
+        return data
+      },
+    ],
+  },
+  fields: [
+    {
+      name: 'client',
+      type: 'relationship',
+      relationTo: 'users',
+      admin: {
+        readOnly: true,
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'user',
+      type: 'relationship',
+      relationTo: 'users',
+      admin: {
+        readOnly: true,
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'userId',
+      label: 'User ID',
+      type: 'text',
+      required: true,
+      index: true,
+      admin: {
+        description: 'Supabase user ID',
+      },
+    },
+    {
+      name: 'creditAmount',
+      label: 'Credit Amount',
+      type: 'number',
+      required: true,
+      defaultValue: 3,
+      min: 0,
+      admin: {
+        description:
+          'Number of credits ',
+      },
+    },
+    {
+      name: 'source',
+      label: 'Credit Source',
+      type: 'select',
+      required: true,
+      defaultValue: 'monthly_free',
+      options: [
+        { label: 'Purchased Credits', value: 'purchased' },
+        { label: 'Signup Bonus', value: 'signup_bonus' },
+      ],
+      admin: {
+        description: 'Type of credit allocation',
+      },
+    },
+    {
+      name: 'status',
+      label: 'Status',
+      type: 'select',
+      defaultValue: 'active',
+      required: true,
+      options: [
+        { label: 'Active', value: 'active' },
+        { label: 'Expired', value: 'expired' },
+        { label: 'Used', value: 'used' },
+      ],
+      admin: {
+        description: 'Status of the credit',
+      },
+    },
+    {
+      name: 'creditsSpent',
+      label: 'Credits Spent',
+      type: 'number',
+      defaultValue: 30,
+      min: 0,
+      admin: {
+        description: 'Amount of credits spent from this allocation',
+      },
+    },
+    {
+      name: 'expirationDate',
+      label: 'Expiration Date',
+      type: 'date',
+      required: true,
+      admin: {
+        description: 'Date when these credits expire',
+      },
+    },
+  ],
+  timestamps: true,
+}
+
+export default CreditHistory
