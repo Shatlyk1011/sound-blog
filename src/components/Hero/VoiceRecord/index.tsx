@@ -10,7 +10,6 @@ import { SubmitEventHandler, useState } from 'react'
 
 export default function VoiceRecord() {
   const [isUploading, setIsUploading] = useState(false)
-
   const {
     status,
     recordingTime,
@@ -79,7 +78,7 @@ export default function VoiceRecord() {
     <div
       {...getRootProps()}
       className={cn(
-        'w-full py-4 relative rounded-xl transition-colors',
+        'w-full mt-4 relative transition-colors',
         isDragActive ? 'bg-primary/5 border-2 border-dashed border-primary' : 'border-2 border-transparent'
       )}
     >
@@ -90,7 +89,7 @@ export default function VoiceRecord() {
           <p className="text-xl font-semibold text-primary">Drop audio file here</p>
         </div>
       )}
-      <form onSubmit={handleSubmit} className='relative mx-auto flex w-full max-w-xl flex-col items-center gap-2.5'>
+      <form onSubmit={handleSubmit} className='relative min-w-64 mx-auto flex w-full max-w-xl flex-col items-center gap-2.5'>
 
         {/* Hidden audio element for playback */}
         {audioUrl && (
@@ -108,7 +107,7 @@ export default function VoiceRecord() {
             {status === 'idle' && (
               <>
                 <Button
-                  className='group flex h-20 w-20 items-center justify-center transition-colors '
+              className='group flex h-20 w-20 items-center justify-center'
                   type='button'
                   variant="outline"
                   onClick={startRecording}
@@ -127,18 +126,24 @@ export default function VoiceRecord() {
                 {/* Static flat waveform */}
                 <SoundWave isStatic />
 
+            <div className='flex flex-col w-full gap-2 justify-end h-32'>
                 <p className='text-xs text-foreground/70'>
                   Click to speak
                 </p>
 
                 <Button
                   type='button'
-                  onClick={startRecording}
-                  variant="secondary"
+                onClick={startRecording}
                   aria-label='Start recording'
                 >
+                <HugeiconsIcon
+                  icon={Mic01Icon}
+                  className='size-4'
+                />
                   Start Recording
                 </Button>
+            </div>
+
               </>
             )}
 
@@ -167,6 +172,8 @@ export default function VoiceRecord() {
                 {/* Animated waveform bars */}
                 <SoundWave />
 
+            <div className='flex flex-col w-full gap-2 justify-end h-32'>
+
                 <p className='text-xs text-foreground/70 '>
                   Listening…
                 </p>
@@ -176,9 +183,12 @@ export default function VoiceRecord() {
                   type='button'
                   variant="destructive"
                   onClick={stopRecording}
+                className='w-full'
                 >
                   Stop Recording
                 </Button>
+            </div>
+
               </>
             )}
 
@@ -211,17 +221,19 @@ export default function VoiceRecord() {
 
             <SoundWave isStatic={!isPlaying} containerClasses={cn(!isPlaying && 'items-end')} classes={cn(isPlaying ? 'h-auto' : 'max-h-1 items-end')} />
 
+            <div className='flex flex-col w-full gap-2 justify-end h-32'>
+
                 <p className='h-4 text-xs text-foreground/70'>
               Recording ready
             </p>
 
             {/* Actions */}
-            <div className='flex items-center gap-3'>
+              <div className='flex w-full items-center gap-3'>
               <Button
                 type='button'
                 variant="outline"
                 onClick={resetRecording}
-                className='flex items-center gap-1.5'
+                  className='flex items-center w-30 gap-1.5'
                 aria-label='Reset recording'
               >
                 <HugeiconsIcon icon={Refresh03Icon} className='size-4' />
@@ -231,7 +243,7 @@ export default function VoiceRecord() {
               <Button
                 type='submit'
                 disabled={isUploading}
-                className='flex items-center gap-1.5 min-w-30'
+                  className='flex items-center gap-1.5 min-w-30'
                 aria-label='Use recording'
               >
                 {isUploading ? (
@@ -243,6 +255,7 @@ export default function VoiceRecord() {
                   </>
                 )}
               </Button>
+            </div>
             </div>
           </>
         )}

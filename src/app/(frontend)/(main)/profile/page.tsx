@@ -28,7 +28,6 @@ export const formatDate = (dateString: string) => {
   })
 }
 
-
 export const dynamic = 'force-dynamic'
 
 const mockUser = {
@@ -156,7 +155,7 @@ export default function ProfilePage() {
             </div>
             <div className='bg-muted h-2 w-full overflow-hidden rounded-full'>
               <div
-                className='h-full bg-secondary transition-all'
+                className='h-full bg-muted-foreground/70 transition-all'
                 style={{
                   width: mockUser?.totalCredits
                     ? `${((mockUser.creditsRemaining || 0) / mockUser.totalCredits) * 100}%`
