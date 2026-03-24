@@ -2,7 +2,7 @@ import Hero from '@/components/Hero'
 
 export default function Home() {
   return (
-    <main className='bg-background mt-14 flex h-full items-center justify-center px-10 py-30 font-sans'>
+    <main className='bg-background mt-14 flex h-full items-center justify-center font-sans'>
       <Hero />
     </main>
   )

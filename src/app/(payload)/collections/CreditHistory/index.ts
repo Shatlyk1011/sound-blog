@@ -70,15 +70,6 @@ const CreditHistory: CollectionConfig = {
       },
     },
     {
-      name: 'user',
-      type: 'relationship',
-      relationTo: 'users',
-      admin: {
-        readOnly: true,
-        position: 'sidebar',
-      },
-    },
-    {
       name: 'userId',
       label: 'User ID',
       type: 'text',

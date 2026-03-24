@@ -1,5 +1,10 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase-server'
+import {
+  getClientByUserId,
+  createClientRecord,
+  createInitialCredits,
+} from '@/lib/credit-helpers'
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url)
@@ -9,9 +14,23 @@ export async function GET(request: Request) {
 
   if (code) {
     const supabase = await createClient()
-    const { error } = await supabase.auth.exchangeCodeForSession(code)
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code)
 
     if (!error) {
+      const user = data.session?.user
+      if (user) {
+        const existingClient = await getClientByUserId(user.id)
+        if (!existingClient) {
+          const provider = user.app_metadata?.provider as string | undefined
+          const validProvider = provider && ['google', 'github', 'email'].includes(provider)
+            ? (provider as 'google' | 'github' | 'email')
+            : 'n/a'
+          
+          await createClientRecord(user.id, user.email ?? undefined, validProvider)
+          await createInitialCredits(user.id)
+        }
+      }
+
       const forwardedHost = request.headers.get('x-forwarded-host') // original origin before load balancer
       const isLocalEnv = process.env.NODE_ENV === 'development'
 
