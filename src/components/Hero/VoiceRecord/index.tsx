@@ -6,9 +6,11 @@ import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { useAudioRecorder } from '@/hooks/use-audio-recorder'
 import SoundWave from './SoundWave'
-import { SubmitEventHandler } from 'react'
+import { SubmitEventHandler, useState } from 'react'
 
 export default function VoiceRecord() {
+  const [isUploading, setIsUploading] = useState(false)
+
   const {
     status,
     recordingTime,
@@ -30,10 +32,47 @@ export default function VoiceRecord() {
     totalDuration
   } = useAudioRecorder()
 
-  const handleSubmit: SubmitEventHandler<HTMLFormElement> = (e) => {
+  const handleSubmit: SubmitEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
-    console.log('submit')
-    console.log('audioUrl', audioUrl)
+    if (!audioUrl) {
+      alert('No audio recorded yet')
+      return
+    }
+
+    setIsUploading(true)
+
+    try {
+      const response = await fetch(audioUrl)
+      const blob = await response.blob()
+
+      const file = new File([blob], `voice-record-${Date.now()}.webm`, {
+        type: blob.type || 'audio/webm',
+      })
+
+      const formData = new FormData()
+      formData.append('file', file)
+      formData.append('duration', totalDuration.toString())
+
+      const uploadRes = await fetch('/api/voice-record', {
+        method: 'POST',
+        body: formData,
+      })
+
+      const result = await uploadRes.json()
+
+      if (!uploadRes.ok) {
+        throw new Error(result.error || 'Failed to upload audio')
+      }
+
+      alert('Voice recording saved successfully!')
+      resetRecording()
+    } catch (error: unknown) {
+      console.error('Upload failed:', error)
+      const message = error instanceof Error ? error.message : 'Error uploading file'
+      alert(message)
+    } finally {
+      setIsUploading(false)
+    }
   }
 
   return (
@@ -191,11 +230,18 @@ export default function VoiceRecord() {
 
               <Button
                 type='submit'
-                className='flex items-center gap-1.5'
+                disabled={isUploading}
+                className='flex items-center gap-1.5 min-w-30'
                 aria-label='Use recording'
               >
-                <HugeiconsIcon icon={Check} className='size-4' />
-                Use Audio
+                {isUploading ? (
+                  <div className='h-4 w-4 bg-transparent border-2 border-white border-t-transparent rounded-full animate-spin' />
+                ) : (
+                  <>
+                      <HugeiconsIcon icon={Check} className='size-4' />
+                      Use Audio
+                  </>
+                )}
               </Button>
             </div>
           </>
