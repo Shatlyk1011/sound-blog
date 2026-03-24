@@ -1,6 +1,6 @@
-import { getClientByUserId } from '@/lib/credit-helpers';
-import { CreditHistory, User } from '@/payload-types';
+import { CreditHistory, User } from '@/payload-types'
 import { NextResponse } from 'next/server'
+import { getClientByUserId } from '@/lib/credit-helpers'
 
 export interface UserDataResponse {
   currentPlan: User['plan']
@@ -48,7 +48,7 @@ export async function GET(req: Request) {
         createdAt: h.createdAt,
         expirationDate: h.expirationDate,
         creditsSpent: h.creditsSpent,
-        status: h.status
+        status: h.status,
       })),
     })
   } catch (error) {

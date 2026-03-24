@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server'
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
-import { getPayload } from 'payload'
 import configPromise from '@payload-config'
+import { NextRequest, NextResponse } from 'next/server'
+import { getPayload } from 'payload'
 import { createClient } from '@/lib/supabase-server'
 
 export async function POST(req: NextRequest) {
@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
 
     // 3. Find corresponding Payload user
     const payload = await getPayload({ config: configPromise })
-    
+
     const { docs: users } = await payload.find({
       collection: 'users',
       where: {
@@ -99,9 +99,6 @@ export async function POST(req: NextRequest) {
   } catch (err: unknown) {
     console.error('Error uploading voice record:', err)
     const message = err instanceof Error ? err.message : 'Internal server error'
-    return NextResponse.json(
-      { error: message },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: message }, { status: 500 })
   }
 }

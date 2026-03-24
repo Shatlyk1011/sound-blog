@@ -1,12 +1,20 @@
 'use client'
 
-import { Check, Mic01Icon, PauseIcon, PlayCircle02Icon, Refresh03Icon, StopCircleIcon, Upload01Icon } from '@hugeicons/core-free-icons'
+import { SubmitEventHandler, useState } from 'react'
+import {
+  Check,
+  Mic01Icon,
+  PauseIcon,
+  PlayCircle02Icon,
+  Refresh03Icon,
+  StopCircleIcon,
+  Upload01Icon,
+} from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
-import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { useAudioRecorder } from '@/hooks/use-audio-recorder'
+import { Button } from '@/components/ui/button'
 import SoundWave from './SoundWave'
-import { SubmitEventHandler, useState } from 'react'
 
 export default function VoiceRecord() {
   const [isUploading, setIsUploading] = useState(false)
@@ -28,7 +36,7 @@ export default function VoiceRecord() {
     handleLoadedMetadata,
     handleEnded,
     formatTime,
-    totalDuration
+    totalDuration,
   } = useAudioRecorder()
 
   const handleSubmit: SubmitEventHandler<HTMLFormElement> = async (e) => {
@@ -67,7 +75,8 @@ export default function VoiceRecord() {
       resetRecording()
     } catch (error: unknown) {
       console.error('Upload failed:', error)
-      const message = error instanceof Error ? error.message : 'Error uploading file'
+      const message =
+        error instanceof Error ? error.message : 'Error uploading file'
       alert(message)
     } finally {
       setIsUploading(false)
@@ -78,19 +87,28 @@ export default function VoiceRecord() {
     <div
       {...getRootProps()}
       className={cn(
-        'w-full mt-4 relative transition-colors',
-        isDragActive ? 'bg-primary/5 border-2 border-dashed border-primary' : 'border-2 border-transparent'
+        'relative mt-4 w-full transition-colors',
+        isDragActive
+          ? 'bg-primary/5 border-primary border-2 border-dashed'
+          : 'border-2 border-transparent'
       )}
     >
       <input {...getInputProps()} />
       {isDragActive && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/80 backdrop-blur-sm z-50 rounded-xl">
-          <HugeiconsIcon icon={Upload01Icon} className="size-12 text-primary mb-4 animate-bounce" />
-          <p className="text-xl font-semibold text-primary">Drop audio file here</p>
+        <div className='bg-background/80 absolute inset-0 z-50 flex flex-col items-center justify-center rounded-xl backdrop-blur-sm'>
+          <HugeiconsIcon
+            icon={Upload01Icon}
+            className='text-primary mb-4 size-12 animate-bounce'
+          />
+          <p className='text-primary text-xl font-semibold'>
+            Drop audio file here
+          </p>
         </div>
       )}
-      <form onSubmit={handleSubmit} className='relative min-w-66 mx-auto flex w-full max-w-xl flex-col items-center gap-2.5'>
-
+      <form
+        onSubmit={handleSubmit}
+        className='relative mx-auto flex w-full max-w-xl min-w-66 flex-col items-center gap-2.5'
+      >
         {/* Hidden audio element for playback */}
         {audioUrl && (
           <audio
@@ -104,164 +122,155 @@ export default function VoiceRecord() {
         )}
 
         {/* ── IDLE ───────────────────────────── */}
-            {status === 'idle' && (
-              <>
-                <Button
+        {status === 'idle' && (
+          <>
+            <Button
               className='group flex h-20 w-20 items-center justify-center'
-                  type='button'
-                  variant="outline"
+              type='button'
+              variant='outline'
+              onClick={startRecording}
+              aria-label='Start recording'
+            >
+              <HugeiconsIcon
+                icon={Mic01Icon}
+                className='text-foreground/90 size-6 transition duration-300 group-hover:-translate-y-0.5 group-hover:scale-108'
+              />
+            </Button>
 
-                  onClick={startRecording}
-                  aria-label='Start recording'
-                >
-                  <HugeiconsIcon
-                    icon={Mic01Icon}
-                    className='size-6 text-foreground/90 group-hover:scale-108 group-hover:-translate-y-0.5 transition duration-300'
-                  />
-                </Button>
+            <span className='text-foreground/70 font-mono text-sm'>00:00</span>
 
-                <span className='font-mono text-sm text-foreground/70'>
-                  00:00
-                </span>
+            {/* Static flat waveform */}
+            <SoundWave isStatic />
 
-                {/* Static flat waveform */}
-                <SoundWave isStatic />
+            <div className='flex h-32 w-full flex-col justify-end gap-2'>
+              <p className='text-foreground/70 text-xs'>Click to speak</p>
 
-            <div className='flex flex-col w-full gap-2 justify-end h-32'>
-                <p className='text-xs text-foreground/70'>
-                  Click to speak
-                </p>
-
-                <Button
-                  type='button'
+              <Button
+                type='button'
                 onClick={startRecording}
-                size="lg"
-                  aria-label='Start recording'
-                >
-                <HugeiconsIcon
-                  icon={Mic01Icon}
-                  className='size-4'
-                />
-                  Start Recording
-                </Button>
+                size='lg'
+                aria-label='Start recording'
+              >
+                <HugeiconsIcon icon={Mic01Icon} className='size-4' />
+                Start Recording
+              </Button>
             </div>
+          </>
+        )}
 
-              </>
-            )}
+        {/* ── RECORDING ──────────────────────── */}
+        {status === 'recording' && (
+          <>
+            {/* Pulsing stop button */}
+            <Button
+              className='group flex h-20 w-20 items-center justify-center transition-colors'
+              type='button'
+              variant='outline'
+              onClick={stopRecording}
+              aria-label='Stop recording'
+            >
+              <div
+                className='bg-foreground/85 h-6 w-6 animate-spin rounded-md transition duration-300 group-hover:scale-108'
+                style={{ animationDuration: '3s' }}
+              />
+            </Button>
 
-            {/* ── RECORDING ──────────────────────── */}
-            {status === 'recording' && (
-              <>
-                {/* Pulsing stop button */}
-                <Button
-                  className='group flex h-20 w-20 items-center justify-center transition-colors '
-                  type='button'
-                  variant="outline"
-                  onClick={stopRecording}
-                  aria-label='Stop recording'
-                >
-                  <div
-                    className='h-6 w-6 bg-foreground/85 rounded-md animate-spin group-hover:scale-108 transition duration-300'
-                    style={{ animationDuration: '3s' }}
-                  />
-                </Button>
+            {/* Live timer */}
+            <span className='text-foreground/70 font-mono text-sm'>
+              {formatTime(recordingTime)}
+            </span>
 
-                {/* Live timer */}
-                <span className='font-mono text-sm text-foreground/70'>
-                  {formatTime(recordingTime)}
-                </span>
+            {/* Animated waveform bars */}
+            <SoundWave />
 
-                {/* Animated waveform bars */}
-                <SoundWave />
+            <div className='flex h-32 w-full flex-col justify-end gap-2'>
+              <p className='text-foreground/70 text-xs'>Listening…</p>
 
-            <div className='flex flex-col w-full gap-2 justify-end h-32'>
-
-                <p className='text-xs text-foreground/70 '>
-                  Listening…
-                </p>
-
-                {/* Stop button */}
-                <Button
-                  type='button'
-                size="lg"
-                  variant="destructive"
-                  onClick={stopRecording}
+              {/* Stop button */}
+              <Button
+                type='button'
+                size='lg'
+                variant='destructive'
+                onClick={stopRecording}
                 className='w-full'
-                >
+              >
                 <HugeiconsIcon icon={StopCircleIcon} className='size-4' />
-                  Stop Recording
-                </Button>
+                Stop Recording
+              </Button>
             </div>
+          </>
+        )}
 
-              </>
-            )}
-
-            {/* ── RECORDED ───────────────────────── */}
-            {status === 'recorded' && (
-              <>
+        {/* ── RECORDED ───────────────────────── */}
+        {status === 'recorded' && (
+          <>
             {/* Play / Pause button */}
             <Button
-              className='group flex h-20 w-20 items-center justify-center transition-colors '
+              className='group flex h-20 w-20 items-center justify-center transition-colors'
               type='button'
-              variant="outline"
+              variant='outline'
               onClick={togglePlayback}
               aria-label={isPlaying ? 'Pause' : 'Play'}
             >
               {isPlaying ? (
-                <HugeiconsIcon icon={PauseIcon} className='size-6 text-foreground/90 transition duration-300' />
+                <HugeiconsIcon
+                  icon={PauseIcon}
+                  className='text-foreground/90 size-6 transition duration-300'
+                />
               ) : (
-                      <HugeiconsIcon icon={PlayCircle02Icon} className='size-6 text-foreground/90 transition duration-300' />
+                <HugeiconsIcon
+                  icon={PlayCircle02Icon}
+                  className='text-foreground/90 size-6 transition duration-300'
+                />
               )}
             </Button>
 
             {/* Playback timer */}
-            <span className='font-mono text-sm text-foreground/70'>
-              {formatTime(
-                (playbackProgress / 100) * totalDuration,
-              )}{' '}
-              /{' '}
+            <span className='text-foreground/70 font-mono text-sm'>
+              {formatTime((playbackProgress / 100) * totalDuration)} /{' '}
               {formatTime(totalDuration)}
             </span>
 
-            <SoundWave isStatic={!isPlaying} containerClasses={cn(!isPlaying && 'items-end')} classes={cn(isPlaying ? 'h-auto' : 'max-h-1 items-end')} />
+            <SoundWave
+              isStatic={!isPlaying}
+              containerClasses={cn(!isPlaying && 'items-end')}
+              classes={cn(isPlaying ? 'h-auto' : 'max-h-1 items-end')}
+            />
 
-            <div className='flex flex-col w-full gap-2 justify-end h-32'>
+            <div className='flex h-32 w-full flex-col justify-end gap-2'>
+              <p className='text-foreground/70 h-4 text-xs'>Recording ready</p>
 
-                <p className='h-4 text-xs text-foreground/70'>
-              Recording ready
-            </p>
-
-            {/* Actions */}
+              {/* Actions */}
               <div className='flex w-full items-center gap-2'>
-              <Button
-                type='button'
-                variant="outline"
-                onClick={resetRecording}
-                  size="lg"
-                  className='flex items-center w-32 gap-1.5'
-                aria-label='Reset recording'
-              >
-                <HugeiconsIcon icon={Refresh03Icon} className='size-4' />
-                Reset
-              </Button>
+                <Button
+                  type='button'
+                  variant='outline'
+                  onClick={resetRecording}
+                  size='lg'
+                  className='flex w-32 items-center gap-1.5'
+                  aria-label='Reset recording'
+                >
+                  <HugeiconsIcon icon={Refresh03Icon} className='size-4' />
+                  Reset
+                </Button>
 
-              <Button
-                type='submit'
-                disabled={isUploading}
-                  size="lg"
-                  className='flex items-center w-32 gap-1.5 min-w-30'
-                aria-label='Use recording'
-              >
-                {isUploading ? (
-                  <div className='h-4 w-4 bg-transparent border-2 border-white border-t-transparent rounded-full animate-spin' />
-                ) : (
-                  <>
+                <Button
+                  type='submit'
+                  disabled={isUploading}
+                  size='lg'
+                  className='flex w-32 min-w-30 items-center gap-1.5'
+                  aria-label='Use recording'
+                >
+                  {isUploading ? (
+                    <div className='h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent bg-transparent' />
+                  ) : (
+                    <>
                       <HugeiconsIcon icon={Check} className='size-4' />
                       Use Audio
-                  </>
-                )}
-              </Button>
-            </div>
+                    </>
+                  )}
+                </Button>
+              </div>
             </div>
           </>
         )}

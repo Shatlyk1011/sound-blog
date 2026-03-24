@@ -75,7 +75,7 @@ export function PricingCard({
       {isAuth && !isEnterprice ? (
         <Button
           className={cn(
-            'w-full text-sm border border-secondary font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2',
+            'border-secondary w-full border text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2'
           )}
         >
           {item.ctaText}
@@ -83,7 +83,7 @@ export function PricingCard({
       ) : (
         <Button
           className={cn(
-            'w-full text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2',
+            'w-full text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2'
           )}
           asChild
         >
@@ -115,7 +115,7 @@ export function PricingCard({
       {isEnterprice && (
         // overlay
         <div className='bg-background/70 absolute top-0 left-0 z-2 flex h-full w-full items-center justify-center'>
-          <div className='relative -bottom-16 flex flex-col items-center text-muted-foreground'>
+          <div className='text-muted-foreground relative -bottom-16 flex flex-col items-center'>
             <HugeiconsIcon icon={LegalHammerIcon} size='28' className='mb-2' />
             <span className='tracking-one gap-1 text-center text-sm font-medium'>
               Enterprice API <br /> Under Development <br />{' '}

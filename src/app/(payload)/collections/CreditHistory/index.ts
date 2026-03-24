@@ -1,5 +1,5 @@
-import { CollectionConfig } from 'payload';
-import { admins } from '../../utils/admins';
+import { CollectionConfig } from 'payload'
+import { admins } from '../../utils/admins'
 
 const CreditHistory: CollectionConfig = {
   slug: 'credit-history',
@@ -87,8 +87,7 @@ const CreditHistory: CollectionConfig = {
       defaultValue: 3,
       min: 0,
       admin: {
-        description:
-          'Number of credits ',
+        description: 'Number of credits ',
       },
     },
     {

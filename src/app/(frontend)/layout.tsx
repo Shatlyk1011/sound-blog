@@ -3,9 +3,9 @@
 import type { Metadata } from 'next'
 import { ThemeProvider } from 'next-themes'
 import { Poppins, Libre_Baskerville, IBM_Plex_Mono } from 'next/font/google'
+import TanstackQueryProvider from '../_providers/tanstack-query'
 import { UserProvider } from '../_providers/user-provider'
 import './globals.css'
-import TanstackQueryProvider from '../_providers/tanstack-query'
 
 const fontSans = Poppins({
   subsets: ['latin'],

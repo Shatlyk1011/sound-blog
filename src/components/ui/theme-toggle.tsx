@@ -30,7 +30,7 @@ function ThemeToggle() {
       {isDark ? (
         <HugeiconsIcon icon={Sun02Icon} />
       ) : (
-          <HugeiconsIcon icon={Moon02Icon} />
+        <HugeiconsIcon icon={Moon02Icon} />
       )}
       <span className='sr-only'>Toggle theme</span>
     </Button>

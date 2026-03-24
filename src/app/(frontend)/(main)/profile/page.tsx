@@ -1,10 +1,19 @@
 'use client'
 import { getUserInitials } from '@/composables/utils'
 import { CreditHistory } from '@/payload-types'
+import { useUserCreditsQuery } from '@/services/user-credits'
+import {
+  Calendar03Icon,
+  CreditCardIcon,
+  Crown03Icon,
+} from '@hugeicons/core-free-icons'
+import { HugeiconsIcon } from '@hugeicons/react'
 import Link from 'next/link'
+import { cn } from '@/lib/utils'
 import { useUser } from '@/hooks/use-user'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
   Table,
@@ -14,11 +23,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { cn } from '@/lib/utils'
-import { HugeiconsIcon } from '@hugeicons/react'
-import { Calendar03Icon, CreditCardIcon, Crown03Icon } from '@hugeicons/core-free-icons'
-import { useUserCreditsQuery } from '@/services/user-credits'
-import { Input } from '@/components/ui/input'
 
 export const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString('en-US', {
@@ -90,12 +94,12 @@ export default function ProfilePage() {
       {/* Profile Settings Card */}
       <div className='bg-card text-card-foreground mb-6 rounded-4xl border p-8'>
         <div className='mb-6 flex items-center gap-4'>
-          <Avatar className='size-12 '>
+          <Avatar className='size-12'>
             <AvatarImage
               src={SBUser?.user_metadata?.avatar_url}
               alt={SBUser?.user_metadata?.full_name || 'avatar image'}
             />
-            <AvatarFallback className='text-xl bg-secondary text-secondary-foreground'>
+            <AvatarFallback className='bg-secondary text-secondary-foreground text-xl'>
               {getUserInitials(SBUser)}
             </AvatarFallback>
           </Avatar>
@@ -121,9 +125,7 @@ export default function ProfilePage() {
               {userData?.currentPlan === 'free' ? 'Free Plan' : 'Pro Plan'}
             </span>
           </h2>
-          <Button
-            asChild
-          >
+          <Button asChild>
             <Link href='/pricing'>
               <HugeiconsIcon icon={Crown03Icon} />
               Upgrade
@@ -155,7 +157,7 @@ export default function ProfilePage() {
             </div>
             <div className='bg-muted h-2 w-full overflow-hidden rounded-full'>
               <div
-                className='h-full bg-muted-foreground/70 transition-all'
+                className='bg-muted-foreground/70 h-full transition-all'
                 style={{
                   width: mockUser?.totalCredits
                     ? `${((mockUser.creditsRemaining || 0) / mockUser.totalCredits) * 100}%`
@@ -174,21 +176,13 @@ export default function ProfilePage() {
           <Table className='w-full overflow-y-auto text-nowrap'>
             <TableHeader className='bg-input/30 text-left text-sm font-medium'>
               <TableRow>
-                <TableHead className='px-6 py-3 w-[40%]'>
-                  Source
-                </TableHead>
-                <TableHead className='px-6 py-3 '>
-                  Added Date
-                </TableHead>
-                <TableHead className='px-6 py-3'>
-                  Expiration Date
-                </TableHead>
-                <TableHead className='px-6 py-3 text-right w-[10%]'>
+                <TableHead className='w-[40%] px-6 py-3'>Source</TableHead>
+                <TableHead className='px-6 py-3'>Added Date</TableHead>
+                <TableHead className='px-6 py-3'>Expiration Date</TableHead>
+                <TableHead className='w-[10%] px-6 py-3 text-right'>
                   Credits
                 </TableHead>
-                <TableHead className='px-6 py-3'>
-                  Status
-                </TableHead>
+                <TableHead className='px-6 py-3'>Status</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody className='divide-y'>
@@ -214,38 +208,48 @@ export default function ProfilePage() {
               ) : (
                 userData?.history &&
                 userData.history.length > 0 &&
-                    userData.history.map((h) => {
-                      // consider "used" status as well
-                      const isActive = h.status === 'active'
-                      return (
-                        <TableRow
-                          key={h.id}
-                          className='hover:bg-muted/30 transition-colors'
-                        >
-                          <TableCell className='px-6 py-4 text-sm font-medium'>
-                            {getCreditTypeLabel(h.source)}
-                          </TableCell>
-                          <TableCell className='px-6 py-4 text-sm'>
-                            <div className='flex items-center gap-2'>
-                              <HugeiconsIcon icon={Calendar03Icon} />
-                              {formatDate(h.createdAt)}
-                            </div>
-                          </TableCell>
-                          <TableCell className='px-6 py-4 text-sm'>
-                            <div className='flex items-center gap-2'>
-                              <HugeiconsIcon icon={Calendar03Icon} />
-                              {formatDate(h.expirationDate || '20.10.20')}
-                            </div>
-                          </TableCell>
-                          <TableCell className={cn('px-6 py-4 text-right text-sm font-semibold ', isActive ? "text-green-600" : "opacity-80")}>
-                            +{h.creditAmount}
-                          </TableCell>
-                          <TableCell className={cn('capitalize text-muted-foreground px-6 py-4 text-sm', isActive ? 'text-green-600' : 'opacity-80')}>
-                            {h.status}
-                          </TableCell>
-                        </TableRow>
-                      )
-                    })
+                userData.history.map((h) => {
+                  // consider "used" status as well
+                  const isActive = h.status === 'active'
+                  return (
+                    <TableRow
+                      key={h.id}
+                      className='hover:bg-muted/30 transition-colors'
+                    >
+                      <TableCell className='px-6 py-4 text-sm font-medium'>
+                        {getCreditTypeLabel(h.source)}
+                      </TableCell>
+                      <TableCell className='px-6 py-4 text-sm'>
+                        <div className='flex items-center gap-2'>
+                          <HugeiconsIcon icon={Calendar03Icon} />
+                          {formatDate(h.createdAt)}
+                        </div>
+                      </TableCell>
+                      <TableCell className='px-6 py-4 text-sm'>
+                        <div className='flex items-center gap-2'>
+                          <HugeiconsIcon icon={Calendar03Icon} />
+                          {formatDate(h.expirationDate || '20.10.20')}
+                        </div>
+                      </TableCell>
+                      <TableCell
+                        className={cn(
+                          'px-6 py-4 text-right text-sm font-semibold',
+                          isActive ? 'text-green-600' : 'opacity-80'
+                        )}
+                      >
+                        +{h.creditAmount}
+                      </TableCell>
+                      <TableCell
+                        className={cn(
+                          'text-muted-foreground px-6 py-4 text-sm capitalize',
+                          isActive ? 'text-green-600' : 'opacity-80'
+                        )}
+                      >
+                        {h.status}
+                      </TableCell>
+                    </TableRow>
+                  )
+                })
               )}
             </TableBody>
           </Table>
@@ -285,7 +289,10 @@ export default function ProfilePage() {
                 >
                   <TableCell className='px-6 py-4 text-sm'>
                     <div className='flex items-center gap-2'>
-                      <HugeiconsIcon icon={Calendar03Icon} className='text-muted-foreground size-4' />
+                      <HugeiconsIcon
+                        icon={Calendar03Icon}
+                        className='text-muted-foreground size-4'
+                      />
                       {formatDate(invoice.date)}
                     </div>
                   </TableCell>

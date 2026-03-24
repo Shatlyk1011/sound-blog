@@ -1,7 +1,7 @@
 'use client'
-import { PauseIcon, PlayIcon } from "@hugeicons/core-free-icons"
-import { HugeiconsIcon } from "@hugeicons/react"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from 'react'
+import { PauseIcon, PlayIcon } from '@hugeicons/core-free-icons'
+import { HugeiconsIcon } from '@hugeicons/react'
 
 function MiniAudioPlayer({ fileUrl }: { fileUrl?: string }) {
   const audioRef = useRef<HTMLAudioElement>(null)
@@ -32,7 +32,7 @@ function MiniAudioPlayer({ fileUrl }: { fileUrl?: string }) {
     e.preventDefault()
     e.stopPropagation()
     if (!audioRef.current || !fileUrl) return
-    
+
     if (isPlaying) {
       audioRef.current.pause()
     } else {
@@ -61,22 +61,23 @@ function MiniAudioPlayer({ fileUrl }: { fileUrl?: string }) {
   if (!fileUrl) return null
 
   return (
-    <div 
-      className="flex flex-col gap-2 mt-2 mb-3 w-full bg-card rounded-2xl p-3 border border-border/50"
-    >
-      <audio ref={audioRef} src={fileUrl} preload="metadata" />
-      
-      <div className="flex items-center gap-3">
-        <button 
+    <div className='bg-card border-border/50 mt-2 mb-3 flex w-full flex-col gap-2 rounded-2xl border p-3'>
+      <audio ref={audioRef} src={fileUrl} preload='metadata' />
+
+      <div className='flex items-center gap-3'>
+        <button
           onClick={togglePlay}
-          className="shrink-0 h-8 w-8 flex items-center justify-center rounded-full dark:bg-accent bg-accent-foreground/80 border text-accent/80 dark:text-accent-foreground active:scale-95 transition-all shadow-sm"
+          className='dark:bg-accent bg-accent-foreground/80 text-accent/80 dark:text-accent-foreground flex h-8 w-8 shrink-0 items-center justify-center rounded-full border shadow-sm transition-all active:scale-95'
         >
-          <HugeiconsIcon icon={isPlaying ? PauseIcon : PlayIcon} className="size-4" />
+          <HugeiconsIcon
+            icon={isPlaying ? PauseIcon : PlayIcon}
+            className='size-4'
+          />
         </button>
 
-        <div className="flex flex-col grow gap-1.5 pt-1">
+        <div className='flex grow flex-col gap-1.5 pt-1'>
           <input
-            type="range"
+            type='range'
             min={0}
             max={duration || 100}
             value={currentTime}
@@ -84,9 +85,9 @@ function MiniAudioPlayer({ fileUrl }: { fileUrl?: string }) {
             onClick={(e) => {
               e.stopPropagation()
             }}
-            className="w-full h-1.5 bg-input rounded-full appearance-none cursor-pointer accent-primary hover:accent-primary/80 transition-all [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 dark:[&::-webkit-slider-thumb]:bg-accent [&::-webkit-slider-thumb]:bg-accent-foreground [&::-webkit-slider-thumb]:rounded-full"
+            className='bg-input accent-primary hover:accent-primary/80 dark:[&::-webkit-slider-thumb]:bg-accent [&::-webkit-slider-thumb]:bg-accent-foreground h-1.5 w-full cursor-pointer appearance-none rounded-full transition-all [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full'
           />
-          <div className="flex justify-between text-[10px] text-muted-foreground font-medium px-0.5">
+          <div className='text-muted-foreground flex justify-between px-0.5 text-[10px] font-medium'>
             <span>{formatTime(currentTime)}</span>
             <span>{formatTime(duration)}</span>
           </div>

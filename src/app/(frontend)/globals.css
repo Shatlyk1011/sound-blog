@@ -192,35 +192,64 @@
   }
 }
 
-
 @layer utilities {
   @keyframes wave1 {
-  0%, 100% { transform: scaleY(0.2); }
-  50% { transform: scaleY(1); }
-}
+    0%,
+    100% {
+      transform: scaleY(0.2);
+    }
+    50% {
+      transform: scaleY(1);
+    }
+  }
 
-@keyframes wave2 {
-  0%, 100% { transform: scaleY(0.4); }
-  50% { transform: scaleY(0.9); }
-}
+  @keyframes wave2 {
+    0%,
+    100% {
+      transform: scaleY(0.4);
+    }
+    50% {
+      transform: scaleY(0.9);
+    }
+  }
 
-@keyframes wave3 {
-  0%, 100% { transform: scaleY(0.3); }
-  50% { transform: scaleY(1.2); }
-}
+  @keyframes wave3 {
+    0%,
+    100% {
+      transform: scaleY(0.3);
+    }
+    50% {
+      transform: scaleY(1.2);
+    }
+  }
 
-@keyframes wave4 {
-  0%, 100% { transform: scaleY(0.6); }
-  50% { transform: scaleY(0.8); }
-}
+  @keyframes wave4 {
+    0%,
+    100% {
+      transform: scaleY(0.6);
+    }
+    50% {
+      transform: scaleY(0.8);
+    }
+  }
 
-@keyframes wave5 {
-  0%, 100% { transform: scaleY(0.25); }
-  50% { transform: scaleY(1.1); }
-}
+  @keyframes wave5 {
+    0%,
+    100% {
+      transform: scaleY(0.25);
+    }
+    50% {
+      transform: scaleY(1.1);
+    }
+  }
 
-@keyframes wave6 {
-  0%, 100% { transform: scaleY(0.5); }
-  50% { transform: scaleY(0.7); }
-}
+  @keyframes wave6 {
+    0%,
+    100% {
+      transform: scaleY(0.5);
+    }
+    50% {
+      transform: scaleY(0.7);
+    }
+  }
 }

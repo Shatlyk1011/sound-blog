@@ -1,12 +1,12 @@
 import { User } from '@/payload-types'
-import config from '@payload-config';
-import { getPayload } from 'payload';
+import config from '@payload-config'
+import { getPayload } from 'payload'
 
 // Create a new client record (called when user signs up via Supabase)
 export async function createClientRecord(
   userId: string,
   email?: string,
-  provider?: User['authProvider'],
+  provider?: User['authProvider']
 ): Promise<void> {
   const payload = await getPayload({ config })
 
@@ -37,7 +37,6 @@ export async function createInitialCredits(userId: string): Promise<void> {
       source: 'signup_bonus',
       expirationDate: expirationDate.toISOString(),
       status: 'active',
-
     },
   })
 

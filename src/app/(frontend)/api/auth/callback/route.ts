@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase-server'
 import {
   getClientByUserId,
   createClientRecord,
   createInitialCredits,
 } from '@/lib/credit-helpers'
+import { createClient } from '@/lib/supabase-server'
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url)
@@ -22,11 +22,16 @@ export async function GET(request: Request) {
         const existingClient = await getClientByUserId(user.id)
         if (!existingClient) {
           const provider = user.app_metadata?.provider as string | undefined
-          const validProvider = provider && ['google', 'github', 'email'].includes(provider)
-            ? (provider as 'google' | 'github' | 'email')
-            : 'n/a'
-          
-          await createClientRecord(user.id, user.email ?? undefined, validProvider)
+          const validProvider =
+            provider && ['google', 'github', 'email'].includes(provider)
+              ? (provider as 'google' | 'github' | 'email')
+              : 'n/a'
+
+          await createClientRecord(
+            user.id,
+            user.email ?? undefined,
+            validProvider
+          )
           await createInitialCredits(user.id)
         }
       }
