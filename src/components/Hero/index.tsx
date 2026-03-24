@@ -1,9 +1,9 @@
-import AIVoice from './ai-voice'
+import AIVoice from './VoiceRecord'
 
 
 const Hero = () => {
   return (
-    <section className=''>
+    <section >
       <AIVoice />
     </section>
   )
