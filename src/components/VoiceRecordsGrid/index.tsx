@@ -8,42 +8,21 @@ import {
 import { HugeiconsIcon } from '@hugeicons/react'
 import Link from 'next/link'
 import MiniAudioPlayer from './AudioPlayer'
+import { useUserContext } from '@/app/_providers/user-provider'
+import { useVoiceRecordsQuery } from '@/services/voice-records'
+import { Skeleton } from '@/components/ui/skeleton'
+import { VoiceRecord } from '@/payload-types'
+const MOCK: VoiceRecord = {
+  id: 'rec-1',
+  updatedAt: '123123',
+  fileName: 'Project Ideas Brainstorm.webm',
+  duration: 125, // seconds
+  status: 'completed',
+  createdAt: new Date('2024-03-20T10:00:00Z').toISOString(),
+  fileUrl: 'https://filesamples.com/samples/audio/mp3/sample3.mp3',
+  userId: '12312123'
+}
 
-// Mock Data as per user request
-const mockRecords = [
-  {
-    id: 'rec-1',
-    fileName: 'Project Ideas Brainstorm.webm',
-    duration: 125, // seconds
-    status: 'completed',
-    createdAt: new Date('2024-03-20T10:00:00Z').toISOString(),
-    fileUrl: 'https://filesamples.com/samples/audio/mp3/sample3.mp3',
-  },
-  {
-    id: 'rec-2',
-    fileName: 'Client Meeting Notes.webm',
-    duration: 340,
-    status: 'processing',
-    createdAt: new Date('2024-03-21T14:30:00Z').toISOString(),
-    fileUrl: 'https://filesamples.com/samples/audio/mp3/sample3.mp3',
-  },
-  {
-    id: 'rec-3',
-    fileName: 'Personal Voice Diary.webm',
-    duration: 65,
-    status: 'completed',
-    createdAt: new Date('2024-03-24T09:15:00Z').toISOString(),
-    fileUrl: 'https://filesamples.com/samples/audio/mp3/sample3.mp3',
-  },
-  {
-    id: 'rec-4',
-    fileName: 'App Feature Demo.webm',
-    duration: 210,
-    status: 'failed',
-    createdAt: new Date('2024-03-24T16:45:00Z').toISOString(),
-    fileUrl: 'https://filesamples.com/samples/audio/mp3/sample3.mp3',
-  },
-]
 
 function formatDuration(seconds: number) {
   const mins = Math.floor(seconds / 60)
@@ -65,6 +44,13 @@ function getStatusColor(status: string) {
 }
 
 export default function VoiceRecordsGrid() {
+  const { user } = useUserContext()
+  const { data: recordsResponse, isLoading } = useVoiceRecordsQuery(user?.id)
+
+  const records = recordsResponse?.docs || []
+
+  console.log('records', records)
+
   return (
     <section className='mx-auto w-full max-w-6xl px-6 py-10 max-md:px-4'>
       <div className='mb-6 flex flex-col items-start justify-between gap-1'>
@@ -74,8 +60,21 @@ export default function VoiceRecordsGrid() {
         </p>
       </div>
 
-      <div className='grid grid-cols-3 gap-6 max-lg:grid-cols-2 max-lg:gap-5 max-sm:grid-cols-1 max-sm:gap-6'>
-        {mockRecords.map((record) => (
+      {isLoading ? (
+        <div className='grid grid-cols-3 gap-6 max-lg:grid-cols-2 max-lg:gap-5 max-sm:grid-cols-1 max-sm:gap-6'>
+          {[...Array(6)].map((_, i) => (
+            <VoiceRecordSkeleton key={`skeleton-${i}`} />
+          ))}
+        </div>
+      ) : records.length === 0 ? (
+        <div className='flex flex-col items-center justify-center rounded-2xl border border-dashed p-12 text-center'>
+          <HugeiconsIcon icon={FileAudioIcon} className='text-muted-foreground mb-4 size-10' />
+          <h3 className='mb-1 font-semibold text-lg'>No recordings yet</h3>
+          <p className='text-muted-foreground text-sm'>Get started by creating a new voice record.</p>
+        </div>
+      ) : (
+        <div className='grid grid-cols-3 gap-6 max-lg:grid-cols-2 max-lg:gap-5 max-sm:grid-cols-1 max-sm:gap-6'>
+          {[MOCK, ...records].map((record) => (
           <div
             key={record.id}
             className='group bg-card hover:border-accent/50 relative flex flex-col justify-between overflow-hidden rounded-2xl border p-6 shadow-sm transition-all hover:shadow-md'
@@ -105,7 +104,7 @@ export default function VoiceRecordsGrid() {
             <div className='text-muted-foreground mt-2 flex items-center justify-end gap-5 text-sm'>
               <div className='flex items-center gap-1.5'>
                 <HugeiconsIcon icon={Clock03Icon} className='size-4' />
-                {formatDuration(record.duration)}
+                      {formatDuration(record.duration ?? 0)}
               </div>
               <div className='flex items-center gap-1.5'>
                 <HugeiconsIcon icon={Calendar04Icon} className='size-4' />
@@ -117,7 +116,31 @@ export default function VoiceRecordsGrid() {
             </div>
           </div>
         ))}
-      </div>
+            </div>
+      )}
     </section>
+  )
+}
+
+function VoiceRecordSkeleton() {
+  return (
+    <div className='bg-card flex flex-col justify-between overflow-hidden rounded-2xl border p-6 shadow-sm'>
+      <div>
+        <div className='mb-2 flex items-start justify-between'>
+          <Skeleton className='size-12 rounded-xl' />
+          <Skeleton className='h-5 w-20 rounded-full' />
+        </div>
+        <Skeleton className='mb-1 mt-4 h-6 w-3/4' />
+      </div>
+
+      <div className='my-4'>
+        <Skeleton className='h-10 w-full rounded-full' />
+      </div>
+
+      <div className='mt-2 flex justify-end gap-5'>
+        <Skeleton className='h-4 w-12' />
+        <Skeleton className='h-4 w-16' />
+      </div>
+    </div>
   )
 }

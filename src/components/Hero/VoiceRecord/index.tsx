@@ -60,7 +60,7 @@ export default function VoiceRecord() {
       formData.append('file', file)
       formData.append('duration', totalDuration.toString())
 
-      const uploadRes = await fetch('/api/voice-record', {
+      const uploadRes = await fetch('/api/upload-voice-record', {
         method: 'POST',
         body: formData,
       })

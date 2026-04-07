@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
     const formData = await req.formData()
     const file = formData.get('file') as File | null
     const durationStr = formData.get('duration') as string | null
-    const duration = durationStr ? parseFloat(durationStr) : 0
+    const duration = durationStr ? Math.ceil(parseFloat(durationStr)) : 0
 
     if (!file) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 })
@@ -45,9 +45,43 @@ export async function POST(req: NextRequest) {
         { status: 404 }
       )
     }
-    const payloadUserId = users[0].id
+    const payloadUser = users[0]
+    const payloadUserId = payloadUser.id
 
-    // 4. Upload to Cloudflare R2
+    // 4. Validate credits
+    // Sum all active (non-expired) credit grants for this user
+    const now = new Date()
+    const { docs: creditDocs } = await payload.find({
+      collection: 'credit-history',
+      where: {
+        and: [
+          { userId: { equals: user.id } },
+          { status: { equals: 'active' } },
+          { expirationDate: { greater_than: now.toISOString() } },
+        ],
+      },
+      limit: 1000,
+    })
+
+    const totalCredits = creditDocs.reduce(
+      (sum, doc) => sum + (typeof doc.creditAmount === 'number' ? doc.creditAmount : 0),
+      0,
+    )
+    const creditsSpent = payloadUser.creditsSpent!
+    const availableCredits = totalCredits - creditsSpent
+
+    if (duration > availableCredits) {
+      return NextResponse.json(
+        {
+          error: 'Insufficient credits',
+          required: duration,
+          available: availableCredits,
+        },
+        { status: 402 },
+      )
+    }
+
+    // 5. Upload to Cloudflare R2
     const accessKeyId = process.env.R2_ACCESS_KEY_ID
     const secretAccessKey = process.env.R2_SECRET_ACCESS_KEY
     const publicUrl = process.env.R2_PUBLIC_URL
@@ -83,7 +117,7 @@ export async function POST(req: NextRequest) {
 
     const fileUrl = `${publicUrl}/${uniqueFileName}`
 
-    // 5. Create VoiceRecord in Payload CMS
+    // 6. Create VoiceRecord in Payload CMS
     const newRecord = await payload.create({
       collection: 'voice-records',
       data: {
@@ -95,7 +129,23 @@ export async function POST(req: NextRequest) {
       },
     })
 
-    return NextResponse.json({ success: true, record: newRecord })
+    // 7. Deduct credits — update creditsSpent on the User document
+    await payload.update({
+      collection: 'users',
+      id: payloadUserId as string,
+      data: {
+        creditsSpent: creditsSpent + duration,
+      },
+    })
+
+    return NextResponse.json({
+      success: true,
+      record: newRecord,
+      credits: {
+        used: duration,
+        remaining: availableCredits - duration,
+      },
+    })
   } catch (err: unknown) {
     console.error('Error uploading voice record:', err)
     const message = err instanceof Error ? err.message : 'Internal server error'
