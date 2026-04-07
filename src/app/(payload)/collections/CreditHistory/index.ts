@@ -1,5 +1,13 @@
-import { CollectionConfig } from 'payload'
-import { admins } from '../../utils/admins'
+import { CollectionConfig } from 'payload';
+import { admins } from '../../utils/admins';
+
+
+
+
+
+
+
+
 
 const CreditHistory: CollectionConfig = {
   slug: 'credit-history',
@@ -87,7 +95,7 @@ const CreditHistory: CollectionConfig = {
       defaultValue: 3,
       min: 0,
       admin: {
-        description: 'Number of credits ',
+        description: 'Number of credits (in seconds)',
       },
     },
     {
@@ -99,6 +107,7 @@ const CreditHistory: CollectionConfig = {
       options: [
         { label: 'Purchased Credits', value: 'purchased' },
         { label: 'Signup Bonus', value: 'signup_bonus' },
+        { label: 'Gift', value: 'gift' },
       ],
       admin: {
         description: 'Type of credit allocation',
@@ -117,16 +126,6 @@ const CreditHistory: CollectionConfig = {
       ],
       admin: {
         description: 'Status of the credit',
-      },
-    },
-    {
-      name: 'creditsSpent',
-      label: 'Credits Spent',
-      type: 'number',
-      defaultValue: 30,
-      min: 0,
-      admin: {
-        description: 'Amount of credits spent from this allocation',
       },
     },
     {

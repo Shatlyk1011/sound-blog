@@ -1,21 +1,18 @@
 import type { CollectionConfig } from 'payload'
 import { admins } from '../../utils/admins'
 
+
+
+
+
 const Users: CollectionConfig = {
   slug: 'users',
 
   admin: {
-    defaultColumns: [
-      'email',
-      'userId',
-      'plan',
-      'credits',
-      'authProvider',
-      'isBlocked',
-    ],
+    defaultColumns: ['email', 'userId', 'plan', 'authProvider', 'isBlocked'],
     useAsTitle: 'email',
     description:
-      'Stores application users authenticated via Supabase. Each record links a Supabase user (by ID) to their plan, credits, and auth provider.',
+      'Stores application users authenticated via Supabase. Each record links a Supabase user (by ID) to their plan, and auth provider.',
   },
 
   // No auth block — these are not Payload auth users; they are app users stored for reference
@@ -37,6 +34,7 @@ const Users: CollectionConfig = {
       required: true,
       unique: true,
       admin: {
+        readOnly: true,
         description: 'The unique user ID issued by Supabase.',
       },
     },
@@ -49,6 +47,17 @@ const Users: CollectionConfig = {
     },
 
     {
+      name: 'creditsSpent',
+      label: 'Credits Spent',
+      type: 'number',
+      defaultValue: 0,
+      min: 0,
+      admin: {
+        description: 'Amount of credits spent from this user',
+      },
+    },
+
+    {
       name: 'plan',
       label: 'Plan',
       type: 'select',
@@ -58,18 +67,6 @@ const Users: CollectionConfig = {
         { label: 'Free', value: 'free' },
         { label: 'Paid', value: 'paid' },
       ],
-    },
-
-    {
-      name: 'credits',
-      label: 'Credits',
-      type: 'number',
-      required: false,
-      defaultValue: 10,
-      min: 0,
-      admin: {
-        description: 'Number of credits available for the user.',
-      },
     },
 
     {
