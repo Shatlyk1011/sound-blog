@@ -59,81 +59,75 @@ export type SupportedTimezones =
   | 'Pacific/Guam'
   | 'Pacific/Noumea'
   | 'Pacific/Auckland'
-  | 'Pacific/Fiji'
+  | 'Pacific/Fiji';
 
 export interface Config {
   auth: {
-    adminUsers: AdminUserAuthOperations
-  }
-  blocks: {}
+    adminUsers: AdminUserAuthOperations;
+  };
+  blocks: {};
   collections: {
-    'voice-records': VoiceRecord
-    transcripts: Transcript
-    blogs: Blog
-    users: User
-    'credit-history': CreditHistory
-    adminUsers: AdminUser
-    'payload-kv': PayloadKv
-    'payload-locked-documents': PayloadLockedDocument
-    'payload-preferences': PayloadPreference
-    'payload-migrations': PayloadMigration
-  }
+    'voice-records': VoiceRecord;
+    transcripts: Transcript;
+    blogs: Blog;
+    users: User;
+    'credit-history': CreditHistory;
+    adminUsers: AdminUser;
+    'payload-kv': PayloadKv;
+    'payload-locked-documents': PayloadLockedDocument;
+    'payload-preferences': PayloadPreference;
+    'payload-migrations': PayloadMigration;
+  };
   collectionsJoins: {
     users: {
-      creditHistory: 'credit-history'
-    }
-  }
+      creditHistory: 'credit-history';
+    };
+  };
   collectionsSelect: {
-    'voice-records': VoiceRecordsSelect<false> | VoiceRecordsSelect<true>
-    transcripts: TranscriptsSelect<false> | TranscriptsSelect<true>
-    blogs: BlogsSelect<false> | BlogsSelect<true>
-    users: UsersSelect<false> | UsersSelect<true>
-    'credit-history': CreditHistorySelect<false> | CreditHistorySelect<true>
-    adminUsers: AdminUsersSelect<false> | AdminUsersSelect<true>
-    'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>
-    'payload-locked-documents':
-      | PayloadLockedDocumentsSelect<false>
-      | PayloadLockedDocumentsSelect<true>
-    'payload-preferences':
-      | PayloadPreferencesSelect<false>
-      | PayloadPreferencesSelect<true>
-    'payload-migrations':
-      | PayloadMigrationsSelect<false>
-      | PayloadMigrationsSelect<true>
-  }
+    'voice-records': VoiceRecordsSelect<false> | VoiceRecordsSelect<true>;
+    transcripts: TranscriptsSelect<false> | TranscriptsSelect<true>;
+    blogs: BlogsSelect<false> | BlogsSelect<true>;
+    users: UsersSelect<false> | UsersSelect<true>;
+    'credit-history': CreditHistorySelect<false> | CreditHistorySelect<true>;
+    adminUsers: AdminUsersSelect<false> | AdminUsersSelect<true>;
+    'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
+    'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
+    'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
+    'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
+  };
   db: {
-    defaultIDType: string
-  }
-  fallbackLocale: null
-  globals: {}
-  globalsSelect: {}
-  locale: null
+    defaultIDType: string;
+  };
+  fallbackLocale: null;
+  globals: {};
+  globalsSelect: {};
+  locale: null;
   widgets: {
-    collections: CollectionsWidget
-  }
-  user: AdminUser
+    collections: CollectionsWidget;
+  };
+  user: AdminUser;
   jobs: {
-    tasks: unknown
-    workflows: unknown
-  }
+    tasks: unknown;
+    workflows: unknown;
+  };
 }
 export interface AdminUserAuthOperations {
   forgotPassword: {
-    email: string
-    password: string
-  }
+    email: string;
+    password: string;
+  };
   login: {
-    email: string
-    password: string
-  }
+    email: string;
+    password: string;
+  };
   registerFirstUser: {
-    email: string
-    password: string
-  }
+    email: string;
+    password: string;
+  };
   unlock: {
-    email: string
-    password: string
-  }
+    email: string;
+    password: string;
+  };
 }
 /**
  * Stores user-uploaded voice recordings. Each record links to the uploading user and references the audio file hosted in Supabase Storage.
@@ -142,98 +136,93 @@ export interface AdminUserAuthOperations {
  * via the `definition` "voice-records".
  */
 export interface VoiceRecord {
-  id: string
+  id: string;
   /**
    * The application user who uploaded this voice recording.
    */
-  userId: string | User
+  userId: string | User;
   /**
    * The public URL of the audio file stored in Supabase Storage.
    */
-  fileUrl: string
+  fileUrl: string;
   /**
    * The original name of the uploaded audio file.
    */
-  fileName: string
+  fileName: string;
   /**
    * The duration of the audio recording in seconds.
    */
-  duration?: number | null
+  duration?: number | null;
   /**
    * The current processing state of this voice recording.
    */
-  status: 'uploaded' | 'processing' | 'completed' | 'failed'
-  updatedAt: string
-  createdAt: string
+  status: 'uploaded' | 'processing' | 'completed' | 'failed';
+  updatedAt: string;
+  createdAt: string;
 }
 /**
- * Stores application users authenticated via Supabase. Each record links a Supabase user (by ID) to their plan, credits, and auth provider.
+ * Stores application users authenticated via Supabase. Each record links a Supabase user (by ID) to their plan, and auth provider.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
-  id: string
+  id: string;
   /**
    * The unique user ID issued by Supabase.
    */
-  userId: string
-  email?: string | null
-  plan?: ('free' | 'paid') | null
+  userId: string;
+  email?: string | null;
   /**
-   * Number of credits available for the user.
+   * Amount of credits spent from this user
    */
-  credits?: number | null
-  authProvider?: ('n/a' | 'email' | 'google' | 'github') | null
+  creditsSpent?: number | null;
+  plan?: ('free' | 'paid') | null;
+  authProvider?: ('n/a' | 'email' | 'google' | 'github') | null;
   /**
    * All credit transactions for this user
    */
   creditHistory?: {
-    docs?: (string | CreditHistory)[]
-    hasNextPage?: boolean
-    totalDocs?: number
-  }
+    docs?: (string | CreditHistory)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   /**
    * When enabled, this user is blocked from accessing the application.
    */
-  isBlocked?: boolean | null
-  updatedAt: string
-  createdAt: string
+  isBlocked?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "credit-history".
  */
 export interface CreditHistory {
-  id: string
-  client?: (string | null) | User
-  user?: (string | null) | User
+  id: string;
+  client?: (string | null) | User;
   /**
    * Supabase user ID
    */
-  userId: string
+  userId: string;
   /**
-   * Number of credits
+   * Number of credits (in seconds)
    */
-  creditAmount: number
+  creditAmount: number;
   /**
    * Type of credit allocation
    */
-  source: 'purchased' | 'signup_bonus'
+  source: 'purchased' | 'signup_bonus' | 'gift';
   /**
    * Status of the credit
    */
-  status: 'active' | 'expired' | 'used'
-  /**
-   * Amount of credits spent from this allocation
-   */
-  creditsSpent?: number | null
+  status: 'active' | 'expired' | 'used';
   /**
    * Date when these credits expire
    */
-  expirationDate: string
-  updatedAt: string
-  createdAt: string
+  expirationDate: string;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * Stores transcripts generated from user-uploaded voice recordings. Each transcript links to its source audio and the uploading user.
@@ -242,29 +231,29 @@ export interface CreditHistory {
  * via the `definition` "transcripts".
  */
 export interface Transcript {
-  id: string
+  id: string;
   /**
    * The application user who owns this transcript.
    */
-  userId: string | User
+  userId: string | User;
   /**
    * The voice recording this transcript was generated from.
    */
-  audioId: string | VoiceRecord
+  audioId: string | VoiceRecord;
   /**
    * The unprocessed transcription text as returned by the speech-to-text service.
    */
-  rawText?: string | null
+  rawText?: string | null;
   /**
    * The refined, human-readable version of the transcript after post-processing.
    */
-  cleanedText?: string | null
+  cleanedText?: string | null;
   /**
    * The detected or specified language of the transcript (e.g. "en", "tr").
    */
-  language?: string | null
-  updatedAt: string
-  createdAt: string
+  language?: string | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * Stores AI-generated blog posts created from user voice recordings. Each blog links to its source audio, transcript, and the authoring user.
@@ -273,46 +262,37 @@ export interface Transcript {
  * via the `definition` "blogs".
  */
 export interface Blog {
-  id: string
+  id: string;
   /**
    * The application user who owns this blog post.
    */
-  userId: string | User
+  userId: string | User;
   /**
    * The voice recording this blog was generated from.
    */
-  audioId: string | VoiceRecord
+  audioId: string | VoiceRecord;
   /**
    * The transcript this blog post was generated from.
    */
-  transcriptId: string | Transcript
+  transcriptId: string | Transcript;
   /**
    * The title of the generated blog post.
    */
-  title: string
+  title: string;
   /**
    * The AI-generated blog content in Markdown format.
    */
-  content?: string | null
+  content?: string | null;
   /**
    * The current state of the blog post in the content pipeline.
    */
-  status: 'draft' | 'generated' | 'edited'
+  status: 'draft' | 'generated' | 'edited';
   /**
    * The writing tone used when generating this blog post with GPT.
    */
-  tone?:
-    | (
-        | 'professional'
-        | 'casual'
-        | 'friendly'
-        | 'formal'
-        | 'humorous'
-        | 'inspirational'
-      )
-    | null
-  updatedAt: string
-  createdAt: string
+  tone?: ('professional' | 'casual' | 'friendly' | 'formal' | 'humorous' | 'inspirational') | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * Manage admin panel users and their access permissions. Configure user roles (admin, moderator, guest) to control who can create, edit, and delete content.
@@ -321,257 +301,255 @@ export interface Blog {
  * via the `definition` "adminUsers".
  */
 export interface AdminUser {
-  id: string
-  name?: string | null
-  phone?: string | null
-  isBlocked?: boolean | null
-  roles?: ('admin' | 'moderator' | 'guest')[] | null
-  updatedAt: string
-  createdAt: string
-  email: string
-  resetPasswordToken?: string | null
-  resetPasswordExpiration?: string | null
-  salt?: string | null
-  hash?: string | null
-  loginAttempts?: number | null
-  lockUntil?: string | null
+  id: string;
+  name?: string | null;
+  phone?: string | null;
+  isBlocked?: boolean | null;
+  roles?: ('admin' | 'moderator' | 'guest')[] | null;
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
   sessions?:
     | {
-        id: string
-        createdAt?: string | null
-        expiresAt: string
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
       }[]
-    | null
-  password?: string | null
-  collection: 'adminUsers'
+    | null;
+  password?: string | null;
+  collection: 'adminUsers';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
-  id: string
-  key: string
+  id: string;
+  key: string;
   data:
     | {
-        [k: string]: unknown
+        [k: string]: unknown;
       }
     | unknown[]
     | string
     | number
     | boolean
-    | null
+    | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: string
+  id: string;
   document?:
     | ({
-        relationTo: 'voice-records'
-        value: string | VoiceRecord
+        relationTo: 'voice-records';
+        value: string | VoiceRecord;
       } | null)
     | ({
-        relationTo: 'transcripts'
-        value: string | Transcript
+        relationTo: 'transcripts';
+        value: string | Transcript;
       } | null)
     | ({
-        relationTo: 'blogs'
-        value: string | Blog
+        relationTo: 'blogs';
+        value: string | Blog;
       } | null)
     | ({
-        relationTo: 'users'
-        value: string | User
+        relationTo: 'users';
+        value: string | User;
       } | null)
     | ({
-        relationTo: 'credit-history'
-        value: string | CreditHistory
+        relationTo: 'credit-history';
+        value: string | CreditHistory;
       } | null)
     | ({
-        relationTo: 'adminUsers'
-        value: string | AdminUser
-      } | null)
-  globalSlug?: string | null
+        relationTo: 'adminUsers';
+        value: string | AdminUser;
+      } | null);
+  globalSlug?: string | null;
   user: {
-    relationTo: 'adminUsers'
-    value: string | AdminUser
-  }
-  updatedAt: string
-  createdAt: string
+    relationTo: 'adminUsers';
+    value: string | AdminUser;
+  };
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: string
+  id: string;
   user: {
-    relationTo: 'adminUsers'
-    value: string | AdminUser
-  }
-  key?: string | null
+    relationTo: 'adminUsers';
+    value: string | AdminUser;
+  };
+  key?: string | null;
   value?:
     | {
-        [k: string]: unknown
+        [k: string]: unknown;
       }
     | unknown[]
     | string
     | number
     | boolean
-    | null
-  updatedAt: string
-  createdAt: string
+    | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: string
-  name?: string | null
-  batch?: number | null
-  updatedAt: string
-  createdAt: string
+  id: string;
+  name?: string | null;
+  batch?: number | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "voice-records_select".
  */
 export interface VoiceRecordsSelect<T extends boolean = true> {
-  userId?: T
-  fileUrl?: T
-  fileName?: T
-  duration?: T
-  status?: T
-  updatedAt?: T
-  createdAt?: T
+  userId?: T;
+  fileUrl?: T;
+  fileName?: T;
+  duration?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "transcripts_select".
  */
 export interface TranscriptsSelect<T extends boolean = true> {
-  userId?: T
-  audioId?: T
-  rawText?: T
-  cleanedText?: T
-  language?: T
-  updatedAt?: T
-  createdAt?: T
+  userId?: T;
+  audioId?: T;
+  rawText?: T;
+  cleanedText?: T;
+  language?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "blogs_select".
  */
 export interface BlogsSelect<T extends boolean = true> {
-  userId?: T
-  audioId?: T
-  transcriptId?: T
-  title?: T
-  content?: T
-  status?: T
-  tone?: T
-  updatedAt?: T
-  createdAt?: T
+  userId?: T;
+  audioId?: T;
+  transcriptId?: T;
+  title?: T;
+  content?: T;
+  status?: T;
+  tone?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
-  userId?: T
-  email?: T
-  plan?: T
-  credits?: T
-  authProvider?: T
-  creditHistory?: T
-  isBlocked?: T
-  updatedAt?: T
-  createdAt?: T
+  userId?: T;
+  email?: T;
+  creditsSpent?: T;
+  plan?: T;
+  authProvider?: T;
+  creditHistory?: T;
+  isBlocked?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "credit-history_select".
  */
 export interface CreditHistorySelect<T extends boolean = true> {
-  client?: T
-  user?: T
-  userId?: T
-  creditAmount?: T
-  source?: T
-  status?: T
-  creditsSpent?: T
-  expirationDate?: T
-  updatedAt?: T
-  createdAt?: T
+  client?: T;
+  userId?: T;
+  creditAmount?: T;
+  source?: T;
+  status?: T;
+  expirationDate?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "adminUsers_select".
  */
 export interface AdminUsersSelect<T extends boolean = true> {
-  name?: T
-  phone?: T
-  isBlocked?: T
-  roles?: T
-  updatedAt?: T
-  createdAt?: T
-  email?: T
-  resetPasswordToken?: T
-  resetPasswordExpiration?: T
-  salt?: T
-  hash?: T
-  loginAttempts?: T
-  lockUntil?: T
+  name?: T;
+  phone?: T;
+  isBlocked?: T;
+  roles?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  email?: T;
+  resetPasswordToken?: T;
+  resetPasswordExpiration?: T;
+  salt?: T;
+  hash?: T;
+  loginAttempts?: T;
+  lockUntil?: T;
   sessions?:
     | T
     | {
-        id?: T
-        createdAt?: T
-        expiresAt?: T
-      }
+        id?: T;
+        createdAt?: T;
+        expiresAt?: T;
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
-  key?: T
-  data?: T
+  key?: T;
+  data?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents_select".
  */
 export interface PayloadLockedDocumentsSelect<T extends boolean = true> {
-  document?: T
-  globalSlug?: T
-  user?: T
-  updatedAt?: T
-  createdAt?: T
+  document?: T;
+  globalSlug?: T;
+  user?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-preferences_select".
  */
 export interface PayloadPreferencesSelect<T extends boolean = true> {
-  user?: T
-  key?: T
-  value?: T
-  updatedAt?: T
-  createdAt?: T
+  user?: T;
+  key?: T;
+  value?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-migrations_select".
  */
 export interface PayloadMigrationsSelect<T extends boolean = true> {
-  name?: T
-  batch?: T
-  updatedAt?: T
-  createdAt?: T
+  name?: T;
+  batch?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -579,17 +557,18 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface CollectionsWidget {
   data?: {
-    [k: string]: unknown
-  }
-  width: 'full'
+    [k: string]: unknown;
+  };
+  width: 'full';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "auth".
  */
 export interface Auth {
-  [k: string]: unknown
+  [k: string]: unknown;
 }
+
 
 declare module 'payload' {
   export interface GeneratedTypes extends Config {}
