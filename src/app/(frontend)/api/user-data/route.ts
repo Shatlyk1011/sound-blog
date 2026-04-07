@@ -1,9 +1,11 @@
-import { CreditHistory, User } from '@/payload-types'
-import { NextResponse } from 'next/server'
+import { CreditHistory, User } from '@/payload-types';
+import { NextResponse } from 'next/server';
 import { getClientByUserId } from '@/lib/credit-helpers'
 
 export interface UserDataResponse {
   currentPlan: User['plan']
+  creditsSpent: User['creditsSpent']
+  totalCredits: number
   history: {
     id: string
     source: CreditHistory['source']
@@ -11,12 +13,12 @@ export interface UserDataResponse {
     createdAt: string
     expirationDate: string
     status: CreditHistory['status']
-    creditsSpent: CreditHistory['creditsSpent']
   }[]
 }
 
 export async function GET(req: Request) {
   try {
+    console.log('here')
     // Get userId from query params or default to logged-in user
     const { searchParams } = new URL(req.url)
     const userId = searchParams.get('userId')!
@@ -41,13 +43,17 @@ export async function GET(req: Request) {
 
     return NextResponse.json<UserDataResponse>({
       currentPlan: client.plan,
+      creditsSpent: client.creditsSpent,
+      totalCredits: creditHistory?.reduce(
+        (prev, curr) => prev + curr.creditAmount,
+        0
+      ),
       history: creditHistory.map((h) => ({
         id: h.id,
         source: h.source,
         creditAmount: h.creditAmount,
         createdAt: h.createdAt,
         expirationDate: h.expirationDate,
-        creditsSpent: h.creditsSpent,
         status: h.status,
       })),
     })
