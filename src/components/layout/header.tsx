@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { getUserInitials } from '@/composables/utils'
-import { LogoutSquare01Icon, Menu05Icon } from '@hugeicons/core-free-icons'
+import { LogoutSquare01Icon, Menu05Icon, UserIcon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { useScroll, useMotionValueEvent } from 'motion/react'
 import Link from 'next/link'
@@ -56,18 +56,18 @@ const Header = () => {
         <Link
           href='/'
           className={cn(
-            'z-50 w-max max-sm:mr-4 max-sm:max-w-max max-sm:min-w-8'
+            'z-50 w-24 max-sm:mr-4 max-sm:max-w-max max-sm:min-w-8'
           )}
         >
           logo
         </Link>
         <nav
           className={cn(
-            'text-muted-foreground z-49 ml-6 flex flex-1 justify-start transition-all max-md:absolute max-md:inset-0 max-md:ml-0 max-md:h-svh max-md:w-screen max-md:translate-x-full',
+            'text-muted-foreground z-49 ml-6 flex flex-1  justify-center transition-all max-md:absolute max-md:inset-0 max-md:ml-0 max-md:h-svh max-md:w-screen max-md:translate-x-full',
             menu ? 'max-md:translate-x-0' : 'max-md:translate-x-full'
           )}
         >
-          <ul className='-tracking-one max-md:bg-secondary flex items-center text-sm font-medium max-md:w-full max-md:flex-col max-md:gap-3 max-md:pt-40 max-md:text-base'>
+          <ul className='-tracking-one max-md:bg-muted flex items-center text-sm font-medium max-md:w-full max-md:flex-col max-md:gap-3 max-md:pt-40 max-md:text-base'>
             <li>
               <Link
                 href={pricing}
@@ -80,20 +80,12 @@ const Header = () => {
               </Link>
             </li>
             <li>
-              <Link
-                href={'/profile'}
-                onClick={closeMenu}
-                className={cn(
-                  'hover:text-foreground min-h-10 rounded-md px-3 py-2 text-nowrap transition ease-out max-sm:px-2'
-                )}
-              >
-                Profile (temp)
-              </Link>
+
             </li>
           </ul>
         </nav>
 
-        <div className='flex min-w-20 items-center justify-end gap-2.5 max-sm:gap-1'>
+        <div className='flex min-w-20 items-center justify-end gap-2.5 max-sm:gap-1 w-24'>
           <ThemeToggle />
 
           {isLoading ? (
@@ -120,10 +112,10 @@ const Header = () => {
                   <DropdownMenuContent align='end' className='z-500 w-56'>
                     <DropdownMenuLabel>
                       <div className='flex flex-col space-y-1'>
-                        <p className='text-sm leading-none font-medium'>
+                          <p className='text-sm leading-none font-medium mb-1.5'>
                           {user.user_metadata?.full_name || 'User'}
                         </p>
-                        <p className='text-muted-foreground text-xs leading-none'>
+                          <p className='text-muted-foreground text-[11px] font-mono leading-none'>
                           {user.email}
                         </p>
                       </div>
@@ -131,8 +123,18 @@ const Header = () => {
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                       onClick={handleSignOut}
-                      className='cursor-pointer'
-                    >
+                        asChild
+                        className='cursor-pointer'
+                      >
+                        <Link href={'/profile'}>
+                          <HugeiconsIcon icon={UserIcon} />
+                          Profile
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={handleSignOut}
+                        className='cursor-pointer'
+                      >
                       <HugeiconsIcon icon={LogoutSquare01Icon} />
                       Sign Out
                     </DropdownMenuItem>
