@@ -15,6 +15,7 @@ import { cn } from '@/lib/utils'
 import { useAudioRecorder } from '@/hooks/use-audio-recorder'
 import { Button } from '@/components/ui/button'
 import SoundWave from './SoundWave'
+import { useQueryClient } from '@tanstack/react-query'
 
 export default function VoiceRecord() {
   const [isUploading, setIsUploading] = useState(false)
@@ -38,6 +39,8 @@ export default function VoiceRecord() {
     formatTime,
     totalDuration,
   } = useAudioRecorder()
+
+  const queryClient = useQueryClient()
 
   const handleSubmit: SubmitEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
@@ -72,6 +75,7 @@ export default function VoiceRecord() {
       }
 
       alert('Voice recording saved successfully!')
+      queryClient.invalidateQueries({ queryKey: ['voice-records'] })
       resetRecording()
     } catch (error: unknown) {
       console.error('Upload failed:', error)
