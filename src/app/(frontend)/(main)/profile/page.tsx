@@ -65,7 +65,6 @@ export default function ProfilePage() {
   console.log('SBUser', SBUser)
   console.log('userData', userData)
 
-
   const getCreditTypeLabel = (type: CreditHistory['source']) => {
     return type === 'signup_bonus' ? 'Signup Bonus' : 'Purchased Credits'
   }
@@ -98,19 +97,23 @@ export default function ProfilePage() {
         <div className='mb-10 flex gap-4 text-sm font-medium'>
           <div className='flex-1'>
             <label className='mb-2 block'>Name</label>
-            <p className='text-muted-foreground border-input bg-input/30 h-9 rounded-full flex items-center px-4'>{SBUser?.user_metadata?.full_name || 'No name'}</p>
+            <p className='text-muted-foreground border-input bg-input/30 flex h-9 items-center rounded-full px-4'>
+              {SBUser?.user_metadata?.full_name || 'No name'}
+            </p>
           </div>
 
           <div className='flex-1'>
             <label className='mb-2 block'>Email</label>
-            <p className='text-muted-foreground border-input bg-input/30 h-9 rounded-full flex items-center px-4'>{SBUser?.user_metadata?.email || 'No email'}</p>
+            <p className='text-muted-foreground border-input bg-input/30 flex h-9 items-center rounded-full px-4'>
+              {SBUser?.user_metadata?.email || 'No email'}
+            </p>
           </div>
         </div>
 
         <div className='mb-5 flex items-center justify-between gap-4'>
           <h2 className='text-xl font-medium'>
             <span className=''>Your Current Plan:</span>{' '}
-            <span className='font-bold tracking-[-0.02em] text-secondary-foreground'>
+            <span className='text-secondary-foreground font-bold tracking-[-0.02em]'>
               {userData?.currentPlan === 'free' ? 'Free Plan' : 'Pro Plan'}
             </span>
           </h2>
@@ -128,7 +131,8 @@ export default function ProfilePage() {
               {userData?.currentPlan === 'free' ? 'Free Plan' : 'Pro Plan'}
             </h3>
             <span className='text-muted-foreground text-sm'>
-              {(userData?.totalCredits || 0) - (userData?.creditsSpent || 0)} credits remaining
+              {(userData?.totalCredits || 0) - (userData?.creditsSpent || 0)}{' '}
+              credits remaining
             </span>
           </div>
           <p className='text-muted-foreground text-sm'>
@@ -140,8 +144,7 @@ export default function ProfilePage() {
             <div className='mb-2 flex items-center justify-between text-sm'>
               <span className='font-medium'>Credits Used</span>
               <span className='text-muted-foreground'>
-                {userData?.creditsSpent || 0} /{' '}
-                {userData?.totalCredits || 0}
+                {userData?.creditsSpent || 0} / {userData?.totalCredits || 0}
               </span>
             </div>
             <div className='bg-muted h-2 w-full overflow-hidden rounded-full'>

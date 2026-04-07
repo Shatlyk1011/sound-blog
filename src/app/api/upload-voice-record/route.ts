@@ -64,8 +64,9 @@ export async function POST(req: NextRequest) {
     })
 
     const totalCredits = creditDocs.reduce(
-      (sum, doc) => sum + (typeof doc.creditAmount === 'number' ? doc.creditAmount : 0),
-      0,
+      (sum, doc) =>
+        sum + (typeof doc.creditAmount === 'number' ? doc.creditAmount : 0),
+      0
     )
     const creditsSpent = payloadUser.creditsSpent!
     const availableCredits = totalCredits - creditsSpent
@@ -77,7 +78,7 @@ export async function POST(req: NextRequest) {
           required: duration,
           available: availableCredits,
         },
-        { status: 402 },
+        { status: 402 }
       )
     }
 

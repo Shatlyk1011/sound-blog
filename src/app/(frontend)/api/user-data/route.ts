@@ -1,5 +1,5 @@
-import { CreditHistory, User } from '@/payload-types';
-import { NextResponse } from 'next/server';
+import { CreditHistory, User } from '@/payload-types'
+import { NextResponse } from 'next/server'
 import { getClientByUserId } from '@/lib/credit-helpers'
 
 export interface UserDataResponse {
