@@ -1,6 +1,11 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { getPayload } from 'payload'
-import configPromise from '@payload-config'
+import configPromise from '@payload-config';
+import { NextRequest, NextResponse } from 'next/server';
+import { getPayload } from 'payload';
+
+
+
+
+
 
 export async function POST(req: NextRequest) {
   try {
@@ -8,23 +13,11 @@ export async function POST(req: NextRequest) {
 
     // 1. Parse incoming JSON body
     const body = await req.json()
-    const {
-      audioKey,
-      transcript,
-      wordCount,
-      vtt,
-    } = body
+    const { audioKey, transcript, wordCount, vtt } = body
 
-    if (!audioKey) {
+    if (!audioKey || !transcript) {
       return NextResponse.json(
-        { error: 'Missing audioKey in request body' },
-        { status: 400 }
-      )
-    }
-
-    if (!transcript) {
-      return NextResponse.json(
-        { error: 'Missing transcript in request body' },
+        { error: 'Missing audioKey or transcript in request body' },
         { status: 400 }
       )
     }
