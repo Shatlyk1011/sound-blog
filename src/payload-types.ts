@@ -252,6 +252,8 @@ export interface Transcript {
    * The detected or specified language of the transcript (e.g. "en", "tr").
    */
   language?: string | null;
+  wordCount?: number | null;
+  vtt?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -438,6 +440,8 @@ export interface TranscriptsSelect<T extends boolean = true> {
   rawText?: T;
   cleanedText?: T;
   language?: T;
+  wordCount?: T;
+  vtt?: T;
   updatedAt?: T;
   createdAt?: T;
 }

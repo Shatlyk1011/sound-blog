@@ -143,7 +143,7 @@ export default function SignUpPage({
         </Link>
 
         <div className='space-y-2 text-center'>
-          <h2 className='text-3xl font-semibold max-md:text-2xl'>
+          <h2 className='text-2xl font-semibold max-md:text-xl'>
             Create your account
           </h2>
           <p className='text-foreground/70 text-sm'>

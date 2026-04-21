@@ -73,6 +73,18 @@ const Transcripts: CollectionConfig = {
           'The detected or specified language of the transcript (e.g. "en", "tr").',
       },
     },
+    {
+      name: 'wordCount',
+      label: 'Word Count',
+      type: 'number',
+      required: false,
+    },
+    {
+      name: 'vtt',
+      label: 'VTT Subtitles',
+      type: 'textarea',
+      required: false,
+    },
   ],
 
   timestamps: true,
