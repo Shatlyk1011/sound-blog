@@ -125,10 +125,14 @@ export async function POST(req: NextRequest) {
 
     const fileUrl = `${publicUrl}/${uniqueFileName}`
 
+    const audioTitle = file.name.replace(/\.[^/.]+$/, '').replace(/\s+/g, '_')
+    const customId = `${audioTitle}-${Math.floor(1000 + Math.random() * 9000)}`
+
     // 6. Create VoiceRecord in Payload CMS
     const newRecord = await payload.create({
       collection: 'voice-records',
       data: {
+        id: customId,
         fileUrl,
         fileName: file.name,
         userId: payloadUserId as string, // Payload document ID
@@ -136,6 +140,35 @@ export async function POST(req: NextRequest) {
         status: 'uploaded',
       },
     })
+
+    // 5.5 Send request to worker
+    const workerUrl = process.env.WORKER_URL
+    if (workerUrl) {
+      try {
+        const workerResponse = await fetch(`${workerUrl}/upload`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            recordId: customId,
+            key: uniqueFileName,
+            fileName: file.name,
+            contentType: file.type || 'audio/webm',
+            size: file.size,
+          }),
+        })
+
+        if (!workerResponse.ok) {
+          console.error('Failed to notify worker:', await workerResponse.text())
+          // We can choose to fail the request or just log it. We'll proceed with creating the record for now.
+        }
+      } catch (workerErr) {
+        console.error('Error notifying worker:', workerErr)
+      }
+    } else {
+      console.warn('Missing WORKER_URL environment variable')
+    }
 
     // 7. Deduct credits — update creditsSpent on the User document
     await payload.update({

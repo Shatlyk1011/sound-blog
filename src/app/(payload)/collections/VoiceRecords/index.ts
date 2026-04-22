@@ -20,6 +20,14 @@ const VoiceRecords: CollectionConfig = {
 
   fields: [
     {
+      name: 'id',
+      type: 'text',
+      required: true,
+      admin: {
+        description: 'Custom generated ID for the record',
+      },
+    },
+    {
       name: 'userId',
       label: 'User',
       type: 'relationship',
