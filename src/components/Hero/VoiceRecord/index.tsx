@@ -70,6 +70,8 @@ export default function VoiceRecord() {
 
       const result = await uploadRes.json()
 
+      console.log('result', result)
+
       if (!uploadRes.ok) {
         throw new Error(result.error || 'Failed to upload audio')
       }

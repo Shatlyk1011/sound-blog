@@ -1,7 +1,15 @@
-import configPromise from '@payload-config'
-import { NextRequest, NextResponse } from 'next/server'
-import { getPayload } from 'payload'
-import { createClient } from '@/lib/supabase-server'
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import configPromise from '@payload-config';
+import { NextRequest, NextResponse } from 'next/server';
+import { getPayload } from 'payload';
+import { createClient } from '@/lib/supabase-server';
+
+
+
+
+
+
+
 
 export async function POST(req: NextRequest) {
   try {
@@ -81,37 +89,41 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // 5. Upload to Cloudflare Worker
-    const workerUrl = process.env.WORKER_URL
+    // 5. Upload to Cloudflare R2
+    const accessKeyId = process.env.R2_ACCESS_KEY_ID
+    const secretAccessKey = process.env.R2_SECRET_ACCESS_KEY
     const publicUrl = process.env.R2_PUBLIC_URL
 
-    if (!publicUrl || !workerUrl) {
-      console.error('Missing R2_PUBLIC_URL or WORKER_URL environment variable')
+    if (!accessKeyId || !secretAccessKey || !publicUrl) {
+      console.error('Missing R2 environment variables')
       return NextResponse.json(
         { error: 'Server configuration error' },
         { status: 500 }
       )
     }
 
-    const workerFormData = new FormData()
-    workerFormData.append('audio', file)
-
-    const workerRes = await fetch(workerUrl, {
-      method: 'POST',
-      body: workerFormData,
+    const s3 = new S3Client({
+      region: 'auto',
+      endpoint: process.env.R2_ENDPOINT_URL,
+      credentials: {
+        accessKeyId,
+        secretAccessKey,
+      },
     })
 
-    if (!workerRes.ok) {
-      const errorText = await workerRes.text()
-      console.error('Error from Cloudflare Worker:', errorText)
-      return NextResponse.json(
-        { error: 'Failed to upload audio to processing worker' },
-        { status: 500 }
-      )
-    }
+    const buffer = Buffer.from(await file.arrayBuffer())
+    const uniqueFileName = `${Date.now()}-${file.name.replace(/\s+/g, '_')}`
 
-    const workerData = await workerRes.json()
-    const fileUrl = `${publicUrl}/${workerData.key}`
+    await s3.send(
+      new PutObjectCommand({
+        Bucket: process.env.R2_VOICE_RECORD_BUCKET, // Cloudflare R2 bucket name
+        Key: uniqueFileName,
+        Body: buffer,
+        ContentType: file.type || 'audio/webm',
+      })
+    )
+
+    const fileUrl = `${publicUrl}/${uniqueFileName}`
 
     // 6. Create VoiceRecord in Payload CMS
     const newRecord = await payload.create({
