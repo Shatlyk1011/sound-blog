@@ -1,7 +1,7 @@
-import configPromise from '@payload-config'
-import { NextResponse } from 'next/server'
-import { getPayload } from 'payload'
-import { createClient } from '@/lib/supabase-server'
+import configPromise from '@payload-config';
+import { NextResponse } from 'next/server';
+import { getPayload } from 'payload';
+import { createClient } from '@/lib/supabase-server';
 
 export async function GET() {
   try {
@@ -34,6 +34,7 @@ export async function GET() {
 
     const { docs, totalDocs } = await payload.find({
       collection: 'voice-records',
+      depth: 0,
       where: {
         userId: {
           equals: payloadUserId,

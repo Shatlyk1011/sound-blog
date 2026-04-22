@@ -1,6 +1,10 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { VoiceRecord } from '@/payload-types'
 
+
+
+
+
 interface VoiceRecordsResponse {
   docs: VoiceRecord[]
   totalDocs: number
@@ -14,7 +18,7 @@ const fetchVoiceRecords = async ({
   pageParam = 1,
 }): Promise<VoiceRecordsResponse> => {
   const response = await fetch(
-    `/api/voice-records-client?limit=10&page=${pageParam}`
+    `/api/voice-records-client?depth=0&limit=10&page=${pageParam}`
   )
   if (!response.ok) {
     throw new Error('Failed to fetch voice records')
