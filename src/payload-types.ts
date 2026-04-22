@@ -136,6 +136,9 @@ export interface AdminUserAuthOperations {
  * via the `definition` "voice-records".
  */
 export interface VoiceRecord {
+  /**
+   * Custom generated ID for the record
+   */
   id: string;
   /**
    * The application user who uploaded this voice recording.
@@ -422,6 +425,7 @@ export interface PayloadMigration {
  * via the `definition` "voice-records_select".
  */
 export interface VoiceRecordsSelect<T extends boolean = true> {
+  id?: T;
   userId?: T;
   fileUrl?: T;
   fileName?: T;

@@ -1,8 +1,10 @@
 'use client'
 
+import { useEffect } from 'react'
 import { useUserContext } from '@/app/_providers/user-provider'
 import { VoiceRecord } from '@/payload-types'
-import { useVoiceRecordsQuery } from '@/services/voice-records'
+import { useVoiceRecordsInfiniteQuery } from '@/services/voice-records'
+import { useInView } from 'react-intersection-observer'
 import {
   Calendar04Icon,
   Clock03Icon,
@@ -45,9 +47,23 @@ function getStatusColor(status: string) {
 
 export default function VoiceRecordsGrid() {
   const { user } = useUserContext()
-  const { data: recordsResponse, isLoading } = useVoiceRecordsQuery(user?.id)
+  const { ref, inView } = useInView()
 
-  const records = recordsResponse?.docs || []
+  const {
+    data: recordsResponse,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useVoiceRecordsInfiniteQuery(user?.id)
+
+  useEffect(() => {
+    if (inView && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage()
+    }
+  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage])
+
+  const records = recordsResponse?.pages.flatMap((page) => page.docs) || []
 
   console.log('records', records)
 
@@ -78,8 +94,9 @@ export default function VoiceRecordsGrid() {
           </p>
         </div>
       ) : (
-        <div className='grid grid-cols-3 gap-6 max-lg:grid-cols-2 max-lg:gap-5 max-sm:grid-cols-1 max-sm:gap-6'>
-          {[MOCK, ...records].map((record) => (
+        <>
+          <div className='grid grid-cols-3 gap-6 max-lg:grid-cols-2 max-lg:gap-5 max-sm:grid-cols-1 max-sm:gap-6'>
+            {[MOCK, ...records].map((record) => (
             <div
               key={record.id}
               className='group bg-card hover:border-accent/50 relative flex flex-col justify-between overflow-hidden rounded-2xl border p-6 shadow-sm transition-all hover:shadow-md'
@@ -121,7 +138,13 @@ export default function VoiceRecordsGrid() {
               </div>
             </div>
           ))}
-        </div>
+          {isFetchingNextPage &&
+            [...Array(3)].map((_, i) => (
+              <VoiceRecordSkeleton key={`skeleton-load-${i}`} />
+            ))}
+          </div>
+          <div ref={ref} className='h-4 w-full' />
+        </>
       )}
     </section>
   )
