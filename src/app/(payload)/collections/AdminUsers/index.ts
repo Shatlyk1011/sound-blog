@@ -1,7 +1,13 @@
-import type { CollectionConfig } from 'payload'
-import { admins } from '../../utils/admins'
-import { checkRole } from '../../utils/checkRole'
-import { ensureFirstUserIsAdmin } from './hooks/ensureFirstUserIsAdmin'
+import type { CollectionConfig } from 'payload';
+import { admins } from '../../utils/admins';
+import { checkRole } from '../../utils/checkRole';
+import { ensureFirstUserIsAdmin } from './hooks/ensureFirstUserIsAdmin';
+
+
+
+
+
+
 
 const AdminUsers: CollectionConfig = {
   slug: 'adminUsers',
@@ -33,6 +39,7 @@ const AdminUsers: CollectionConfig = {
     depth: 0,
     maxLoginAttempts: 20,
     tokenExpiration: 604800,
+    useAPIKey: true,
   },
 
   fields: [
