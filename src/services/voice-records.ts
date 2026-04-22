@@ -10,8 +10,12 @@ interface VoiceRecordsResponse {
   totalPages: number
 }
 
-const fetchVoiceRecords = async ({ pageParam = 1 }): Promise<VoiceRecordsResponse> => {
-  const response = await fetch(`/api/voice-records?limit=10&page=${pageParam}`)
+const fetchVoiceRecords = async ({
+  pageParam = 1,
+}): Promise<VoiceRecordsResponse> => {
+  const response = await fetch(
+    `/api/voice-records-client?limit=10&page=${pageParam}`
+  )
   if (!response.ok) {
     throw new Error('Failed to fetch voice records')
   }
@@ -23,7 +27,8 @@ export const useVoiceRecordsInfiniteQuery = (userId: string | undefined) => {
     queryKey: ['voice-records', userId],
     queryFn: fetchVoiceRecords,
     initialPageParam: 1,
-    getNextPageParam: (lastPage) => (lastPage.hasNextPage ? lastPage.nextPage : undefined),
+    getNextPageParam: (lastPage) =>
+      lastPage.hasNextPage ? lastPage.nextPage : undefined,
     enabled: !!userId,
   })
 }
