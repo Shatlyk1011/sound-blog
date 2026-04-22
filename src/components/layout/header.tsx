@@ -2,7 +2,11 @@
 
 import { useState } from 'react'
 import { getUserInitials } from '@/composables/utils'
-import { LogoutSquare01Icon, Menu05Icon, UserIcon } from '@hugeicons/core-free-icons'
+import {
+  LogoutSquare01Icon,
+  Menu05Icon,
+  UserIcon,
+} from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { useScroll, useMotionValueEvent } from 'motion/react'
 import Link from 'next/link'
@@ -63,7 +67,7 @@ const Header = () => {
         </Link>
         <nav
           className={cn(
-            'text-muted-foreground z-49 ml-6 flex flex-1  justify-center transition-all max-md:absolute max-md:inset-0 max-md:ml-0 max-md:h-svh max-md:w-screen max-md:translate-x-full',
+            'text-muted-foreground z-49 ml-6 flex flex-1 justify-center transition-all max-md:absolute max-md:inset-0 max-md:ml-0 max-md:h-svh max-md:w-screen max-md:translate-x-full',
             menu ? 'max-md:translate-x-0' : 'max-md:translate-x-full'
           )}
         >
@@ -79,13 +83,11 @@ const Header = () => {
                 Pricing
               </Link>
             </li>
-            <li>
-
-            </li>
+            <li></li>
           </ul>
         </nav>
 
-        <div className='flex min-w-20 items-center justify-end gap-2.5 max-sm:gap-1 w-24'>
+        <div className='flex w-24 min-w-20 items-center justify-end gap-2.5 max-sm:gap-1'>
           <ThemeToggle />
 
           {isLoading ? (
@@ -112,10 +114,10 @@ const Header = () => {
                   <DropdownMenuContent align='end' className='z-500 w-56'>
                     <DropdownMenuLabel>
                       <div className='flex flex-col space-y-1'>
-                          <p className='text-sm leading-none font-medium mb-1.5'>
+                        <p className='mb-1.5 text-sm leading-none font-medium'>
                           {user.user_metadata?.full_name || 'User'}
                         </p>
-                          <p className='text-muted-foreground text-[11px] font-mono leading-none'>
+                        <p className='text-muted-foreground font-mono text-[11px] leading-none'>
                           {user.email}
                         </p>
                       </div>
@@ -123,18 +125,18 @@ const Header = () => {
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                       onClick={handleSignOut}
-                        asChild
-                        className='cursor-pointer'
-                      >
-                        <Link href={'/profile'}>
-                          <HugeiconsIcon icon={UserIcon} />
-                          Profile
-                        </Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={handleSignOut}
-                        className='cursor-pointer'
-                      >
+                      asChild
+                      className='cursor-pointer'
+                    >
+                      <Link href={'/profile'}>
+                        <HugeiconsIcon icon={UserIcon} />
+                        Profile
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={handleSignOut}
+                      className='cursor-pointer'
+                    >
                       <HugeiconsIcon icon={LogoutSquare01Icon} />
                       Sign Out
                     </DropdownMenuItem>

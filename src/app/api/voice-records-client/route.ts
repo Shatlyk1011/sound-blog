@@ -1,7 +1,7 @@
-import configPromise from '@payload-config';
-import { NextResponse } from 'next/server';
-import { getPayload } from 'payload';
-import { createClient } from '@/lib/supabase-server';
+import configPromise from '@payload-config'
+import { NextResponse } from 'next/server'
+import { getPayload } from 'payload'
+import { createClient } from '@/lib/supabase-server'
 
 export async function GET() {
   try {

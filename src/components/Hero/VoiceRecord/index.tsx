@@ -1,6 +1,7 @@
 'use client'
 
 import { SubmitEventHandler, useState } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
 import {
   Check,
   Mic01Icon,
@@ -15,7 +16,6 @@ import { cn } from '@/lib/utils'
 import { useAudioRecorder } from '@/hooks/use-audio-recorder'
 import { Button } from '@/components/ui/button'
 import SoundWave from './SoundWave'
-import { useQueryClient } from '@tanstack/react-query'
 
 export default function VoiceRecord() {
   const [isUploading, setIsUploading] = useState(false)

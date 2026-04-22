@@ -1,11 +1,6 @@
-import configPromise from '@payload-config';
-import { NextRequest, NextResponse } from 'next/server';
-import { getPayload } from 'payload';
-
-
-
-
-
+import configPromise from '@payload-config'
+import { NextRequest, NextResponse } from 'next/server'
+import { getPayload } from 'payload'
 
 export async function POST(req: NextRequest) {
   try {
@@ -23,7 +18,7 @@ export async function POST(req: NextRequest) {
     }
 
     // 2. Find the corresponding VoiceRecord by audioKey
-    // The voice record fileUrl usually contains the audioKey 
+    // The voice record fileUrl usually contains the audioKey
     const { docs: voiceRecords } = await payload.find({
       collection: 'voice-records',
       where: {
@@ -41,7 +36,10 @@ export async function POST(req: NextRequest) {
     }
 
     const voiceRecord = voiceRecords[0]
-    const userId = typeof voiceRecord.userId === 'object' ? voiceRecord.userId.id : voiceRecord.userId
+    const userId =
+      typeof voiceRecord.userId === 'object'
+        ? voiceRecord.userId.id
+        : voiceRecord.userId
 
     // 3. Create a new Transcript document
     const newTranscript = await payload.create({

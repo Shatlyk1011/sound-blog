@@ -4,7 +4,6 @@ import { useEffect } from 'react'
 import { useUserContext } from '@/app/_providers/user-provider'
 import { VoiceRecord } from '@/payload-types'
 import { useVoiceRecordsInfiniteQuery } from '@/services/voice-records'
-import { useInView } from 'react-intersection-observer'
 import {
   Calendar04Icon,
   Clock03Icon,
@@ -12,6 +11,7 @@ import {
 } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import Link from 'next/link'
+import { useInView } from 'react-intersection-observer'
 import { Skeleton } from '@/components/ui/skeleton'
 import MiniAudioPlayer from './AudioPlayer'
 
@@ -97,51 +97,51 @@ export default function VoiceRecordsGrid() {
         <>
           <div className='grid grid-cols-3 gap-6 max-lg:grid-cols-2 max-lg:gap-5 max-sm:grid-cols-1 max-sm:gap-6'>
             {[MOCK, ...records].map((record) => (
-            <div
-              key={record.id}
-              className='group bg-card hover:border-accent/50 relative flex flex-col justify-between overflow-hidden rounded-2xl border p-6 shadow-sm transition-all hover:shadow-md'
-            >
-              <div>
-                <div className='mb-2 flex items-start justify-between'>
-                  <div className='bg-input/50 text-foreground/80 rounded-xl p-3'>
-                    <HugeiconsIcon icon={FileAudioIcon} className='size-6' />
+              <div
+                key={record.id}
+                className='group bg-card hover:border-accent/50 relative flex flex-col justify-between overflow-hidden rounded-2xl border p-6 shadow-sm transition-all hover:shadow-md'
+              >
+                <div>
+                  <div className='mb-2 flex items-start justify-between'>
+                    <div className='bg-input/50 text-foreground/80 rounded-xl p-3'>
+                      <HugeiconsIcon icon={FileAudioIcon} className='size-6' />
+                    </div>
+                    <span
+                      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold capitalize ${getStatusColor(
+                        record.status
+                      )}`}
+                    >
+                      {record.status}
+                    </span>
                   </div>
-                  <span
-                    className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold capitalize ${getStatusColor(
-                      record.status
-                    )}`}
-                  >
-                    {record.status}
-                  </span>
+                  <Link href={`/record/${record.id}`}>
+                    <h3 className='hover:text-primary mt-4 mb-1 line-clamp-1 text-lg font-semibold transition-colors'>
+                      {record.fileName}
+                    </h3>
+                  </Link>
                 </div>
-                <Link href={`/record/${record.id}`}>
-                  <h3 className='hover:text-primary mt-4 mb-1 line-clamp-1 text-lg font-semibold transition-colors'>
-                    {record.fileName}
-                  </h3>
-                </Link>
-              </div>
 
-              <MiniAudioPlayer fileUrl={record.fileUrl} />
+                <MiniAudioPlayer fileUrl={record.fileUrl} />
 
-              <div className='text-muted-foreground mt-2 flex items-center justify-end gap-5 text-sm'>
-                <div className='flex items-center gap-1.5'>
-                  <HugeiconsIcon icon={Clock03Icon} className='size-4' />
-                  {formatDuration(record.duration ?? 0)}
-                </div>
-                <div className='flex items-center gap-1.5'>
-                  <HugeiconsIcon icon={Calendar04Icon} className='size-4' />
-                  {new Date(record.createdAt).toLocaleDateString(undefined, {
-                    month: 'short',
-                    day: 'numeric',
-                  })}
+                <div className='text-muted-foreground mt-2 flex items-center justify-end gap-5 text-sm'>
+                  <div className='flex items-center gap-1.5'>
+                    <HugeiconsIcon icon={Clock03Icon} className='size-4' />
+                    {formatDuration(record.duration ?? 0)}
+                  </div>
+                  <div className='flex items-center gap-1.5'>
+                    <HugeiconsIcon icon={Calendar04Icon} className='size-4' />
+                    {new Date(record.createdAt).toLocaleDateString(undefined, {
+                      month: 'short',
+                      day: 'numeric',
+                    })}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-          {isFetchingNextPage &&
-            [...Array(3)].map((_, i) => (
-              <VoiceRecordSkeleton key={`skeleton-load-${i}`} />
             ))}
+            {isFetchingNextPage &&
+              [...Array(3)].map((_, i) => (
+                <VoiceRecordSkeleton key={`skeleton-load-${i}`} />
+              ))}
           </div>
           <div ref={ref} className='h-4 w-full' />
         </>
