@@ -2,6 +2,7 @@
 // https://tailwindcss.com/docs/font-family
 import type { Metadata } from 'next'
 import { ThemeProvider } from 'next-themes'
+import { Toaster } from 'sonner'
 import { Poppins, Libre_Baskerville, IBM_Plex_Mono } from 'next/font/google'
 import TanstackQueryProvider from '../_providers/tanstack-query'
 import { UserProvider } from '../_providers/user-provider'
@@ -54,6 +55,8 @@ export default function RootLayout({
             </TanstackQueryProvider>
           </ThemeProvider>
         </UserProvider>
+        <Toaster position='bottom-right' />
+
       </body>
     </html>
   )

@@ -4,23 +4,16 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getPayload } from 'payload';
 import { createClient } from '@/lib/supabase-server';
 
-
-
-
-
-
-
-
 export async function POST(req: NextRequest) {
   try {
     // 1. Authenticate with Supabase
     const supabase = await createClient()
     const {
-      data: { user },
+      data: { user: supabaseUser },
       error: authError,
     } = await supabase.auth.getUser()
 
-    if (authError || !user) {
+    if (authError || !supabaseUser) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -41,7 +34,7 @@ export async function POST(req: NextRequest) {
       collection: 'users',
       where: {
         userId: {
-          equals: user.id,
+          equals: supabaseUser.id,
         },
       },
     })
@@ -62,7 +55,7 @@ export async function POST(req: NextRequest) {
       collection: 'credit-history',
       where: {
         and: [
-          { userId: { equals: user.id } },
+          { userId: { equals: supabaseUser.id } },
           { status: { equals: 'active' } },
           { expirationDate: { greater_than: now.toISOString() } },
         ],
@@ -135,13 +128,13 @@ export async function POST(req: NextRequest) {
         id: customRecordId,
         fileUrl,
         fileName: file.name,
-        userId: payloadUserId as string, // Payload document ID
+        userId: payloadUserId, // Payload document ID
         duration,
         status: 'uploaded',
       },
     })
 
-    // 5.5 Send request to worker
+    // 7 Send request to worker
     const workerUrl = process.env.WORKER_URL
     if (workerUrl) {
       try {
@@ -151,7 +144,7 @@ export async function POST(req: NextRequest) {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            userId: user.id,
+            userId: payloadUserId,
             recordId: customRecordId,
             key: uniqueFileName,
             fileName: file.name,
@@ -171,7 +164,7 @@ export async function POST(req: NextRequest) {
       console.warn('Missing WORKER_URL environment variable')
     }
 
-    // 7. Deduct credits — update creditsSpent on the User document
+    // 8. Deduct credits — update creditsSpent on the User document
     await payload.update({
       collection: 'users',
       id: payloadUserId as string,

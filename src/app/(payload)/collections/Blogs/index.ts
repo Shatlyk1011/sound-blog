@@ -1,18 +1,6 @@
 import type { CollectionConfig } from 'payload';
 import { admins } from '../../utils/admins';
 
-
-
-
-
-
-
-
-
-
-
-
-
 const Blogs: CollectionConfig = {
   slug: 'blogs',
 

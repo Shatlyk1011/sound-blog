@@ -16,6 +16,7 @@ import { cn } from '@/lib/utils'
 import { useAudioRecorder } from '@/hooks/use-audio-recorder'
 import { Button } from '@/components/ui/button'
 import SoundWave from './SoundWave'
+import { toast } from 'sonner'
 
 export default function VoiceRecord() {
   const [isUploading, setIsUploading] = useState(false)
@@ -45,7 +46,7 @@ export default function VoiceRecord() {
   const handleSubmit: SubmitEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
     if (!audioUrl) {
-      alert('No audio recorded yet')
+      toast.info('No audio recorded yet')
       return
     }
 
@@ -76,14 +77,14 @@ export default function VoiceRecord() {
         throw new Error(result.error || 'Failed to upload audio')
       }
 
-      alert('Voice recording saved successfully!')
+      toast.success('Voice recording saved successfully!')
       queryClient.invalidateQueries({ queryKey: ['voice-records'] })
       resetRecording()
     } catch (error: unknown) {
       console.error('Upload failed:', error)
       const message =
         error instanceof Error ? error.message : 'Error uploading file'
-      alert(message)
+      toast.error(message)
     } finally {
       setIsUploading(false)
     }
