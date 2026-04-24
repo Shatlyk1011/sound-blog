@@ -3,27 +3,25 @@
 import type { Metadata } from 'next'
 import { ThemeProvider } from 'next-themes'
 import { Toaster } from 'sonner'
-import { Poppins, Libre_Baskerville, IBM_Plex_Mono } from 'next/font/google'
+import { Poppins, Lora } from 'next/font/google'
 import TanstackQueryProvider from '../_providers/tanstack-query'
 import { UserProvider } from '../_providers/user-provider'
 import './globals.css'
 
-const fontSans = Poppins({
+const poppins = Poppins({
   subsets: ['latin'],
-  variable: '--font-sans',
-  weight: ['400', '500', '600'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-poppins',
+  display: 'swap',
 })
 
-const fontSerif = Libre_Baskerville({
+const lora = Lora({
   subsets: ['latin'],
-  variable: '--font-serif',
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-lora',
+  display: 'swap',
 })
 
-const fontMono = IBM_Plex_Mono({
-  subsets: ['latin'],
-  variable: '--font-mono',
-  weight: ['400', '500', '600'],
-})
 
 export const metadata: Metadata = {
   title: 'Sound Blog',
@@ -40,7 +38,7 @@ export default function RootLayout({
   return (
     <html lang='en' suppressHydrationWarning>
       <body
-        className={`${fontSans.variable} ${fontSerif.variable} ${fontMono.variable} antialiased`}
+        className={`${poppins.variable} ${lora.variable} antialiased`}
       >
         <UserProvider>
           <ThemeProvider

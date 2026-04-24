@@ -36,8 +36,7 @@
   --sidebar-border: #f5e8d2;
   --sidebar-ring: #9b2c2c;
   --font-sans: Poppins, sans-serif;
-  --font-serif: Libre Baskerville, serif;
-  --font-mono: IBM Plex Mono, monospace;
+  --font-serif: Lora, serif;
   --radius: 0.375rem;
   --shadow-x: 1px;
   --shadow-y: 1px;
@@ -100,15 +99,6 @@
   --sidebar-accent-foreground: #fef3c7;
   --sidebar-border: #44403c;
   --sidebar-ring: #b91c1c;
-  --font-sans: Poppins, sans-serif;
-  --font-serif: Libre Baskerville, serif;
-  --font-mono: IBM Plex Mono, monospace;
-  --radius: 0.375rem;
-  --shadow-x: 1px;
-  --shadow-y: 1px;
-  --shadow-blur: 16px;
-  --shadow-spread: -2px;
-  --shadow-opacity: 0.12;
   --shadow-color: hsl(0 63% 18%);
   --shadow-2xs: 1px 1px 16px -2px hsl(0 63% 18% / 0.06);
   --shadow-xs: 1px 1px 16px -2px hsl(0 63% 18% / 0.06);
@@ -165,7 +155,6 @@
   --color-sidebar-ring: var(--sidebar-ring);
 
   --font-sans: var(--font-sans);
-  --font-mono: var(--font-mono);
   --font-serif: var(--font-serif);
 
   --radius-sm: calc(var(--radius) - 4px);
@@ -252,4 +241,205 @@
       transform: scaleY(0.7);
     }
   }
+}
+
+
+/* Enhanced Prose Styling */
+.prose {
+  font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  scroll-margin-top: 5rem;
+  font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+}
+
+.prose h1 {
+  font-size: 3rem;
+}
+
+.prose h2 {
+  font-size: 2rem;
+}
+
+.prose h3 {
+  font-size: 1.6rem;
+}
+.prose h2 {
+  position: relative;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.dark .prose h2 {
+  border-bottom-color: #1a1a1a;
+}
+
+.prose p {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+}
+
+.prose blockquote {
+  position: relative;
+  font-style: italic;
+  border-left: 4px solid #3b82f6;
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+  margin: 2rem 0;
+  padding: 1rem;
+}
+
+.dark .prose blockquote {
+  background: linear-gradient(135deg, #0a0a0a 0%, #000000 100%);
+  border-left-color: #60a5fa;
+  color: #d1d5db;
+}
+
+.prose blockquote p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.prose blockquote::before {
+  content: '"';
+  position: absolute;
+  top: -0.5rem;
+  left: 1rem;
+  font-size: 3rem;
+  color: #3b82f6;
+  font-family: var(--font-lora), Georgia, serif;
+  line-height: 1;
+}
+
+.dark .prose blockquote::before {
+  color: #60a5fa;
+}
+
+.prose img {
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.prose img:hover {
+  transform: scale(1.02);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.prose code:not(pre code) {
+  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+  color: #1f2937;
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+  font-size: 0.875em;
+  border: 1px solid #d1d5db;
+}
+
+.dark .prose code:not(pre code) {
+  background: #1f1f1f;
+  color: #e5e7eb;
+  border-color: #2a2a2a;
+}
+
+.prose pre {
+  background: #0f0f0f !important;
+  border: 1px solid #1f1f1f;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+}
+
+.prose pre code {
+  background: transparent !important;
+  font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.prose pre code .line {
+  display: block;
+  background: transparent !important;
+}
+
+.prose pre code span {
+  background: transparent !important;
+}
+
+.prose ul>li::marker {
+  color: #3b82f6;
+}
+
+.prose ol>li::marker {
+  color: #3b82f6;
+  font-weight: 600;
+}
+
+.dark .prose ul>li::marker,
+.dark .prose ol>li::marker {
+  color: #60a5fa;
+}
+
+.prose a {
+  position: relative;
+  color: #2563eb;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.prose a:hover {
+  color: #1d4ed8;
+}
+
+.dark .prose a {
+  color: #60a5fa;
+}
+
+.dark .prose a:hover {
+  color: #93c5fd;
+}
+
+.prose a::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+  transform: scaleX(0);
+  transform-origin: bottom right;
+  transition: transform 0.3s ease;
+}
+
+.prose a:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+.dark .prose a::after {
+  background: linear-gradient(90deg, #60a5fa, #93c5fd);
+}
+
+.prose table thead th {
+  padding-block: 4px;
+}
+
+.prose table tbody td {
+  border: 1px solid #fff8;
+  padding: 10px;
 }
