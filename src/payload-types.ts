@@ -149,6 +149,10 @@ export interface VoiceRecord {
    */
   fileUrl: string;
   /**
+   * The title of the generated blog.
+   */
+  title?: string | null;
+  /**
    * The original name of the uploaded audio file.
    */
   fileName: string;
@@ -283,7 +287,7 @@ export interface Blog {
   /**
    * The title of the generated blog post.
    */
-  title: string;
+  title?: string | null;
   /**
    * The AI-generated blog content in Markdown format.
    */
@@ -431,6 +435,7 @@ export interface VoiceRecordsSelect<T extends boolean = true> {
   id?: T;
   userId?: T;
   fileUrl?: T;
+  title?: T;
   fileName?: T;
   duration?: T;
   status?: T;

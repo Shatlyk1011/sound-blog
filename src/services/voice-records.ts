@@ -1,6 +1,10 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { VoiceRecord } from '@/payload-types'
 
+
+
+
+
 interface VoiceRecordsResponse {
   docs: VoiceRecord[]
   totalDocs: number
@@ -22,7 +26,10 @@ const fetchVoiceRecords = async ({
   return response.json()
 }
 
-export const useVoiceRecordsInfiniteQuery = (userId: string | undefined) => {
+export const useVoiceRecordsInfiniteQuery = (
+  userId: string | undefined,
+  isRefetchAvailable: boolean
+) => {
   return useInfiniteQuery({
     queryKey: ['voice-records', userId],
     queryFn: fetchVoiceRecords,
@@ -30,5 +37,6 @@ export const useVoiceRecordsInfiniteQuery = (userId: string | undefined) => {
     getNextPageParam: (lastPage) =>
       lastPage.hasNextPage ? lastPage.nextPage : undefined,
     enabled: !!userId,
+    refetchInterval: isRefetchAvailable ? 3000 : false,
   })
 }

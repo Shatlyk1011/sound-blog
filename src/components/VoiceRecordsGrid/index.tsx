@@ -1,8 +1,7 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useUserContext } from '@/app/_providers/user-provider'
-import { VoiceRecord } from '@/payload-types'
 import { useVoiceRecordsInfiniteQuery } from '@/services/voice-records'
 import {
   Calendar04Icon,
@@ -15,17 +14,6 @@ import { useInView } from 'react-intersection-observer'
 import { Skeleton } from '@/components/ui/skeleton'
 import MiniAudioPlayer from './AudioPlayer'
 
-const MOCK: VoiceRecord = {
-  id: 'rec-1',
-  updatedAt: '123123',
-  fileName: 'Project Ideas Brainstorm.webm',
-  duration: 125, // seconds
-  status: 'completed',
-  createdAt: new Date('2024-03-20T10:00:00Z').toISOString(),
-  fileUrl: 'https://filesamples.com/samples/audio/mp3/sample3.mp3',
-  userId: '12312123',
-}
-
 function formatDuration(seconds: number) {
   const mins = Math.floor(seconds / 60)
   const secs = seconds % 60
@@ -35,7 +23,7 @@ function formatDuration(seconds: number) {
 function getStatusColor(status: string) {
   switch (status) {
     case 'completed':
-      return 'text-green-500 bg-green-50 dark:bg-green-500/10'
+      return 'text-green-600 bg-green-100 dark:bg-green-500/10'
     case 'processing':
       return 'text-blue-500 bg-blue-50 dark:bg-blue-500/10'
     case 'failed':
@@ -55,7 +43,8 @@ export default function VoiceRecordsGrid() {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useVoiceRecordsInfiniteQuery(user?.id)
+  } = useVoiceRecordsInfiniteQuery(user?.id, true)
+
 
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
@@ -96,7 +85,7 @@ export default function VoiceRecordsGrid() {
       ) : (
         <>
           <div className='grid grid-cols-3 gap-6 max-lg:grid-cols-2 max-lg:gap-5 max-sm:grid-cols-1 max-sm:gap-6'>
-            {[MOCK, ...records].map((record) => (
+                {records.map((record) => (
               <div
                 key={record.id}
                 className='group bg-card hover:border-accent/50 relative flex flex-col justify-between overflow-hidden rounded-2xl border p-6 shadow-sm transition-all hover:shadow-md'

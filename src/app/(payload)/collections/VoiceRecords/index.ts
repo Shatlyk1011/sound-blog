@@ -1,5 +1,5 @@
-import type { CollectionConfig } from 'payload'
-import { admins } from '../../utils/admins'
+import type { CollectionConfig } from 'payload';
+import { admins } from '../../utils/admins';
 
 const VoiceRecords: CollectionConfig = {
   slug: 'voice-records',
@@ -46,6 +46,15 @@ const VoiceRecords: CollectionConfig = {
       admin: {
         description:
           'The public URL of the audio file stored in Supabase Storage.',
+      },
+    },
+    {
+      name: 'title',
+      label: 'Generated title',
+      type: 'text',
+      required: false,
+      admin: {
+        description: 'The title of the generated blog.',
       },
     },
 
