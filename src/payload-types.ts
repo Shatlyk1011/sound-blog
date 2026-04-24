@@ -291,7 +291,7 @@ export interface Blog {
   /**
    * The current state of the blog post in the content pipeline.
    */
-  status: 'draft' | 'generated' | 'edited';
+  status?: ('draft' | 'generated' | 'edited') | null;
   /**
    * The writing tone used when generating this blog post with GPT.
    */

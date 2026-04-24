@@ -9,6 +9,10 @@ import { admins } from '../../utils/admins';
 
 
 
+
+
+
+
 const Blogs: CollectionConfig = {
   slug: 'blogs',
 
@@ -85,7 +89,7 @@ const Blogs: CollectionConfig = {
       name: 'status',
       label: 'Status',
       type: 'select',
-      required: true,
+      required: false,
       defaultValue: 'draft',
       options: [
         { label: 'Draft', value: 'draft' },

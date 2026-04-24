@@ -1,8 +1,15 @@
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
-import configPromise from '@payload-config'
-import { NextRequest, NextResponse } from 'next/server'
-import { getPayload } from 'payload'
-import { createClient } from '@/lib/supabase-server'
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import configPromise from '@payload-config';
+import { NextRequest, NextResponse } from 'next/server';
+import { getPayload } from 'payload';
+import { createClient } from '@/lib/supabase-server';
+
+
+
+
+
+
+
 
 export async function POST(req: NextRequest) {
   try {
@@ -119,13 +126,13 @@ export async function POST(req: NextRequest) {
     const fileUrl = `${publicUrl}/${uniqueFileName}`
 
     const audioTitle = file.name.replace(/\.[^/.]+$/, '').replace(/\s+/g, '_')
-    const customId = `${audioTitle}-${Math.floor(1000 + Math.random() * 9000)}`
+    const customRecordId = `${audioTitle}-${Math.floor(1000 + Math.random() * 9000)}`
 
     // 6. Create VoiceRecord in Payload CMS
     const newRecord = await payload.create({
       collection: 'voice-records',
       data: {
-        id: customId,
+        id: customRecordId,
         fileUrl,
         fileName: file.name,
         userId: payloadUserId as string, // Payload document ID
@@ -144,7 +151,8 @@ export async function POST(req: NextRequest) {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            recordId: customId,
+            userId: user.id,
+            recordId: customRecordId,
             key: uniqueFileName,
             fileName: file.name,
             contentType: file.type || 'audio/webm',
