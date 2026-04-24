@@ -287,7 +287,7 @@ export interface Blog {
   /**
    * The title of the generated blog post.
    */
-  title?: string | null;
+  title: string;
   /**
    * The AI-generated blog content in Markdown format.
    */

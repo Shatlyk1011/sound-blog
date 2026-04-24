@@ -123,8 +123,7 @@ const Header = () => {
                       </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                      onClick={handleSignOut}
+                      <DropdownMenuItem
                       asChild
                       className='cursor-pointer'
                     >
