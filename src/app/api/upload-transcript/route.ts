@@ -1,6 +1,11 @@
-import configPromise from '@payload-config'
-import { NextRequest, NextResponse } from 'next/server'
-import { getPayload } from 'payload'
+import configPromise from '@payload-config';
+import { NextRequest, NextResponse } from 'next/server';
+import { getPayload } from 'payload';
+
+
+
+
+
 
 export async function POST(req: NextRequest) {
   try {
@@ -45,7 +50,7 @@ export async function POST(req: NextRequest) {
     const newTranscript = await payload.create({
       collection: 'transcripts',
       data: {
-        audioId: voiceRecord.id,
+        recordId: voiceRecord.id,
         userId: userId as string,
         rawText: transcript,
         wordCount: wordCount,

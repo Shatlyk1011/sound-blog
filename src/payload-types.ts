@@ -242,7 +242,7 @@ export interface Transcript {
   /**
    * The voice recording this transcript was generated from.
    */
-  audioId: string | VoiceRecord;
+  recordId: string | VoiceRecord;
   /**
    * The unprocessed transcription text as returned by the speech-to-text service.
    */
@@ -275,7 +275,7 @@ export interface Blog {
   /**
    * The voice recording this blog was generated from.
    */
-  audioId: string | VoiceRecord;
+  recordId: string | VoiceRecord;
   /**
    * The transcript this blog post was generated from.
    */
@@ -443,7 +443,7 @@ export interface VoiceRecordsSelect<T extends boolean = true> {
  */
 export interface TranscriptsSelect<T extends boolean = true> {
   userId?: T;
-  audioId?: T;
+  recordId?: T;
   rawText?: T;
   cleanedText?: T;
   language?: T;
@@ -458,7 +458,7 @@ export interface TranscriptsSelect<T extends boolean = true> {
  */
 export interface BlogsSelect<T extends boolean = true> {
   userId?: T;
-  audioId?: T;
+  recordId?: T;
   transcriptId?: T;
   title?: T;
   content?: T;

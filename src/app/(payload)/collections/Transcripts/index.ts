@@ -1,12 +1,16 @@
-import type { CollectionConfig } from 'payload'
-import { admins } from '../../utils/admins'
+import type { CollectionConfig } from 'payload';
+import { admins } from '../../utils/admins';
+
+
+
+
 
 const Transcripts: CollectionConfig = {
   slug: 'transcripts',
 
   admin: {
-    defaultColumns: ['audioId', 'userId', 'language', 'createdAt'],
-    useAsTitle: 'audioId',
+    defaultColumns: ['recordId', 'userId', 'language', 'createdAt'],
+    useAsTitle: 'recordId',
     description:
       'Stores transcripts generated from user-uploaded voice recordings. Each transcript links to its source audio and the uploading user.',
   },
@@ -31,7 +35,7 @@ const Transcripts: CollectionConfig = {
     },
 
     {
-      name: 'audioId',
+      name: 'recordId',
       label: 'Voice Record',
       type: 'relationship',
       relationTo: 'voice-records',

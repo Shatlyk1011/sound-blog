@@ -5,6 +5,10 @@ import { admins } from '../../utils/admins';
 
 
 
+
+
+
+
 const Blogs: CollectionConfig = {
   slug: 'blogs',
 
@@ -36,7 +40,7 @@ const Blogs: CollectionConfig = {
     },
 
     {
-      name: 'audioId',
+      name: 'recordId',
       label: 'Voice Record',
       type: 'relationship',
       relationTo: 'voice-records',
