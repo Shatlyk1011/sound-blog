@@ -16,6 +16,7 @@ export function useAudioRecorder() {
       const file = acceptedFiles[0]
       const url = URL.createObjectURL(file)
       setAudioUrl(url)
+      setStatus('recorded')
       console.log('url', url)
     }
   }, [])
