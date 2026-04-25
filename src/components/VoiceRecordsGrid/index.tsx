@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useUserContext } from '@/app/_providers/user-provider'
 import { useVoiceRecordsInfiniteQuery } from '@/services/voice-records'
 import {

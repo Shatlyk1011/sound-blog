@@ -57,17 +57,6 @@ const Transcripts: CollectionConfig = {
     },
 
     {
-      name: 'cleanedText',
-      label: 'Cleaned Text',
-      type: 'textarea',
-      required: false,
-      admin: {
-        description:
-          'The refined, human-readable version of the transcript after post-processing.',
-      },
-    },
-
-    {
       name: 'language',
       label: 'Language',
       type: 'text',
