@@ -2,6 +2,11 @@ import { User } from '@/payload-types'
 import config from '@payload-config'
 import { getPayload } from 'payload'
 
+
+
+
+
+
 // Create a new client record (called when user signs up via Supabase)
 export async function createClientRecord(
   userId: string,
@@ -14,8 +19,8 @@ export async function createClientRecord(
     collection: 'users',
     data: {
       userId,
-      email: email || undefined,
-      authProvider: provider || undefined,
+      email: email,
+      authProvider: provider,
     },
   })
 

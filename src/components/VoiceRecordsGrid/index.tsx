@@ -43,7 +43,7 @@ export default function VoiceRecordsGrid() {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useVoiceRecordsInfiniteQuery(user?.id, true)
+  } = useVoiceRecordsInfiniteQuery(user?.id, false)
 
 
   useEffect(() => {

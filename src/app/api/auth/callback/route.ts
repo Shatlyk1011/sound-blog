@@ -1,10 +1,16 @@
-import { NextResponse } from 'next/server'
-import {
-  getClientByUserId,
-  createClientRecord,
-  createInitialCredits,
-} from '@/lib/credit-helpers'
-import { createClient } from '@/lib/supabase-server'
+import { NextResponse } from 'next/server';
+import { getClientByUserId, createClientRecord, createInitialCredits } from '@/lib/credit-helpers';
+import { createClient } from '@/lib/supabase-server';
+
+
+
+
+
+
+
+
+
+
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url)
@@ -18,6 +24,8 @@ export async function GET(request: Request) {
 
     if (!error) {
       const user = data.session?.user
+
+      console.log('XXXX', user)
       if (user) {
         const existingClient = await getClientByUserId(user.id)
         if (!existingClient) {

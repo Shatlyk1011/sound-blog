@@ -11,9 +11,6 @@ const Users: CollectionConfig = {
       'Stores application users authenticated via Supabase. Each record links a Supabase user (by ID) to their plan, and auth provider.',
   },
 
-  // No auth block — these are not Payload auth users; they are app users stored for reference
-  auth: false,
-
   access: {
     // Restrict all operations to admins only from the admin panel
     read: () => true,
