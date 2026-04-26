@@ -30,7 +30,11 @@ const { pricing, profile } = {
   profile: '/profile'
 }
 
-const Header = () => {
+interface Props {
+  isDashboardPage?: boolean
+}
+
+const Header = ({ isDashboardPage }: Props) => {
   const router = useRouter()
   const pathname = usePathname()
 
@@ -69,7 +73,8 @@ const Header = () => {
         <nav
           className={cn(
             'text-muted-foreground z-49 ml-6 flex flex-1 justify-center transition-all max-md:absolute max-md:inset-0 max-md:ml-0 max-md:h-svh max-md:w-screen max-md:translate-x-full',
-            menu ? 'max-md:translate-x-0' : 'max-md:translate-x-full'
+            menu ? 'max-md:translate-x-0' : 'max-md:translate-x-full',
+            isDashboardPage && 'hidden'
           )}
         >
           <ul className='-tracking-one max-md:bg-muted flex items-center text-sm font-medium max-md:w-full max-md:flex-col max-md:gap-3 max-md:pt-40 max-md:text-base'>

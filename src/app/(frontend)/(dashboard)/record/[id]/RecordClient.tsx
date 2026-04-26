@@ -7,6 +7,7 @@ import ReactMarkdown from 'react-markdown'
 import { stringify } from 'qs-esm'
 import { Blog } from '@/payload-types'
 import { Badge } from '@/components/ui/badge'
+import MiniAudioPlayer from '@/components/VoiceRecordsGrid/AudioPlayer'
 
 interface RecordClientProps {
   recordId: string
@@ -57,25 +58,28 @@ export function RecordClient({ recordId }: RecordClientProps) {
         <>
           <h1 className='text-5xl leading-[130%]  font-bold tracking-tight'>{blog.title}</h1>
 
-          <div className='flex items-center mb-6  text-sm font-medium'>
+          <div className='flex justify-between'>
+            <div className='flex items-center mb-6  text-sm font-medium'>
 
-            <ul className='flex items-center gap-2 py-4'>
-              <Badge variant={'secondary'}>Status: {blog.status}</Badge>
-              {blog.tone && (
-                <Badge >
-                  Tone: {blog.tone}
-                </Badge>
-              )}
-            </ul>
-            <span className='mx-2 text-lg'>•</span>
-            <time className='text-muted-foreground' dateTime={blog.createdAt}>
-              {new Intl.DateTimeFormat(
-                'en-US',
-                {
-                  dateStyle: 'long',
-                },
-              ).format(new Date(blog.createdAt))}
-            </time>
+              <ul className='flex items-center gap-2 py-4'>
+                <Badge variant={'secondary'}>Status: {blog.status}</Badge>
+                {blog.tone && (
+                  <Badge >
+                    Tone: {blog.tone}
+                  </Badge>
+                )}
+              </ul>
+              <span className='mx-2 text-lg'>•</span>
+              <time className='text-muted-foreground' dateTime={blog.createdAt}>
+                {new Intl.DateTimeFormat(
+                  'en-US',
+                  {
+                    dateStyle: 'long',
+                  },
+                ).format(new Date(blog.createdAt))}
+              </time>
+            </div>
+            <MiniAudioPlayer />
           </div>
 
           <article className='bg-card w-full max-w-full rounded-3xl border p-8 text-left shadow-sm'>

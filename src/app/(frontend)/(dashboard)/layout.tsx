@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import Header from '@/components/layout/header'
+import { DashboardSidebar } from '@/components/layout/DashboardSidebar'
 
 export const metadata: Metadata = {
   title: {
@@ -14,8 +14,14 @@ export default function DashboardLayout({
   children: React.ReactNode
 }>) {
   return (
-    <div className='flex min-h-svh flex-col'>
-      {children}
-    </div>
+    <main className='flex min-h-svh'>
+      <DashboardSidebar>
+        <div className='ml-60 flex-1'>
+          {children}
+        </div>
+      </DashboardSidebar>
+
+    </main>
   )
 }
+
