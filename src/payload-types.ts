@@ -252,10 +252,6 @@ export interface Transcript {
    */
   rawText?: string | null;
   /**
-   * The refined, human-readable version of the transcript after post-processing.
-   */
-  cleanedText?: string | null;
-  /**
    * The detected or specified language of the transcript (e.g. "en", "tr").
    */
   language?: string | null;
@@ -450,7 +446,6 @@ export interface TranscriptsSelect<T extends boolean = true> {
   userId?: T;
   recordId?: T;
   rawText?: T;
-  cleanedText?: T;
   language?: T;
   wordCount?: T;
   vtt?: T;
