@@ -5,7 +5,7 @@ import { HugeiconsIcon } from '@hugeicons/react'
 import { useQuery } from '@tanstack/react-query'
 import ReactMarkdown from 'react-markdown'
 import { stringify } from 'qs-esm'
-import { Blog, VoiceRecord } from '@/payload-types'
+import { Blog } from '@/payload-types'
 import { Badge } from '@/components/ui/badge'
 
 interface RecordClientProps {
@@ -55,18 +55,30 @@ export function RecordClient({ recordId }: RecordClientProps) {
 
       {blog && (
         <>
-          <h1 className='text-4xl font-semibold tracking-tight'>{blog.title}</h1>
+          <h1 className='text-5xl leading-[130%]  font-bold tracking-tight'>{blog.title}</h1>
 
-          <ul className='flex items-center gap-2 py-4'>
-            <Badge variant={'secondary'}>{blog.status}</Badge>
-            {blog.tone && (
-              <Badge >
-                {blog.tone}
-              </Badge>
-            )}
-          </ul>
+          <div className='flex items-center mb-6  text-sm font-medium'>
 
-          <article className='bg-card w-full max-w-full rounded-xl border p-8 text-left shadow-sm'>
+            <ul className='flex items-center gap-2 py-4'>
+              <Badge variant={'secondary'}>Status: {blog.status}</Badge>
+              {blog.tone && (
+                <Badge >
+                  Tone: {blog.tone}
+                </Badge>
+              )}
+            </ul>
+            <span className='mx-2 text-lg'>•</span>
+            <time className='text-muted-foreground' dateTime={blog.createdAt}>
+              {new Intl.DateTimeFormat(
+                'en-US',
+                {
+                  dateStyle: 'long',
+                },
+              ).format(new Date(blog.createdAt))}
+            </time>
+          </div>
+
+          <article className='bg-card w-full max-w-full rounded-3xl border p-8 text-left shadow-sm'>
             <div className='prose prose-sm sm:prose-base font-serif dark:prose- max-w-none'>
               <ReactMarkdown>{blog.content}</ReactMarkdown>
             </div>

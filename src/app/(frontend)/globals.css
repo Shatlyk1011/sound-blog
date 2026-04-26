@@ -35,8 +35,8 @@
   --sidebar-accent-foreground: #232933;
   --sidebar-border: #e1e5eb;
   --sidebar-ring: #6b5fca;
-  --font-sans: var(--font-sans);
-  --font-serif: var(--font-serif);
+  --font-poppins: var(--font-poppins);
+  --font-lora: var(--font-lora);
   --radius: 0.5rem;
   --shadow-x: 0px;
   --shadow-y: 4px;
@@ -140,8 +140,8 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  --font-sans: var(--font-sans);
-  --font-serif: var(--font-serif);
+  --font-sans: var(--font-poppins);
+  --font-serif: var(--font-lora);
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -275,7 +275,6 @@
 .prose p {
   font-size: 1rem;
   line-height: 1.5;
-  margin-top: 1.25em;
   margin-bottom: 1.25em;
 }
 
