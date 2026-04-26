@@ -20,25 +20,27 @@ export async function GET(request: Request) {
 
   if (code) {
     const supabase = await createClient()
-    const { data, error } = await supabase.auth.exchangeCodeForSession(code)
-
+    const { error } = await supabase.auth.exchangeCodeForSession(code)
     if (!error) {
-      const user = data.session?.user
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
 
-      console.log('XXXX', user)
       if (user) {
         const existingClient = await getClientByUserId(user.id)
         if (!existingClient) {
           const provider = user.app_metadata?.provider as string | undefined
-          const validProvider =
-            provider && ['google', 'github', 'email'].includes(provider)
-              ? (provider as 'google' | 'github' | 'email')
-              : 'n/a'
 
           await createClientRecord(
             user.id,
             user.email ?? undefined,
-            validProvider
+            (provider || 'n/a') as
+              | 'email'
+              | 'google'
+              | 'github'
+              | 'n/a'
+              | null
+              | undefined
           )
           await createInitialCredits(user.id)
         }

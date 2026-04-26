@@ -1,5 +1,9 @@
-import { createServerClient } from '@supabase/ssr'
-import { NextResponse, type NextRequest } from 'next/server'
+import { createServerClient } from '@supabase/ssr';
+import { NextResponse, type NextRequest } from 'next/server';
+
+
+
+
 
 // Routes that are publicly accessible (no auth required)
 const PUBLIC_ROUTES = ['/', '/sign-in', '/sign-up', '/pricing']
@@ -7,6 +11,9 @@ const PUBLIC_ROUTES = ['/', '/sign-in', '/sign-up', '/pricing']
 // Routes that only unauthenticated users should access
 // (authenticated users are redirected away from these)
 const AUTH_ONLY_ROUTES = ['/sign-in', '/sign-up']
+
+// Routes that bypass all auth checks entirely (Next.js middleware should also exclude these)
+const BYPASS_ROUTES = ['/api/auth/callback', '/admin']
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -43,8 +50,8 @@ export async function updateSession(request: NextRequest) {
 
   const { pathname } = request.nextUrl
 
-  // Bypass middleware entirely for Payload CMS admin routes
-  if (pathname.startsWith('/admin')) {
+  // Bypass middleware entirely for Payload CMS admin routes and Supabase auth callback
+  if (BYPASS_ROUTES.some((r) => pathname.startsWith(r))) {
     return supabaseResponse
   }
 
