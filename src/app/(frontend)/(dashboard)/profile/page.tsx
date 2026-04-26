@@ -1,4 +1,5 @@
 'use client'
+
 import { getUserInitials } from '@/composables/utils'
 import { CreditHistory } from '@/payload-types'
 import { useUserCreditsQuery } from '@/services/user-credits'

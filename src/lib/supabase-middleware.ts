@@ -1,6 +1,13 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
+// Routes that are publicly accessible (no auth required)
+const PUBLIC_ROUTES = ['/', '/sign-in', '/sign-up', '/pricing']
+
+// Routes that only unauthenticated users should access
+// (authenticated users are redirected away from these)
+const AUTH_ONLY_ROUTES = ['/sign-in', '/sign-up']
+
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
@@ -29,8 +36,35 @@ export async function updateSession(request: NextRequest) {
     }
   )
 
-  // This will refresh session if expired
-  await supabase.auth.getUser()
+  // Refresh session if expired — must happen before any redirect checks
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  const { pathname } = request.nextUrl
+
+  const isPublicRoute = PUBLIC_ROUTES.includes(pathname)
+  const isAuthOnlyRoute = AUTH_ONLY_ROUTES.includes(pathname)
+
+  // Unauthenticated user trying to access a protected route → redirect to /sign-in
+  if (!user && !isPublicRoute) {
+    const redirectUrl = request.nextUrl.clone()
+    redirectUrl.pathname = '/sign-in'
+    return NextResponse.redirect(redirectUrl)
+  }
+
+  if (user && pathname === '/') {
+    const redirectUrl = request.nextUrl.clone()
+    redirectUrl.pathname = '/dashboard'
+    return NextResponse.redirect(redirectUrl)
+  }
+
+  // Authenticated user trying to access sign-in or sign-up → redirect to /
+  if (user && isAuthOnlyRoute) {
+    const redirectUrl = request.nextUrl.clone()
+    redirectUrl.pathname = '/'
+    return NextResponse.redirect(redirectUrl)
+  }
 
   return supabaseResponse
 }
