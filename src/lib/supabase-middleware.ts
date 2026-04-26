@@ -43,6 +43,11 @@ export async function updateSession(request: NextRequest) {
 
   const { pathname } = request.nextUrl
 
+  // Bypass middleware entirely for Payload CMS admin routes
+  if (pathname.startsWith('/admin')) {
+    return supabaseResponse
+  }
+
   const isPublicRoute = PUBLIC_ROUTES.includes(pathname)
   const isAuthOnlyRoute = AUTH_ONLY_ROUTES.includes(pathname)
 
