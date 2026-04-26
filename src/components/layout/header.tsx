@@ -25,8 +25,9 @@ import {
 } from '@/components/ui/dropdown-menu'
 import ThemeToggle from '@/components/ui/theme-toggle'
 
-const { pricing } = {
+const { pricing, profile } = {
   pricing: '/pricing',
+  profile: '/profile'
 }
 
 const Header = () => {
@@ -53,7 +54,7 @@ const Header = () => {
     <>
       <header
         className={cn(
-          'fixed top-0 z-20 mx-auto flex h-14 w-full items-center justify-between border-b px-8 py-2 font-sans max-md:px-4',
+          'fixed top-0 z-20 mx-auto flex h-14 w-full items-center justify-between border-b px-8 py-2 max-md:px-4',
           isScrolled && 'bg-background/90 backdrop-blur-sm'
         )}
       >
@@ -83,7 +84,17 @@ const Header = () => {
                 Pricing
               </Link>
             </li>
-            <li></li>
+            <li>
+              <Link
+                href={profile}
+                onClick={closeMenu}
+                className={cn(
+                  'hover:text-foreground min-h-10 rounded-md px-3 py-2 text-nowrap transition ease-out max-sm:px-2'
+                )}
+              >
+                Profile
+              </Link>
+            </li>
           </ul>
         </nav>
 
@@ -117,7 +128,7 @@ const Header = () => {
                         <p className='mb-1.5 text-sm leading-none font-medium'>
                           {user.user_metadata?.full_name || 'User'}
                         </p>
-                        <p className='text-muted-foreground font-mono text-[11px] leading-none'>
+                          <p className='text-muted-foreground font-serif text-xs leading-none'>
                           {user.email}
                         </p>
                       </div>
@@ -132,6 +143,7 @@ const Header = () => {
                         Profile
                       </Link>
                     </DropdownMenuItem>
+
                     <DropdownMenuItem
                       onClick={handleSignOut}
                       className='cursor-pointer'
