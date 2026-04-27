@@ -156,6 +156,11 @@
   --shadow-lg: var(--shadow-lg);
   --shadow-xl: var(--shadow-xl);
   --shadow-2xl: var(--shadow-2xl);
+
+  --tracking-one: 0.01em;
+  --tracking-two: 0.02em;
+  --tracking-three: 0.03em;
+  --tracking-four: 0.04em;
 }
 
 @layer base {
