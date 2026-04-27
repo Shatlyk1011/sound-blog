@@ -72,7 +72,7 @@ const Header = ({ isDashboardPage }: Props) => {
         </Link>
         <nav
           className={cn(
-            'text-muted-foreground z-49 ml-6 flex flex-1 justify-center transition-all max-md:absolute max-md:inset-0 max-md:ml-0 max-md:h-svh max-md:w-screen max-md:translate-x-full',
+            'text-muted-foreground z-49 flex flex-1 justify-start transition-all max-md:absolute max-md:inset-0 max-md:ml-0 max-md:h-svh max-md:w-screen max-md:translate-x-full',
             menu ? 'max-md:translate-x-0' : 'max-md:translate-x-full',
             isDashboardPage && 'hidden'
           )}

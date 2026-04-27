@@ -125,8 +125,10 @@ export default function Hero() {
                 </Link>
               </Button>
 
-              <Button variant={'secondary'} className="w-max px-8 py-6 rounded-full font-semibold transition-all">
+              <Button asChild variant={'secondary'} className="w-max px-8 py-6 rounded-full font-semibold transition-all">
+                <a href="#demo">
                 <span>See Demo</span>
+                </a>
               </Button>
             </motion.div>
 

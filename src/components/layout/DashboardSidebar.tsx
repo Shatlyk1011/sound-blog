@@ -14,6 +14,9 @@ import { HugeiconsIcon } from '@hugeicons/react'
 
 import { ReactNode } from 'react'
 import Header from './header'
+import { useUser } from '@/hooks/use-user'
+import { useUserCreditsQuery } from '@/services/user-credits'
+import { Separator } from '../ui/separator'
 
 const NAV_ITEMS = [
   { href: '/dashboard', label: 'Home', icon: Home01Icon },
@@ -26,6 +29,10 @@ interface Props {
 
 export function DashboardSidebar({children}: Props) {
   const pathname = usePathname()
+
+  const { user: SBUser, } = useUser()
+
+  const { data: userData, isLoading, isError } = useUserCreditsQuery(SBUser?.id)
 
   return (
     <>
@@ -67,15 +74,29 @@ export function DashboardSidebar({children}: Props) {
           })}
         </ul>
 
-        <div className='space-y-2 mt-4'>
-          <span className='inline-block px-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground/70'>Current Plan</span>          
-          <Button asChild className='w-full'>
-            <Link href='/pricing'>
-              <HugeiconsIcon icon={Crown03Icon} />
-              Upgrade
-            </Link>
-          </Button>
-        </div>
+          <Separator className='my-3' />
+
+          <div className='space-y-2 px-2 mt-6 text-xs'>
+            <p className='text-base font-medium'>{SBUser?.user_metadata?.full_name || 'No name'}&apos;s workspace</p>
+            <Button asChild className='w-full'>
+              <Link href='/pricing'>
+                <HugeiconsIcon icon={Crown03Icon} />
+                Upgrade
+              </Link>
+            </Button>
+            <div className='flex flex-col gap- text-sm font-semibold  tracking-one text-muted-foreground/70'>
+              <span>Current Plan:</span>
+              {userData && !isLoading ? (
+                <span className='text-primary tracking-four uppercase'>{userData.currentPlan === 'free' ? 'Free Plan' : 'Pro Plan'}</span>
+              ) : (
+                <span>Loading...</span>
+              )}
+              {isError && <span className='text-destructive'>Something went wrong. <br /> Call 112</span>}
+            </div>
+
+          </div>
+
+
       
       </nav>
 
