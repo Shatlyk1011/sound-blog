@@ -1,6 +1,10 @@
 import type { CollectionConfig } from 'payload'
 import { admins } from '../../utils/admins'
 
+
+
+
+
 const VoiceRecords: CollectionConfig = {
   slug: 'voice-records',
 
@@ -29,7 +33,7 @@ const VoiceRecords: CollectionConfig = {
     },
     {
       name: 'userId',
-      label: 'User',
+      label: 'User (payload users collection)',
       type: 'relationship',
       relationTo: 'users',
       required: true,

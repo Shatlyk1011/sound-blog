@@ -1,5 +1,9 @@
-import { createServerClient } from '@supabase/ssr'
-import { NextResponse, type NextRequest } from 'next/server'
+import { createServerClient } from '@supabase/ssr';
+import { NextResponse, type NextRequest } from 'next/server';
+
+
+
+
 
 // Routes that are publicly accessible (no auth required)
 const PUBLIC_ROUTES = ['/', '/sign-in', '/sign-up', '/pricing']
@@ -9,7 +13,7 @@ const PUBLIC_ROUTES = ['/', '/sign-in', '/sign-up', '/pricing']
 const AUTH_ONLY_ROUTES = ['/sign-in', '/sign-up']
 
 // Routes that bypass all auth checks entirely (Next.js middleware should also exclude these)
-const BYPASS_ROUTES = ['/api/auth/callback', '/admin']
+const BYPASS_ROUTES = ['/api/auth/callback', '/admin', '/api']
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({

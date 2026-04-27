@@ -269,7 +269,7 @@ export interface Transcript {
 export interface Blog {
   id: string;
   /**
-   * The application user who owns this blog post (supabase auth).
+   * The application user who owns this blog post (payload users collection).
    */
   userId: string | User;
   /**

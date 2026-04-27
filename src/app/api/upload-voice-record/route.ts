@@ -2,7 +2,14 @@ import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
 import configPromise from '@payload-config'
 import { NextRequest, NextResponse } from 'next/server'
 import { getPayload } from 'payload'
-import { createClient } from '@/lib/supabase-server'
+import { createClient } from '@/lib/supabase-server';
+
+
+
+
+
+
+
 
 export async function POST(req: NextRequest) {
   try {
@@ -46,7 +53,7 @@ export async function POST(req: NextRequest) {
       )
     }
     const payloadUser = users[0]
-    const payloadUserId = payloadUser.userId
+    const payloadDocId = payloadUser.id as string
 
     // 4. Validate credits
     // Sum all active (non-expired) credit grants for this user
@@ -128,7 +135,7 @@ export async function POST(req: NextRequest) {
         id: customRecordId,
         fileUrl,
         fileName: file.name,
-        userId: payloadUserId, // Payload document ID
+        userId: payloadDocId, // Payload document ID
         duration,
         status: 'uploaded',
       },
@@ -144,7 +151,7 @@ export async function POST(req: NextRequest) {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            userId: payloadUserId,
+            userId: payloadDocId,
             recordId: customRecordId,
             key: uniqueFileName,
             fileName: file.name,
@@ -167,7 +174,7 @@ export async function POST(req: NextRequest) {
     // 8. Deduct credits — update creditsSpent on the User document
     await payload.update({
       collection: 'users',
-      id: payloadUser.id as string,
+      id: payloadDocId,
       data: {
         creditsSpent: creditsSpent + duration,
       },
