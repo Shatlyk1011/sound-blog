@@ -1,5 +1,5 @@
-import Hero from '@/components/Hero'
 import DemoSection from '@/components/DemoSection'
+import Hero from '@/components/Hero'
 
 export default function Home() {
   return (

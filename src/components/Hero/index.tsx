@@ -1,11 +1,15 @@
 'use client'
 
-import { motion, Variants } from 'motion/react'
 import { useEffect, useState } from 'react'
+import {
+  CheckmarkCircle01Icon,
+  Mic02Icon,
+  SparklesIcon,
+} from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
-import { CheckmarkCircle01Icon, Mic02Icon, SparklesIcon } from '@hugeicons/core-free-icons'
-import { Button } from '../ui/button'
+import { motion, Variants } from 'motion/react'
 import Link from 'next/link'
+import { Button } from '../ui/button'
 
 const containerVariants = {
   hidden: {
@@ -70,89 +74,100 @@ const bars = [
 ]
 
 export default function Hero() {
-// Staggered animation variants
+  // Staggered animation variants
 
   return (
-    <section className="relative min-h-[80svh] py-20 w-full flex items-center justify-center overflow-hidden">
-      <div className="container relative z-10 mx-auto px-6 max-w-7xl">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+    <section className='relative flex min-h-[80svh] w-full items-center justify-center overflow-hidden py-20'>
+      <div className='relative z-10 container mx-auto max-w-7xl px-6'>
+        <div className='grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16'>
           {/* Left Column: Content */}
           <motion.div
             variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            className="flex flex-col  items-start text-left"
+            initial='hidden'
+            animate='visible'
+            className='flex flex-col items-start text-left'
           >
             <motion.div
               variants={itemVariants}
-              className="inline-flex items-center space-x-2 bg-secondary/70 border border-foreground/10 rounded-full px-3 py-1 mb-6"
+              className='bg-secondary/70 border-foreground/10 mb-6 inline-flex items-center space-x-2 rounded-full border px-3 py-1'
             >
-              <span className="flex h-2 w-2 rounded-full bg-violet-500 animate-pulse" />
-              <span className="text-xs font-medium text-secondary-foreground">
+              <span className='flex h-2 w-2 animate-pulse rounded-full bg-violet-500' />
+              <span className='text-secondary-foreground text-xs font-medium'>
                 SoundBlog is now in beta
               </span>
             </motion.div>
 
             <motion.h1
               variants={itemVariants}
-              className="font-heading text-6xl font-extrabold tracking-tight leading-[1.1] mb-6"
+              className='font-heading mb-6 text-6xl leading-[1.1] font-extrabold tracking-tight'
             >
-              Turn Your Voice Into <br className="hidden md:block" />
-              <span className="">
-                Polished Blog Posts
-              </span>
+              Turn Your Voice Into <br className='hidden md:block' />
+              <span className=''>Polished Blog Posts</span>
             </motion.h1>
 
             <motion.p
               variants={itemVariants}
-              className="text-lg md:text-xl text-gray-400 max-w-lg mb-8 leading-relaxed"
+              className='mb-8 max-w-lg text-lg leading-relaxed text-gray-400 md:text-xl'
             >
-              Just speak naturally. SoundBlog&apos;s AI transforms your words into
-              beautifully written, publish-ready articles in seconds.
+              Just speak naturally. SoundBlog&apos;s AI transforms your words
+              into beautifully written, publish-ready articles in seconds.
             </motion.p>
 
             <motion.div
               variants={itemVariants}
-              className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4 w-full sm:w-auto mb-8"
+              className='mb-8 flex w-full flex-col items-center space-y-4 sm:w-auto sm:flex-row sm:space-y-0 sm:space-x-4'
             >
               <Button
                 asChild
-                className="w-max px-8 py-6 rounded-full font-semibold transition-all "
+                className='w-max rounded-full px-8 py-6 font-semibold transition-all'
               >
                 <Link href={'/sign-in'}>
-                  <HugeiconsIcon className="w-5 h-5" icon={Mic02Icon} />
+                  <HugeiconsIcon className='h-5 w-5' icon={Mic02Icon} />
                   <span>Start Speaking</span>
                 </Link>
               </Button>
 
-              <Button asChild variant={'secondary'} className="w-max px-8 py-6 rounded-full font-semibold transition-all">
-                <a href="#demo">
-                <span>See Demo</span>
+              <Button
+                asChild
+                variant={'secondary'}
+                className='w-max rounded-full px-8 py-6 font-semibold transition-all'
+              >
+                <a href='#demo'>
+                  <span>See Demo</span>
                 </a>
               </Button>
             </motion.div>
 
             <motion.div
               variants={itemVariants}
-              className="flex items-center space-x-4 text-sm text-gray-500 font-medium"
+              className='flex items-center space-x-4 text-sm font-medium text-gray-500'
             >
-              <div className="flex items-center">
-                <HugeiconsIcon icon={CheckmarkCircle01Icon} className='w-4 h-4 mr-1.5 text-violet-500' />
+              <div className='flex items-center'>
+                <HugeiconsIcon
+                  icon={CheckmarkCircle01Icon}
+                  className='mr-1.5 h-4 w-4 text-violet-500'
+                />
                 No credit card required
               </div>
-              <div className="hidden sm:flex items-center">
-                <HugeiconsIcon icon={CheckmarkCircle01Icon} className='w-4 h-4 mr-1.5 text-violet-500' />
+              <div className='hidden items-center sm:flex'>
+                <HugeiconsIcon
+                  icon={CheckmarkCircle01Icon}
+                  className='mr-1.5 h-4 w-4 text-violet-500'
+                />
                 Free to start
               </div>
-              <div className="flex items-center">
-                <HugeiconsIcon icon={CheckmarkCircle01Icon} className='w-4 h-4 mr-1.5 text-violet-500' />
+              <div className='flex items-center'>
+                <HugeiconsIcon
+                  icon={CheckmarkCircle01Icon}
+                  className='mr-1.5 h-4 w-4 text-violet-500'
+                />
                 1,000 free tokens
               </div>
             </motion.div>
           </motion.div>
 
           {/* Right Column: Visual */}
-          <div className="w-full flex justify-center ">
+          <div className='flex w-full justify-center'>
             <WaveformVisual />
           </div>
         </div>
@@ -160,7 +175,6 @@ export default function Hero() {
     </section>
   )
 }
-
 
 export function WaveformVisual() {
   const [typedText, setTypedText] = useState('')
@@ -194,17 +208,17 @@ export function WaveformVisual() {
         duration: 0.8,
         delay: 0.2,
       }}
-      className="relative w-full max-w-md mx-auto"
+      className='relative mx-auto w-full max-w-md'
     >
       {/* Background Glow */}
-      <div className="absolute hidden dark:block -inset-1 bg-linear-to-r from-chart-1 to-chart-3 rounded-2xl blur-xl opacity-20" />
+      <div className='from-chart-1 to-chart-3 absolute -inset-1 hidden rounded-2xl bg-linear-to-r opacity-20 blur-xl dark:block' />
 
       {/* Main Card */}
-      <div className="relative bg-card border border-border rounded-3xl px-7 py-6 overflow-hidden">
+      <div className='bg-card border-border relative overflow-hidden rounded-3xl border px-7 py-6'>
         {/* Top Section: Mic & Waveform */}
-        <div className="flex items-center space-x-4 mb-6 pb-6 border-b border-border">
-          <div className="relative flex items-center justify-center w-12 h-12 rounded-full bg-primary text-primary-foreground/70">
-            <HugeiconsIcon className="size-5" icon={Mic02Icon} />
+        <div className='border-border mb-6 flex items-center space-x-4 border-b pb-6'>
+          <div className='bg-primary text-primary-foreground/70 relative flex h-12 w-12 items-center justify-center rounded-full'>
+            <HugeiconsIcon className='size-5' icon={Mic02Icon} />
             <motion.div
               animate={{
                 scale: [1, 1.2, 1],
@@ -213,15 +227,15 @@ export function WaveformVisual() {
                 repeat: Infinity,
                 duration: 2,
               }}
-              className="absolute inset-0 rounded-full border border-primary/30"
+              className='border-primary/30 absolute inset-0 rounded-full border'
             />
           </div>
 
-          <div className="flex items-center space-x-1">
+          <div className='flex items-center space-x-1'>
             {bars.map((bar, i) => (
               <motion.div
                 key={i}
-                className="w-1.5 bg-linear-to-t from-violet-500 to-blue-400 rounded-full"
+                className='w-1.5 rounded-full bg-linear-to-t from-violet-500 to-blue-400'
                 animate={{
                   height: [8, bar.height, 8],
                 }}
@@ -234,15 +248,15 @@ export function WaveformVisual() {
               />
             ))}
           </div>
-          <div className="ml-auto flex items-center space-x-2 text-xs text-emerald-600 bg-emerald-600/10 dark:text-emerald-400 dark:bg-emerald-400/10  px-2 py-1 rounded-full">
-            <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
+          <div className='ml-auto flex items-center space-x-2 rounded-full bg-emerald-600/10 px-2 py-1 text-xs text-emerald-600 dark:bg-emerald-400/10 dark:text-emerald-400'>
+            <div className='h-2 w-2 animate-pulse rounded-full bg-current' />
             <span>Recording</span>
           </div>
         </div>
 
         {/* Middle Section: Transcription */}
-        <div className="mb-8 min-h-20">
-          <p className="text-base text-card-foreground font-serif leading-relaxed">
+        <div className='mb-8 min-h-20'>
+          <p className='text-card-foreground font-serif text-base leading-relaxed'>
             {typedText}
             <motion.span
               animate={{
@@ -252,33 +266,31 @@ export function WaveformVisual() {
                 repeat: Infinity,
                 duration: 0.8,
               }}
-              className="inline-block w-1.5 h-4 ml-1 bg-current align-middle"
+              className='ml-1 inline-block h-4 w-1.5 bg-current align-middle'
             />
           </p>
         </div>
 
         {/* Bottom Section: Polished Output Preview */}
-        <div
-          className="relative bg-white/3 mb-1 border border-border rounded-2xl p-4"
-        >
-          <div className="absolute -top-3 left-4 bg-chart-2 text-primary-foreground text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center space-x-1 shadow-lg">
-            <HugeiconsIcon icon={SparklesIcon} className='w-3 h-3' />
+        <div className='border-border relative mb-1 rounded-2xl border bg-white/3 p-4'>
+          <div className='bg-chart-2 text-primary-foreground absolute -top-3 left-4 flex items-center space-x-1 rounded-full px-2 py-0.5 text-[10px] font-bold shadow-lg'>
+            <HugeiconsIcon icon={SparklesIcon} className='h-3 w-3' />
             <span>AI Polished</span>
           </div>
 
-          <div className="mt-2">
-            <h4 className="font-sans font-semibold text-lg mb-2">
+          <div className='mt-2'>
+            <h4 className='mb-2 font-sans text-lg font-semibold'>
               The Future of Content Creation
             </h4>
-            <div className="flex items-center gap-2 text-xs text-gray-500 mb-3">
+            <div className='mb-3 flex items-center gap-2 text-xs text-gray-500'>
               <span>Today</span>
               <span>•</span>
               <span>Read 2 min</span>
             </div>
-            <div className="space-y-2">
-              <div className="h-2 bg-foreground/10 rounded-full w-full" />
-              <div className="h-2 bg-foreground/10 rounded-full w-5/6" />
-              <div className="h-2 bg-foreground/10 rounded-full w-4/6" />
+            <div className='space-y-2'>
+              <div className='bg-foreground/10 h-2 w-full rounded-full' />
+              <div className='bg-foreground/10 h-2 w-5/6 rounded-full' />
+              <div className='bg-foreground/10 h-2 w-4/6 rounded-full' />
             </div>
           </div>
         </div>

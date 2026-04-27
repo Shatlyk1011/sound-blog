@@ -12,11 +12,11 @@ import {
   Upload01Icon,
 } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
+import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 import { useAudioRecorder } from '@/hooks/use-audio-recorder'
 import { Button } from '@/components/ui/button'
 import SoundWave from './SoundWave'
-import { toast } from 'sonner'
 
 export default function VoiceRecord() {
   const [isUploading, setIsUploading] = useState(false)

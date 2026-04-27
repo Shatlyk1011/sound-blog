@@ -1,10 +1,6 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { VoiceRecord } from '@/payload-types'
 
-
-
-
-
 interface VoiceRecordsResponse {
   docs: VoiceRecord[]
   totalDocs: number

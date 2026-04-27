@@ -27,7 +27,7 @@ import ThemeToggle from '@/components/ui/theme-toggle'
 
 const { pricing, profile } = {
   pricing: '/pricing',
-  profile: '/profile'
+  profile: '/profile',
 }
 
 interface Props {
@@ -133,16 +133,13 @@ const Header = ({ isDashboardPage }: Props) => {
                         <p className='mb-1.5 text-sm leading-none font-medium'>
                           {user.user_metadata?.full_name || 'User'}
                         </p>
-                          <p className='text-muted-foreground font-serif text-xs leading-none'>
+                        <p className='text-muted-foreground font-serif text-xs leading-none'>
                           {user.email}
                         </p>
                       </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                      <DropdownMenuItem
-                      asChild
-                      className='cursor-pointer'
-                    >
+                    <DropdownMenuItem asChild className='cursor-pointer'>
                       <Link href={'/profile'}>
                         <HugeiconsIcon icon={UserIcon} />
                         Profile

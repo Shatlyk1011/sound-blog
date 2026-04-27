@@ -27,7 +27,6 @@ export default function VoiceRecordsGrid() {
     isFetchingNextPage,
   } = useVoiceRecordsInfiniteQuery(user?.id, false)
 
-
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
       fetchNextPage()
@@ -67,8 +66,8 @@ export default function VoiceRecordsGrid() {
       ) : (
         <>
           <div className='grid grid-cols-3 gap-6 max-lg:grid-cols-2 max-lg:gap-5 max-sm:grid-cols-1 max-sm:gap-6'>
-                {records.map((record) => (
-                  <VoiceRecordCard key={record.id} record={record} />
+            {records.map((record) => (
+              <VoiceRecordCard key={record.id} record={record} />
             ))}
             {isFetchingNextPage &&
               [...Array(3)].map((_, i) => (

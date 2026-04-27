@@ -44,14 +44,24 @@
   --shadow-spread: 0px;
   --shadow-opacity: 0.12;
   --shadow-color: #29303d;
-  --shadow-2xs: 0px 4px 10px 0px hsl(219.0000 19.6078% 20% / 0.06);
-  --shadow-xs: 0px 4px 10px 0px hsl(219.0000 19.6078% 20% / 0.06);
-  --shadow-sm: 0px 4px 10px 0px hsl(219.0000 19.6078% 20% / 0.12), 0px 1px 2px -1px hsl(219.0000 19.6078% 20% / 0.12);
-  --shadow: 0px 4px 10px 0px hsl(219.0000 19.6078% 20% / 0.12), 0px 1px 2px -1px hsl(219.0000 19.6078% 20% / 0.12);
-  --shadow-md: 0px 4px 10px 0px hsl(219.0000 19.6078% 20% / 0.12), 0px 2px 4px -1px hsl(219.0000 19.6078% 20% / 0.12);
-  --shadow-lg: 0px 4px 10px 0px hsl(219.0000 19.6078% 20% / 0.12), 0px 4px 6px -1px hsl(219.0000 19.6078% 20% / 0.12);
-  --shadow-xl: 0px 4px 10px 0px hsl(219.0000 19.6078% 20% / 0.12), 0px 8px 10px -1px hsl(219.0000 19.6078% 20% / 0.12);
-  --shadow-2xl: 0px 4px 10px 0px hsl(219.0000 19.6078% 20% / 0.30);
+  --shadow-2xs: 0px 4px 10px 0px hsl(219 19.6078% 20% / 0.06);
+  --shadow-xs: 0px 4px 10px 0px hsl(219 19.6078% 20% / 0.06);
+  --shadow-sm:
+    0px 4px 10px 0px hsl(219 19.6078% 20% / 0.12),
+    0px 1px 2px -1px hsl(219 19.6078% 20% / 0.12);
+  --shadow:
+    0px 4px 10px 0px hsl(219 19.6078% 20% / 0.12),
+    0px 1px 2px -1px hsl(219 19.6078% 20% / 0.12);
+  --shadow-md:
+    0px 4px 10px 0px hsl(219 19.6078% 20% / 0.12),
+    0px 2px 4px -1px hsl(219 19.6078% 20% / 0.12);
+  --shadow-lg:
+    0px 4px 10px 0px hsl(219 19.6078% 20% / 0.12),
+    0px 4px 6px -1px hsl(219 19.6078% 20% / 0.12);
+  --shadow-xl:
+    0px 4px 10px 0px hsl(219 19.6078% 20% / 0.12),
+    0px 8px 10px -1px hsl(219 19.6078% 20% / 0.12);
+  --shadow-2xl: 0px 4px 10px 0px hsl(219 19.6078% 20% / 0.3);
   --tracking-normal: 0em;
   --spacing: 0.25rem;
 }
@@ -96,14 +106,24 @@
   --shadow-spread: 0px;
   --shadow-opacity: 0.12;
   --shadow-color: #0a0c0f;
-  --shadow-2xs: 0px 4px 10px 0px hsl(216 20.0000% 4.9020% / 0.06);
-  --shadow-xs: 0px 4px 10px 0px hsl(216 20.0000% 4.9020% / 0.06);
-  --shadow-sm: 0px 4px 10px 0px hsl(216 20.0000% 4.9020% / 0.12), 0px 1px 2px -1px hsl(216 20.0000% 4.9020% / 0.12);
-  --shadow: 0px 4px 10px 0px hsl(216 20.0000% 4.9020% / 0.12), 0px 1px 2px -1px hsl(216 20.0000% 4.9020% / 0.12);
-  --shadow-md: 0px 4px 10px 0px hsl(216 20.0000% 4.9020% / 0.12), 0px 2px 4px -1px hsl(216 20.0000% 4.9020% / 0.12);
-  --shadow-lg: 0px 4px 10px 0px hsl(216 20.0000% 4.9020% / 0.12), 0px 4px 6px -1px hsl(216 20.0000% 4.9020% / 0.12);
-  --shadow-xl: 0px 4px 10px 0px hsl(216 20.0000% 4.9020% / 0.12), 0px 8px 10px -1px hsl(216 20.0000% 4.9020% / 0.12);
-  --shadow-2xl: 0px 4px 10px 0px hsl(216 20.0000% 4.9020% / 0.30);
+  --shadow-2xs: 0px 4px 10px 0px hsl(216 20% 4.902% / 0.06);
+  --shadow-xs: 0px 4px 10px 0px hsl(216 20% 4.902% / 0.06);
+  --shadow-sm:
+    0px 4px 10px 0px hsl(216 20% 4.902% / 0.12),
+    0px 1px 2px -1px hsl(216 20% 4.902% / 0.12);
+  --shadow:
+    0px 4px 10px 0px hsl(216 20% 4.902% / 0.12),
+    0px 1px 2px -1px hsl(216 20% 4.902% / 0.12);
+  --shadow-md:
+    0px 4px 10px 0px hsl(216 20% 4.902% / 0.12),
+    0px 2px 4px -1px hsl(216 20% 4.902% / 0.12);
+  --shadow-lg:
+    0px 4px 10px 0px hsl(216 20% 4.902% / 0.12),
+    0px 4px 6px -1px hsl(216 20% 4.902% / 0.12);
+  --shadow-xl:
+    0px 4px 10px 0px hsl(216 20% 4.902% / 0.12),
+    0px 8px 10px -1px hsl(216 20% 4.902% / 0.12);
+  --shadow-2xl: 0px 4px 10px 0px hsl(216 20% 4.902% / 0.3);
 }
 
 @theme inline {
@@ -234,10 +254,12 @@
   }
 }
 
-
 /* Enhanced Prose Styling */
 .prose {
-  font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+  font-feature-settings:
+    'kern' 1,
+    'liga' 1,
+    'calt' 1;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -250,7 +272,10 @@
 .prose h5,
 .prose h6 {
   scroll-margin-top: 5rem;
-  font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+  font-feature-settings:
+    'kern' 1,
+    'liga' 1,
+    'calt' 1;
 }
 
 .prose h1 {
@@ -321,13 +346,19 @@
 
 .prose img {
   border-radius: 0.75rem;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .prose img:hover {
   transform: scale(1.02);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
 .prose code:not(pre code) {
@@ -349,12 +380,14 @@
 .prose pre {
   background: #0f0f0f !important;
   border: 1px solid #1f1f1f;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.3),
+    0 2px 4px -1px rgba(0, 0, 0, 0.2);
 }
 
 .prose pre code {
   background: transparent !important;
-  font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
   font-size: 0.875rem;
   font-weight: 400;
   line-height: 1.6;
@@ -369,17 +402,17 @@
   background: transparent !important;
 }
 
-.prose ul>li::marker {
+.prose ul > li::marker {
   color: #3b82f6;
 }
 
-.prose ol>li::marker {
+.prose ol > li::marker {
   color: #3b82f6;
   font-weight: 600;
 }
 
-.dark .prose ul>li::marker,
-.dark .prose ol>li::marker {
+.dark .prose ul > li::marker,
+.dark .prose ol > li::marker {
   color: #60a5fa;
 }
 

@@ -8,7 +8,7 @@ export default async function RecordPage({ params }: PageProps) {
   const { id } = await params
 
   return (
-    <main className='mt-14 py-20 max-w-4xl mx-auto'>
+    <main className='mx-auto mt-14 max-w-4xl py-20'>
       <RecordClient recordId={id} />
     </main>
   )
