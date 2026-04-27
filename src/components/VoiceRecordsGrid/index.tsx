@@ -13,25 +13,7 @@ import Link from 'next/link'
 import { useInView } from 'react-intersection-observer'
 import { Skeleton } from '@/components/ui/skeleton'
 import MiniAudioPlayer from './AudioPlayer'
-
-function formatDuration(seconds: number) {
-  const mins = Math.floor(seconds / 60)
-  const secs = seconds % 60
-  return `${mins}:${secs.toString().padStart(2, '0')}`
-}
-
-function getStatusColor(status: string) {
-  switch (status) {
-    case 'completed':
-      return 'text-green-600 bg-green-100 dark:bg-green-500/10'
-    case 'processing':
-      return 'text-blue-500 bg-blue-50 dark:bg-blue-500/10'
-    case 'failed':
-      return 'text-red-500 bg-red-50 dark:bg-red-500/10'
-    default:
-      return 'text-gray-500 bg-gray-50 dark:bg-gray-500/10'
-  }
-}
+import VoiceRecordCard from './VoiceRecordCard'
 
 export default function VoiceRecordsGrid() {
   const { user } = useUserContext()
@@ -67,7 +49,7 @@ export default function VoiceRecordsGrid() {
 
       {isLoading ? (
         <div className='grid grid-cols-3 gap-6 max-lg:grid-cols-2 max-lg:gap-5 max-sm:grid-cols-1 max-sm:gap-6'>
-          {[...Array(6)].map((_, i) => (
+          {Array.from({ length: 3 }).map((_, i) => (
             <VoiceRecordSkeleton key={`skeleton-${i}`} />
           ))}
         </div>
@@ -86,46 +68,7 @@ export default function VoiceRecordsGrid() {
         <>
           <div className='grid grid-cols-3 gap-6 max-lg:grid-cols-2 max-lg:gap-5 max-sm:grid-cols-1 max-sm:gap-6'>
                 {records.map((record) => (
-              <div
-                key={record.id}
-                className='group bg-card hover:border-accent/50 relative flex flex-col justify-between overflow-hidden rounded-2xl border p-6 shadow-sm transition-all hover:shadow-md'
-              >
-                <div>
-                  <div className='mb-2 flex items-start justify-between'>
-                    <div className='bg-input/50 text-foreground/80 rounded-xl p-3'>
-                      <HugeiconsIcon icon={FileAudioIcon} className='size-6' />
-                    </div>
-                    <span
-                      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold capitalize ${getStatusColor(
-                        record.status
-                      )}`}
-                    >
-                      {record.status}
-                    </span>
-                  </div>
-                  <Link href={`/record/${record.id}`}>
-                    <h3 className='hover:text-primary mt-4 mb-1 line-clamp-1 text-lg font-semibold transition-colors'>
-                      {record.fileName}
-                    </h3>
-                  </Link>
-                </div>
-
-                <MiniAudioPlayer fileUrl={record.fileUrl} />
-
-                <div className='text-muted-foreground mt-2 flex items-center justify-end gap-5 text-sm'>
-                  <div className='flex items-center gap-1.5'>
-                    <HugeiconsIcon icon={Clock03Icon} className='size-4' />
-                    {formatDuration(record.duration ?? 0)}
-                  </div>
-                  <div className='flex items-center gap-1.5'>
-                    <HugeiconsIcon icon={Calendar04Icon} className='size-4' />
-                    {new Date(record.createdAt).toLocaleDateString(undefined, {
-                      month: 'short',
-                      day: 'numeric',
-                    })}
-                  </div>
-                </div>
-              </div>
+                  <VoiceRecordCard key={record.id} record={record} />
             ))}
             {isFetchingNextPage &&
               [...Array(3)].map((_, i) => (
