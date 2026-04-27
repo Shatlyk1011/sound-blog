@@ -1,5 +1,5 @@
-import { CollectionConfig } from 'payload'
-import { admins } from '../../utils/admins'
+import { CollectionConfig } from 'payload';
+import { admins } from '../../utils/admins';
 
 const CreditHistory: CollectionConfig = {
   slug: 'credit-history',
@@ -97,6 +97,7 @@ const CreditHistory: CollectionConfig = {
       required: true,
       defaultValue: 'monthly_free',
       options: [
+        { label: 'Monthly Free', value: 'monthly_free' },
         { label: 'Purchased Credits', value: 'purchased' },
         { label: 'Signup Bonus', value: 'signup_bonus' },
         { label: 'Gift', value: 'gift' },

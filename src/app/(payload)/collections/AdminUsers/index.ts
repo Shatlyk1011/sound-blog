@@ -16,7 +16,6 @@ const AdminUsers: CollectionConfig = {
       if (req.user?.isBlocked) {
         return false
       }
-
       return false
     },
     update: admins,

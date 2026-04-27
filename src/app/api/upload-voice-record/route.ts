@@ -1,8 +1,15 @@
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
-import configPromise from '@payload-config'
-import { NextRequest, NextResponse } from 'next/server'
-import { getPayload } from 'payload'
-import { createClient } from '@/lib/supabase-server'
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import configPromise from '@payload-config';
+import { NextRequest, NextResponse } from 'next/server';
+import { getPayload } from 'payload';
+import { createClient } from '@/lib/supabase-server';
+
+
+
+
+
+
+
 
 export async function POST(req: NextRequest) {
   try {
@@ -46,7 +53,7 @@ export async function POST(req: NextRequest) {
       )
     }
     const payloadUser = users[0]
-    const payloadUserId = payloadUser.id
+    const payloadUserId = payloadUser.userId
 
     // 4. Validate credits
     // Sum all active (non-expired) credit grants for this user
@@ -167,7 +174,7 @@ export async function POST(req: NextRequest) {
     // 8. Deduct credits — update creditsSpent on the User document
     await payload.update({
       collection: 'users',
-      id: payloadUserId as string,
+      id: payloadUser.id as string,
       data: {
         creditsSpent: creditsSpent + duration,
       },

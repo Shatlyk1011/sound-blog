@@ -63,9 +63,6 @@ export default function ProfilePage() {
 
   const { data: userData, isLoading, isError } = useUserCreditsQuery(SBUser?.id)
 
-  console.log('SBUser', SBUser)
-  console.log('userData', userData)
-
   const getCreditTypeLabel = (type: CreditHistory['source']) => {
     return type === 'signup_bonus' ? 'Signup Bonus' : 'Purchased Credits'
   }
@@ -227,15 +224,15 @@ export default function ProfilePage() {
                       <TableCell
                         className={cn(
                           'px-6 py-4 text-right text-sm font-semibold',
-                          isActive ? 'text-green-600' : 'opacity-80'
+                          isActive ? 'text-green-600' : 'text-muted-foreground/80'
                         )}
                       >
                         +{h.creditAmount}
                       </TableCell>
                       <TableCell
                         className={cn(
-                          'text-muted-foreground px-6 py-4 text-sm capitalize',
-                          isActive ? 'text-green-600' : 'opacity-80'
+                          'px-6 py-4 text-sm capitalize',
+                          isActive ? 'text-green-600' : 'text-muted-foreground/80'
                         )}
                       >
                         {h.status}

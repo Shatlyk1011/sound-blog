@@ -1,5 +1,9 @@
-import type { CollectionConfig } from 'payload'
-import { admins } from '../../utils/admins'
+import type { CollectionConfig } from 'payload';
+import { admins } from '../../utils/admins';
+
+
+
+
 
 const Blogs: CollectionConfig = {
   slug: 'blogs',
@@ -21,7 +25,7 @@ const Blogs: CollectionConfig = {
   fields: [
     {
       name: 'userId',
-      label: 'User',
+      label: 'User (supabase)',
       type: 'relationship',
       relationTo: 'users',
       required: true,

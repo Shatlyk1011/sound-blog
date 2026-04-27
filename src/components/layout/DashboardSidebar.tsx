@@ -7,6 +7,7 @@ import {
   UserCircleIcon,
   MessageMultiple01Icon,
   Crown03Icon,
+  Coins01Icon,
 } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import Link from 'next/link'
@@ -75,19 +76,14 @@ export function DashboardSidebar({ children }: Props) {
           <Separator className='my-3' />
 
           <div className='mt-6 space-y-2 px-2 text-xs'>
-            <p className='text-base font-medium'>
+            <p className='text-base font-semibold mb-4'>
               {SBUser?.user_metadata?.full_name || 'No name'}&apos;s workspace
             </p>
-            <Button asChild className='w-full'>
-              <Link href='/pricing'>
-                <HugeiconsIcon icon={Crown03Icon} />
-                Upgrade
-              </Link>
-            </Button>
-            <div className='gap- tracking-one text-muted-foreground/70 flex flex-col text-sm font-semibold'>
+
+            <div className='tracking-one mb-2 text-muted-foreground flex gap-2 items-center text-sm font-semibold'>
               <span>Current Plan:</span>
               {userData && !isLoading ? (
-                <span className='text-primary tracking-four uppercase'>
+                <span className='text-primary'>
                   {userData.currentPlan === 'free' ? 'Free Plan' : 'Pro Plan'}
                 </span>
               ) : (
@@ -99,6 +95,28 @@ export function DashboardSidebar({ children }: Props) {
                 </span>
               )}
             </div>
+
+            <div className='flex gap-2 items-center text-muted-foreground text-sm font-semibold mb-2'>
+              <span>Credits: </span>
+              <span className='flex items-center gap-0.5 text-primary'>
+                {userData?.totalCredits}
+                <HugeiconsIcon size={18} icon={Coins01Icon} />
+              </span>
+            </div>
+
+            <div className='flex gap-1 text-muted-foreground/70 text-xs font-semibold'>
+              <span>Note: 1 credit</span>
+              <span>=</span>
+              <span>1 second</span>
+            </div>
+
+            <Button asChild className='w-full '>
+              <Link href='/pricing'>
+                <HugeiconsIcon icon={Crown03Icon} />
+                Upgrade
+              </Link>
+            </Button>
+
           </div>
         </nav>
 
