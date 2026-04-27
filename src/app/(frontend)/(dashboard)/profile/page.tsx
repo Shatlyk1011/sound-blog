@@ -224,7 +224,9 @@ export default function ProfilePage() {
                       <TableCell
                         className={cn(
                           'px-6 py-4 text-right text-sm font-semibold',
-                          isActive ? 'text-green-600' : 'text-muted-foreground/80'
+                          isActive
+                            ? 'text-green-600'
+                            : 'text-muted-foreground/80'
                         )}
                       >
                         +{h.creditAmount}
@@ -232,7 +234,9 @@ export default function ProfilePage() {
                       <TableCell
                         className={cn(
                           'px-6 py-4 text-sm capitalize',
-                          isActive ? 'text-green-600' : 'text-muted-foreground/80'
+                          isActive
+                            ? 'text-green-600'
+                            : 'text-muted-foreground/80'
                         )}
                       >
                         {h.status}

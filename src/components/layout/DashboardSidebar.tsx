@@ -76,11 +76,11 @@ export function DashboardSidebar({ children }: Props) {
           <Separator className='my-3' />
 
           <div className='mt-6 space-y-2 px-2 text-xs'>
-            <p className='text-base font-semibold mb-4'>
+            <p className='mb-4 text-base font-semibold'>
               {SBUser?.user_metadata?.full_name || 'No name'}&apos;s workspace
             </p>
 
-            <div className='tracking-one mb-2 text-muted-foreground flex gap-2 items-center text-sm font-semibold'>
+            <div className='tracking-one text-muted-foreground mb-2 flex items-center gap-2 text-sm font-semibold'>
               <span>Current Plan:</span>
               {userData && !isLoading ? (
                 <span className='text-primary'>
@@ -96,27 +96,26 @@ export function DashboardSidebar({ children }: Props) {
               )}
             </div>
 
-            <div className='flex gap-2 items-center text-muted-foreground text-sm font-semibold mb-2'>
+            <div className='text-muted-foreground mb-2 flex items-center gap-2 text-sm font-semibold'>
               <span>Credits: </span>
-              <span className='flex items-center gap-0.5 text-primary'>
+              <span className='text-primary flex items-center gap-0.5'>
                 {userData?.totalCredits}
                 <HugeiconsIcon size={18} icon={Coins01Icon} />
               </span>
             </div>
 
-            <div className='flex gap-1 text-muted-foreground/70 text-xs font-semibold'>
+            <div className='text-muted-foreground/70 flex gap-1 text-xs font-semibold'>
               <span>Note: 1 credit</span>
               <span>=</span>
               <span>1 second</span>
             </div>
 
-            <Button asChild className='w-full '>
+            <Button asChild className='w-full'>
               <Link href='/pricing'>
                 <HugeiconsIcon icon={Crown03Icon} />
                 Upgrade
               </Link>
             </Button>
-
           </div>
         </nav>
 
