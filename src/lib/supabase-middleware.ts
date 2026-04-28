@@ -1,9 +1,5 @@
-import { createServerClient } from '@supabase/ssr';
-import { NextResponse, type NextRequest } from 'next/server';
-
-
-
-
+import { createServerClient } from '@supabase/ssr'
+import { NextResponse, type NextRequest } from 'next/server'
 
 // Routes that are publicly accessible (no auth required)
 const PUBLIC_ROUTES = ['/', '/sign-in', '/sign-up', '/pricing']

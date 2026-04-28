@@ -4,11 +4,10 @@ import type { Metadata } from 'next'
 import { ThemeProvider } from 'next-themes'
 import { Poppins, Lora } from 'next/font/google'
 import { Toaster } from 'sonner'
+import { TooltipProvider } from '@/components/ui/tooltip'
 import TanstackQueryProvider from '../_providers/tanstack-query'
 import { UserProvider } from '../_providers/user-provider'
 import './globals.css'
-import { TooltipProvider } from "@/components/ui/tooltip"
-
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -47,11 +46,10 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <TooltipProvider>
-
-            <TanstackQueryProvider>
-              {children}
-              {modal}
-            </TanstackQueryProvider>
+              <TanstackQueryProvider>
+                {children}
+                {modal}
+              </TanstackQueryProvider>
             </TooltipProvider>
           </ThemeProvider>
         </UserProvider>

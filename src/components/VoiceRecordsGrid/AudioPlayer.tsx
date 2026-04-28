@@ -67,7 +67,12 @@ function MiniAudioPlayer({ fileUrl, classes }: Props) {
   if (!fileUrl) return null
 
   return (
-    <div className={cn('bg-card border-border/50 mt-2 mb-3 flex w-full flex-col gap-2 rounded-2xl border p-3', classes)}>
+    <div
+      className={cn(
+        'bg-card border-border/50 mt-2 mb-3 flex w-full flex-col gap-2 rounded-2xl border p-3',
+        classes
+      )}
+    >
       <audio ref={audioRef} src={fileUrl} preload='metadata' />
 
       <div className='flex items-center gap-3'>

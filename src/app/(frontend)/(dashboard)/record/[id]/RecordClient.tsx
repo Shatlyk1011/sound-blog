@@ -1,21 +1,21 @@
 'use client'
 
+import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Blog, Transcript, VoiceRecord } from '@/payload-types'
 import { Close, Loading03Icon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
-import { stringify } from 'qs-esm'
-import ReactMarkdown from 'react-markdown'
-import { Badge } from '@/components/ui/badge'
-import MiniAudioPlayer from '@/components/VoiceRecordsGrid/AudioPlayer'
-import { useState } from 'react'
-import { Button } from '@/components/ui/button'
 import { AnimatePresence, Transition } from 'motion/react'
 import { motion } from 'motion/react'
-import TabSwitcher from './ui/TabSwitch'
-import { ActionBar } from './ui/ActionBar'
-import { copyToClipboard } from '@/lib/utils'
+import { stringify } from 'qs-esm'
+import ReactMarkdown from 'react-markdown'
 import { toast } from 'sonner'
+import { copyToClipboard } from '@/lib/utils'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import MiniAudioPlayer from '@/components/VoiceRecordsGrid/AudioPlayer'
+import { ActionBar } from './ui/ActionBar'
+import TabSwitcher from './ui/TabSwitch'
 
 interface RecordClientProps {
   recordId: string
@@ -25,7 +25,7 @@ const animationVariants = {
   hidden: { opacity: 0, y: 15 },
   animate: { opacity: 1, y: 0 },
   exit: { opacity: 0, y: -15 },
-};
+}
 
 export function RecordClient({ recordId }: RecordClientProps) {
   const [showOriginalAudio, setShowOriginalAudio] = useState(false)
@@ -65,7 +65,7 @@ export function RecordClient({ recordId }: RecordClientProps) {
   return (
     <section className='gap-6 px-4'>
       {isLoading && (
-        <div className='text-muted-foreground flex items-center text-center gap-2'>
+        <div className='text-muted-foreground flex items-center gap-2 text-center'>
           <HugeiconsIcon
             icon={Loading03Icon}
             className='animate-spin duration-2000'
@@ -86,10 +86,12 @@ export function RecordClient({ recordId }: RecordClientProps) {
             {blog.title}
           </h1>
 
-          <div className='flex justify-between items-start min-h-20'>
-            <div className='flex text-sm font-medium items-center '>
+          <div className='flex min-h-20 items-start justify-between'>
+            <div className='flex items-center text-sm font-medium'>
               <ul className='flex items-center gap-2 py-4'>
-                {blog.tone && <Badge variant={'outline'}>Tone: {blog.tone}</Badge>}
+                {blog.tone && (
+                  <Badge variant={'outline'}>Tone: {blog.tone}</Badge>
+                )}
               </ul>
               <span className='mx-2 text-lg'>•</span>
               <time className='text-muted-foreground' dateTime={blog.createdAt}>
@@ -99,14 +101,26 @@ export function RecordClient({ recordId }: RecordClientProps) {
               </time>
             </div>
 
-
             <div className='flex flex-col'>
               {!showOriginalAudio ? (
-                <Button variant={'outline'} size="sm" onClick={() => setShowOriginalAudio(true)} className='text-xs font-medium'>Show original audio</Button>
+                <Button
+                  variant={'outline'}
+                  size='sm'
+                  onClick={() => setShowOriginalAudio(true)}
+                  className='text-xs font-medium'
+                >
+                  Show original audio
+                </Button>
               ) : (
-                <div className='w-full relative'>
-                  <MiniAudioPlayer classes='border border-border w-64 ' fileUrl={(blog.recordId as VoiceRecord).fileUrl} />
-                  <button onClick={() => setShowOriginalAudio(false)} className=' absolute -top-2 -right-2 bg-muted text-muted-foreground/60 p-0.5 rounded-full'>
+                <div className='relative w-full'>
+                  <MiniAudioPlayer
+                    classes='border border-border w-64 '
+                    fileUrl={(blog.recordId as VoiceRecord).fileUrl}
+                  />
+                  <button
+                    onClick={() => setShowOriginalAudio(false)}
+                    className='bg-muted text-muted-foreground/60 absolute -top-2 -right-2 rounded-full p-0.5'
+                  >
                     <HugeiconsIcon icon={Close} size={12} />
                   </button>
                 </div>
@@ -117,17 +131,16 @@ export function RecordClient({ recordId }: RecordClientProps) {
             <ActionBar handleCopy={() => handleCopy(blog.content!)} />
           </div>
 
-
           <TabSwitcher activeTab={activeTab} onChange={setActiveTab} />
 
           <article className='bg-card w-full rounded-3xl border p-8 text-left shadow-sm'>
-            <AnimatePresence mode="wait">
+            <AnimatePresence mode='wait'>
               {activeTab === 'generated' ? (
                 <motion.div
-                  key="generated"
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
+                  key='generated'
+                  initial='initial'
+                  animate='animate'
+                  exit='exit'
                   variants={animationVariants}
                   transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1.0] }}
                 >
@@ -137,10 +150,10 @@ export function RecordClient({ recordId }: RecordClientProps) {
                 </motion.div>
               ) : (
                 <motion.div
-                  key="raw"
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
+                  key='raw'
+                  initial='initial'
+                  animate='animate'
+                  exit='exit'
                   variants={animationVariants}
                   transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1.0] }}
                 >
@@ -148,7 +161,6 @@ export function RecordClient({ recordId }: RecordClientProps) {
                 </motion.div>
               )}
             </AnimatePresence>
-
           </article>
         </>
       )}
