@@ -20,7 +20,7 @@ const BlogMetadata: FC<Props> = ({ createdAt, tone, fileUrl }: Props) => {
       <div className='flex items-center text-sm font-medium'>
         <ul className='flex items-center gap-2 py-4'>
           {tone && (
-            <Badge variant={'outline'}>Tone: {tone}</Badge>
+            <li className='text-xs border border-border rounded-full px-2.5 py-1'>Tone: {tone}</li>
           )}
         </ul>
         <span className='mx-2 text-lg'>•</span>
@@ -33,10 +33,10 @@ const BlogMetadata: FC<Props> = ({ createdAt, tone, fileUrl }: Props) => {
       <div className='flex flex-col'>
         {!showOriginalAudio ? (
           <Button
-            variant={'outline'}
+            variant={'ghost'}
             size='sm'
             onClick={() => setShowOriginalAudio(true)}
-            className='text-xs font-medium'
+            className='text-xs font-medium opacity-70'
           >
             Show original audio
           </Button>

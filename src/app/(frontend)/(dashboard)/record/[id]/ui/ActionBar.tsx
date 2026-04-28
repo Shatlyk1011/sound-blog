@@ -17,18 +17,25 @@ interface Props {
   isSaving: boolean
   onEditClick: () => void
   onSaveClick: () => void
+  onCancelClick: () => void
 }
 
-export function ActionBar({ handleCopy, isEditing, isSaving, onEditClick, onSaveClick }: Props) {
+export function ActionBar({ handleCopy, isEditing, isSaving, onEditClick, onSaveClick, onCancelClick }: Props) {
   return (
     <div className='mb-4 flex flex-wrap items-center gap-2 py-2'>
       {isEditing ? (
-        <Button variant={'default'} onClick={onSaveClick} disabled={isSaving}>
-          {isSaving && <HugeiconsIcon icon={Loading03Icon} size={16} />}
-          Save Article
-        </Button>
+        <>
+          <Button variant={'default'} onClick={onSaveClick} disabled={isSaving}>
+            {isSaving && <HugeiconsIcon icon={Loading03Icon} size={16} />}
+            Save Article
+          </Button>
+          <Button variant={'destructive'} onClick={onCancelClick} disabled={isSaving}>
+            {isSaving && <HugeiconsIcon icon={Loading03Icon} size={16} />}
+            Cancel Editing
+          </Button>
+        </>
       ) : (
-        <Button variant={'secondary'} onClick={onEditClick}>
+          <Button variant={'outline'} onClick={onEditClick}>
           <HugeiconsIcon icon={PencilEdit02Icon} size={16} />
           Edit Article
         </Button>

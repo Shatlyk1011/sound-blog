@@ -67,6 +67,16 @@ export function RecordClient({ recordId }: RecordClientProps) {
     )
   }
 
+  const onEditClick = () => {
+    setActiveTab("generated")
+    setIsEditing(true);
+  }
+
+  const onCancelClick = () => {
+    setIsEditing(false)
+    setBlogContent(blog.content!)
+  }
+
   const handleCopy = async (text: string) => {
     await copyToClipboard(text)
     toast.success('Blog copied successfully!', { position: 'top-center' })
@@ -98,12 +108,16 @@ export function RecordClient({ recordId }: RecordClientProps) {
               handleCopy={() => handleCopy(blog.content!)}
               isEditing={isEditing}
               isSaving={isPending}
-              onEditClick={() => setIsEditing(true)}
+              onEditClick={onEditClick}
               onSaveClick={handleSave}
+              onCancelClick={onCancelClick}
             />
           </div>
-
-          <TabSwitcher activeTab={activeTab} onChange={setActiveTab} disabled={isEditing} />
+          {
+            !isEditing && (
+              <TabSwitcher activeTab={activeTab} onChange={setActiveTab} disabled={isEditing} />
+            )
+          }
 
           <article className='bg-card w-full rounded-3xl border p-8 text-left shadow-sm'>
             <AnimatePresence mode='wait'>
