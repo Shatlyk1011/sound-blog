@@ -1,6 +1,14 @@
 import type { CollectionConfig } from 'payload';
 import { admins } from '../../utils/admins';
 
+
+
+
+
+
+
+
+
 const Blogs: CollectionConfig = {
   slug: 'blogs',
 
@@ -21,13 +29,15 @@ const Blogs: CollectionConfig = {
   fields: [
     {
       name: 'userId',
-      label: 'User (payload users collection)',
+      label: 'User (users collection)',
       type: 'relationship',
       relationTo: 'users',
       required: true,
       admin: {
+        readOnly: true,
+        position: 'sidebar',
         description:
-          'The application user who owns this blog post (payload users collection).',
+          'The application user who owns this blog post (users collection).',
       },
     },
 
@@ -38,6 +48,8 @@ const Blogs: CollectionConfig = {
       relationTo: 'voice-records',
       required: true,
       admin: {
+        readOnly: true,
+        position: 'sidebar',
         description: 'The voice recording this blog was generated from.',
       },
     },
@@ -49,6 +61,8 @@ const Blogs: CollectionConfig = {
       relationTo: 'transcripts',
       required: true,
       admin: {
+        position: 'sidebar',
+        readOnly: true,
         description: 'The transcript this blog post was generated from.',
       },
     },

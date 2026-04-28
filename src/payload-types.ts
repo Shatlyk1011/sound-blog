@@ -269,7 +269,7 @@ export interface Transcript {
 export interface Blog {
   id: string;
   /**
-   * The application user who owns this blog post (payload users collection).
+   * The application user who owns this blog post (users collection).
    */
   userId: string | User;
   /**
