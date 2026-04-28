@@ -1,7 +1,7 @@
 import {
   CopyIcon,
+  Loading03Icon,
   PencilEdit02Icon,
-  SparklesIcon,
 } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { Button } from '@/components/ui/button'
@@ -13,15 +13,26 @@ import {
 
 interface Props {
   handleCopy: () => void
+  isEditing: boolean
+  isSaving: boolean
+  onEditClick: () => void
+  onSaveClick: () => void
 }
 
-export function ActionBar({ handleCopy }: Props) {
+export function ActionBar({ handleCopy, isEditing, isSaving, onEditClick, onSaveClick }: Props) {
   return (
     <div className='mb-4 flex flex-wrap items-center gap-2 py-2'>
-      <Button variant={'secondary'}>
-        <HugeiconsIcon icon={PencilEdit02Icon} size={16} />
-        Edit Article
-      </Button>
+      {isEditing ? (
+        <Button variant={'default'} onClick={onSaveClick} disabled={isSaving}>
+          {isSaving && <HugeiconsIcon icon={Loading03Icon} size={16} />}
+          Save Article
+        </Button>
+      ) : (
+        <Button variant={'secondary'} onClick={onEditClick}>
+          <HugeiconsIcon icon={PencilEdit02Icon} size={16} />
+          Edit Article
+        </Button>
+      )}
 
       <div className='flex flex-1 justify-end'>
         <Tooltip>
