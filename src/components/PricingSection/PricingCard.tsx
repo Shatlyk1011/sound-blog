@@ -1,8 +1,5 @@
 'use client'
-import {
-  CheckmarkCircle01Icon,
-  LegalHammerIcon,
-} from '@hugeicons/core-free-icons'
+import { CheckmarkCircle01Icon, LegalHammerIcon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
@@ -28,12 +25,7 @@ interface PricingCardProps {
 const getPricingLabel = (s: string) => {
   return s.toLowerCase() === 'custom' ? s : `$${s}`
 }
-export function PricingCard({
-  item,
-  isAnnual,
-  isAuth,
-  classes,
-}: PricingCardProps) {
+export function PricingCard({ item, isAnnual, isAuth, classes }: PricingCardProps) {
   const isEnterprice = item.name === 'Enterprise'
 
   return (
@@ -46,17 +38,13 @@ export function PricingCard({
     >
       <div className='mb-4 min-h-22'>
         <h3 className='text-foreground text-2xl font-semibold'>{item.name}</h3>
-        <p className='text-foreground/70 mt-2 line-clamp-2 text-base'>
-          {item.description}
-        </p>
+        <p className='text-foreground/70 mt-2 line-clamp-2 text-base'>{item.description}</p>
       </div>
 
       <div className='mb-6'>
         <div className='flex items-center'>
           <span className='-tracking-two font-mono text-3xl leading-8 font-medium'>
-            {isAnnual
-              ? getPricingLabel(item.priceYearly)
-              : getPricingLabel(item.price)}
+            {isAnnual ? getPricingLabel(item.priceYearly) : getPricingLabel(item.price)}
           </span>
 
           {item.priceDetail && (
@@ -87,16 +75,12 @@ export function PricingCard({
           )}
           asChild
         >
-          <Link href='/sign-in'>
-            {isEnterprice ? item.ctaText : 'Get Started'}
-          </Link>
+          <Link href='/sign-in'>{isEnterprice ? item.ctaText : 'Get Started'}</Link>
         </Button>
       )}
 
       <div className='mt-8 flex flex-1 flex-col'>
-        <p className='text-foreground/80 mb-4 text-sm font-medium'>
-          {item.featuresIntro}
-        </p>
+        <p className='text-foreground/80 mb-4 text-sm font-medium'>{item.featuresIntro}</p>
         <ul className='space-y-3'>
           {item.features.map((feature) => (
             <li key={feature} className='flex items-start gap-2'>

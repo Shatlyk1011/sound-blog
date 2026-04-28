@@ -40,10 +40,7 @@ export async function POST(req: NextRequest) {
     })
 
     if (users.length === 0) {
-      return NextResponse.json(
-        { error: 'User profile not found in database' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'User profile not found in database' }, { status: 404 })
     }
     const payloadUser = users[0]
     const payloadDocId = payloadUser.id as string
@@ -64,8 +61,7 @@ export async function POST(req: NextRequest) {
     })
 
     const totalCredits = creditDocs.reduce(
-      (sum, doc) =>
-        sum + (typeof doc.creditAmount === 'number' ? doc.creditAmount : 0),
+      (sum, doc) => sum + (typeof doc.creditAmount === 'number' ? doc.creditAmount : 0),
       0
     )
     const creditsSpent = payloadUser.creditsSpent!
@@ -89,10 +85,7 @@ export async function POST(req: NextRequest) {
 
     if (!accessKeyId || !secretAccessKey || !publicUrl) {
       console.error('Missing R2 environment variables')
-      return NextResponse.json(
-        { error: 'Server configuration error' },
-        { status: 500 }
-      )
+      return NextResponse.json({ error: 'Server configuration error' }, { status: 500 })
     }
 
     const s3 = new S3Client({

@@ -1,15 +1,7 @@
-import {
-  CopyIcon,
-  Loading03Icon,
-  PencilEdit02Icon,
-} from '@hugeicons/core-free-icons'
+import { CopyIcon, Loading03Icon, PencilEdit02Icon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { Button } from '@/components/ui/button'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 
 interface Props {
   handleCopy: () => void
@@ -29,13 +21,18 @@ export function ActionBar({ handleCopy, isEditing, isSaving, onEditClick, onSave
             {isSaving && <HugeiconsIcon icon={Loading03Icon} size={16} />}
             Save Article
           </Button>
-          <Button className='rounded-full text-destructive/90 bg-destructive/40' variant={'destructive'} onClick={onCancelClick} disabled={isSaving}>
+          <Button
+            className='text-destructive/90 bg-destructive/40 rounded-full'
+            variant={'destructive'}
+            onClick={onCancelClick}
+            disabled={isSaving}
+          >
             {isSaving && <HugeiconsIcon icon={Loading03Icon} size={16} />}
             Cancel Editing
           </Button>
         </>
       ) : (
-          <Button variant={'outline'} onClick={onEditClick}>
+        <Button variant={'outline'} onClick={onEditClick}>
           <HugeiconsIcon icon={PencilEdit02Icon} size={16} />
           Edit Article
         </Button>

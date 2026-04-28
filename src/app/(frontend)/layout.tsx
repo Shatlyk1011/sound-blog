@@ -39,12 +39,7 @@ export default function RootLayout({
     <html lang='en' suppressHydrationWarning>
       <body className={`${poppins.variable} ${lora.variable} antialiased`}>
         <UserProvider>
-          <ThemeProvider
-            attribute='class'
-            defaultTheme='system'
-            enableSystem
-            disableTransitionOnChange
-          >
+          <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
             <TooltipProvider>
               <TanstackQueryProvider>
                 {children}

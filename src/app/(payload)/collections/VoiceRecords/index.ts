@@ -1,10 +1,6 @@
-import type { CollectionConfig } from 'payload';
-import { admins } from '../../utils/admins';
-import { S3Client, DeleteObjectCommand } from '@aws-sdk/client-s3';
-
-
-
-
+import { S3Client, DeleteObjectCommand } from '@aws-sdk/client-s3'
+import type { CollectionConfig } from 'payload'
+import { admins } from '../../utils/admins'
 
 const VoiceRecords: CollectionConfig = {
   slug: 'voice-records',
@@ -23,15 +19,15 @@ const VoiceRecords: CollectionConfig = {
           const record = await req.payload.findByID({
             collection: 'voice-records',
             id,
-          });
+          })
 
           if (record && record.fileUrl) {
-            const fileUrl = record.fileUrl as string;
-            const key = fileUrl.split('/').pop();
+            const fileUrl = record.fileUrl as string
+            const key = fileUrl.split('/').pop()
 
             if (key) {
-              const accessKeyId = process.env.R2_ACCESS_KEY_ID;
-              const secretAccessKey = process.env.R2_SECRET_ACCESS_KEY;
+              const accessKeyId = process.env.R2_ACCESS_KEY_ID
+              const secretAccessKey = process.env.R2_SECRET_ACCESS_KEY
 
               if (accessKeyId && secretAccessKey) {
                 const s3 = new S3Client({
@@ -41,21 +37,21 @@ const VoiceRecords: CollectionConfig = {
                     accessKeyId,
                     secretAccessKey,
                   },
-                });
+                })
 
                 await s3.send(
                   new DeleteObjectCommand({
                     Bucket: process.env.R2_VOICE_RECORD_BUCKET,
                     Key: key,
                   })
-                );
+                )
               } else {
-                console.error('Missing R2 credentials for deletion');
+                console.error('Missing R2 credentials for deletion')
               }
             }
           }
         } catch (err) {
-          console.error('Error deleting file from R2:', err);
+          console.error('Error deleting file from R2:', err)
         }
       },
     ],
@@ -94,8 +90,7 @@ const VoiceRecords: CollectionConfig = {
       type: 'text',
       required: true,
       admin: {
-        description:
-          'The public URL of the audio file stored in Supabase Storage.',
+        description: 'The public URL of the audio file stored in Supabase Storage.',
       },
     },
     {

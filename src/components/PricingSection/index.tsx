@@ -28,12 +28,7 @@ const pricingPlans: PricingTier[] = [
     price: '60',
     priceYearly: '48',
     description: 'Ideal for growing teams and businesses',
-    features: [
-      '300 monthly credits',
-      'Credit rollovers',
-      'Faster AI Model',
-      'Emerald UI Component Generations',
-    ],
+    features: ['300 monthly credits', 'Credit rollovers', 'Faster AI Model', 'Emerald UI Component Generations'],
     ctaText: 'Upgrade to Pro',
     ctaVariant: 'blue',
     featuresIntro: 'Everything in Hobby, plus:',
@@ -57,35 +52,16 @@ const PricingSection = () => {
   return (
     <>
       <section className='mb-8 text-center'>
-        <h1 className='mb-2 text-4xl font-bold tracking-tight max-sm:text-3xl'>
-          Simple, Transparent Pricing
-        </h1>
+        <h1 className='mb-2 text-4xl font-bold tracking-tight max-sm:text-3xl'>Simple, Transparent Pricing</h1>
         <p className='text-muted-foreground mx-auto max-w-2xl text-lg max-sm:text-base'>
           Deliver new products faster with Emerald UI
         </p>
       </section>
       <div className='mb-4 flex items-center justify-center gap-1.5 text-sm font-normal'>
-        <span
-          className={cn(
-            'transition-colors',
-            isAnnual && 'text-muted-foreground'
-          )}
-        >
-          Monthly
-        </span>
-        <Switch
-          checked={isAnnual}
-          onCheckedChange={(checked) => setAnnual(checked)}
-        />
+        <span className={cn('transition-colors', isAnnual && 'text-muted-foreground')}>Monthly</span>
+        <Switch checked={isAnnual} onCheckedChange={(checked) => setAnnual(checked)} />
         <p className='relative'>
-          <span
-            className={cn(
-              'transition-colors',
-              !isAnnual && 'text-muted-foreground'
-            )}
-          >
-            Annual
-          </span>
+          <span className={cn('transition-colors', !isAnnual && 'text-muted-foreground')}>Annual</span>
           <span className='tracking-one bg-secondary text-secondary-foreground absolute top-1/2 -right-[135%] flex w-max -translate-y-1/2 items-center rounded-full border px-1.5 py-0.5 text-xs text-[10px] font-medium text-nowrap'>
             Save 20%
           </span>
@@ -94,12 +70,7 @@ const PricingSection = () => {
 
       <section className='mx-auto grid h-full max-w-full grid-cols-3 justify-center gap-3 px-10 max-lg:px-0 max-md:grid-cols-2 max-sm:grid-cols-1'>
         {pricingPlans.map((plan) => (
-          <PricingCard
-            key={plan.name}
-            item={plan}
-            isAnnual={isAnnual}
-            isAuth={true}
-          />
+          <PricingCard key={plan.name} item={plan} isAnnual={isAnnual} isAuth={true} />
         ))}
       </section>
     </>

@@ -2,11 +2,7 @@
 
 import { useState } from 'react'
 import { getUserInitials } from '@/composables/utils'
-import {
-  LogoutSquare01Icon,
-  Menu05Icon,
-  UserIcon,
-} from '@hugeicons/core-free-icons'
+import { LogoutSquare01Icon, Menu05Icon, UserIcon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { useScroll, useMotionValueEvent } from 'motion/react'
 import Link from 'next/link'
@@ -58,17 +54,12 @@ const Header = ({ isDashboardPage }: Props) => {
     <>
       <header
         className={cn(
-          'fixed top-0 z-20 mx-auto flex h-14 border-b w-full items-center justify-between px-8 py-2 max-md:px-4',
-          isScrolled && 'bg-background/50 backdrop-blur-sm ',
-          user && 'bg-sidebar backdrop-blur-none border-none',
+          'fixed top-0 z-20 mx-auto flex h-14 w-full items-center justify-between border-b px-8 py-2 max-md:px-4',
+          isScrolled && 'bg-background/50 backdrop-blur-sm',
+          user && 'bg-sidebar border-none backdrop-blur-none'
         )}
       >
-        <Link
-          href='/'
-          className={cn(
-            'z-50 w-24 max-sm:mr-4 max-sm:max-w-max max-sm:min-w-8'
-          )}
-        >
+        <Link href='/' className={cn('z-50 w-24 max-sm:mr-4 max-sm:max-w-max max-sm:min-w-8')}>
           logo
         </Link>
         <nav
@@ -118,11 +109,7 @@ const Header = ({ isDashboardPage }: Props) => {
                       <Avatar className='size-8 cursor-pointer'>
                         <AvatarImage
                           src={user.user_metadata?.avatar_url}
-                          alt={
-                            user.user_metadata?.full_name ||
-                            user.email ||
-                            'User'
-                          }
+                          alt={user.user_metadata?.full_name || user.email || 'User'}
                         />
                         <AvatarFallback>{getUserInitials(user)}</AvatarFallback>
                       </Avatar>
@@ -134,9 +121,7 @@ const Header = ({ isDashboardPage }: Props) => {
                         <p className='mb-1.5 text-sm leading-none font-medium'>
                           {user.user_metadata?.full_name || 'User'}
                         </p>
-                        <p className='text-muted-foreground font-serif text-xs leading-none'>
-                          {user.email}
-                        </p>
+                        <p className='text-muted-foreground font-serif text-xs leading-none'>{user.email}</p>
                       </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
@@ -147,10 +132,7 @@ const Header = ({ isDashboardPage }: Props) => {
                       </Link>
                     </DropdownMenuItem>
 
-                    <DropdownMenuItem
-                      onClick={handleSignOut}
-                      className='cursor-pointer'
-                    >
+                    <DropdownMenuItem onClick={handleSignOut} className='cursor-pointer'>
                       <HugeiconsIcon icon={LogoutSquare01Icon} />
                       Sign Out
                     </DropdownMenuItem>
@@ -160,9 +142,7 @@ const Header = ({ isDashboardPage }: Props) => {
                 <Button
                   variant='outline'
                   size='sm'
-                  onClick={() =>
-                    router.push(`/sign-in?next=${encodeURIComponent(pathname)}`)
-                  }
+                  onClick={() => router.push(`/sign-in?next=${encodeURIComponent(pathname)}`)}
                   className=''
                 >
                   Sign In
@@ -170,12 +150,7 @@ const Header = ({ isDashboardPage }: Props) => {
               )}
             </>
           )}
-          <Button
-            size='icon-sm'
-            className='z-50 hidden max-md:flex'
-            variant={'ghost'}
-            onClick={() => setMenu(!menu)}
-          >
+          <Button size='icon-sm' className='z-50 hidden max-md:flex' variant={'ghost'} onClick={() => setMenu(!menu)}>
             <HugeiconsIcon icon={Menu05Icon} />
           </Button>
         </div>

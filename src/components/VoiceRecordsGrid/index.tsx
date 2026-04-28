@@ -33,9 +33,7 @@ export default function VoiceRecordsGrid() {
     <section className='mx-auto w-full max-w-7xl px-6 py-10 max-md:px-4'>
       <div className='mb-6 flex flex-col items-start justify-between gap-1'>
         <h2 className='text-4xl font-bold tracking-tight'>Your Recordings</h2>
-        <p className='text-muted-foreground text-base'>
-          Explore your voice records
-        </p>
+        <p className='text-muted-foreground text-base'>Explore your voice records</p>
       </div>
 
       {isLoading ? (
@@ -46,25 +44,17 @@ export default function VoiceRecordsGrid() {
         </div>
       ) : records.length === 0 ? (
         <div className='flex flex-col items-center justify-center rounded-2xl border border-dashed p-12 text-center'>
-          <HugeiconsIcon
-            icon={FileAudioIcon}
-            className='text-muted-foreground mb-4 size-10'
-          />
+          <HugeiconsIcon icon={FileAudioIcon} className='text-muted-foreground mb-4 size-10' />
           <h3 className='mb-1 text-lg font-semibold'>No recordings yet</h3>
-          <p className='text-muted-foreground text-sm'>
-            Get started by creating a new voice record.
-          </p>
+          <p className='text-muted-foreground text-sm'>Get started by creating a new voice record.</p>
         </div>
       ) : (
         <>
-              <div className='grid grid-cols-3 gap-5 max-xl:grid-cols-2 max-xl:gap-5 max-md:grid-cols-1 max-sm:gap-6'>
+          <div className='grid grid-cols-3 gap-5 max-xl:grid-cols-2 max-xl:gap-5 max-md:grid-cols-1 max-sm:gap-6'>
             {records.map((record) => (
               <VoiceRecordCard key={record.id} record={record} />
             ))}
-            {isFetchingNextPage &&
-              [...Array(3)].map((_, i) => (
-                <VoiceRecordSkeleton key={`skeleton-load-${i}`} />
-              ))}
+            {isFetchingNextPage && [...Array(3)].map((_, i) => <VoiceRecordSkeleton key={`skeleton-load-${i}`} />)}
           </div>
           <div ref={ref} className='h-4 w-full' />
         </>

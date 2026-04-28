@@ -82,8 +82,7 @@ export default function VoiceRecord() {
       resetRecording()
     } catch (error: unknown) {
       console.error('Upload failed:', error)
-      const message =
-        error instanceof Error ? error.message : 'Error uploading file'
+      const message = error instanceof Error ? error.message : 'Error uploading file'
       toast.error(message)
     } finally {
       setIsUploading(false)
@@ -95,21 +94,14 @@ export default function VoiceRecord() {
       {...getRootProps()}
       className={cn(
         'relative mt-4 w-full transition-colors',
-        isDragActive
-          ? 'bg-primary/5 border-primary border-2 border-dashed'
-          : 'border-2 border-transparent'
+        isDragActive ? 'bg-primary/5 border-primary border-2 border-dashed' : 'border-2 border-transparent'
       )}
     >
       <input {...getInputProps()} />
       {isDragActive && (
         <div className='bg-background/80 absolute inset-0 z-50 flex flex-col items-center justify-center rounded-xl backdrop-blur-sm'>
-          <HugeiconsIcon
-            icon={Upload01Icon}
-            className='text-primary mb-4 size-12 animate-bounce'
-          />
-          <p className='text-primary text-xl font-semibold'>
-            Drop audio file here
-          </p>
+          <HugeiconsIcon icon={Upload01Icon} className='text-primary mb-4 size-12 animate-bounce' />
+          <p className='text-primary text-xl font-semibold'>Drop audio file here</p>
         </div>
       )}
       <form
@@ -152,12 +144,7 @@ export default function VoiceRecord() {
             <div className='flex h-32 w-full flex-col justify-end gap-2'>
               <p className='text-foreground/70 text-xs'>Click to speak</p>
 
-              <Button
-                type='button'
-                onClick={startRecording}
-                size='lg'
-                aria-label='Start recording'
-              >
+              <Button type='button' onClick={startRecording} size='lg' aria-label='Start recording'>
                 <HugeiconsIcon icon={Mic01Icon} className='size-4' />
                 Start Recording
               </Button>
@@ -183,9 +170,7 @@ export default function VoiceRecord() {
             </Button>
 
             {/* Live timer */}
-            <span className='text-foreground/70 font-mono text-sm'>
-              {formatTime(recordingTime)}
-            </span>
+            <span className='text-foreground/70 font-mono text-sm'>{formatTime(recordingTime)}</span>
 
             {/* Animated waveform bars */}
             <SoundWave />
@@ -194,13 +179,7 @@ export default function VoiceRecord() {
               <p className='text-foreground/70 text-xs'>Listening…</p>
 
               {/* Stop button */}
-              <Button
-                type='button'
-                size='lg'
-                variant='destructive'
-                onClick={stopRecording}
-                className='w-full'
-              >
+              <Button type='button' size='lg' variant='destructive' onClick={stopRecording} className='w-full'>
                 <HugeiconsIcon icon={StopCircleIcon} className='size-4' />
                 Stop Recording
               </Button>
@@ -220,22 +199,15 @@ export default function VoiceRecord() {
               aria-label={isPlaying ? 'Pause' : 'Play'}
             >
               {isPlaying ? (
-                <HugeiconsIcon
-                  icon={PauseIcon}
-                  className='text-foreground/90 size-6 transition duration-300'
-                />
+                <HugeiconsIcon icon={PauseIcon} className='text-foreground/90 size-6 transition duration-300' />
               ) : (
-                <HugeiconsIcon
-                  icon={PlayCircle02Icon}
-                  className='text-foreground/90 size-6 transition duration-300'
-                />
+                <HugeiconsIcon icon={PlayCircle02Icon} className='text-foreground/90 size-6 transition duration-300' />
               )}
             </Button>
 
             {/* Playback timer */}
             <span className='text-foreground/70 font-mono text-sm'>
-              {formatTime((playbackProgress / 100) * totalDuration)} /{' '}
-              {formatTime(totalDuration)}
+              {formatTime((playbackProgress / 100) * totalDuration)} / {formatTime(totalDuration)}
             </span>
 
             <SoundWave

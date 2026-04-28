@@ -20,11 +20,7 @@ interface Props {
   redirectTo?: string
 }
 
-export default function SignUpPage({
-  isModal,
-  handleSwitch,
-  redirectTo,
-}: Props) {
+export default function SignUpPage({ isModal, handleSwitch, redirectTo }: Props) {
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -118,17 +114,12 @@ export default function SignUpPage({
           !isModal && 'border shadow-md'
         )}
       >
-        <Link
-          href='/'
-          className='block text-center text-xl font-bold max-md:text-2xl'
-        >
+        <Link href='/' className='block text-center text-xl font-bold max-md:text-2xl'>
           Logo
         </Link>
 
         <div className='space-y-2 text-center'>
-          <h2 className='text-2xl font-semibold max-md:text-xl'>
-            Create your account
-          </h2>
+          <h2 className='text-2xl font-semibold max-md:text-xl'>Create your account</h2>
           <p className='text-foreground/70 text-sm'>
             Already have an account?{' '}
             {isModal ? (
@@ -157,12 +148,7 @@ export default function SignUpPage({
             size='lg'
             className='bg-foreground text-background hover:bg-foreground h-10 w-full cursor-pointer rounded-full border'
           >
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              viewBox='0 0 24 24'
-              width='50'
-              height='50'
-            >
+            <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='50' height='50'>
               <path
                 fill='#4285F4'
                 d='M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z'
@@ -199,9 +185,7 @@ export default function SignUpPage({
             <div className='border-border w-full border-t' />
           </div>
           <div className='relative flex justify-center text-xs uppercase'>
-            <span className='tracking-one bg-background px-2 font-normal opacity-80'>
-              Or continue with email
-            </span>
+            <span className='tracking-one bg-background px-2 font-normal opacity-80'>Or continue with email</span>
           </div>
         </div>
 
@@ -221,9 +205,7 @@ export default function SignUpPage({
           </div>
 
           {error && (
-            <div className='rounded-full border border-red-900/50 bg-red-950/50 p-3 text-sm text-red-400'>
-              {error}
-            </div>
+            <div className='rounded-full border border-red-900/50 bg-red-950/50 p-3 text-sm text-red-400'>{error}</div>
           )}
 
           {magicLinkSent && (
@@ -232,12 +214,7 @@ export default function SignUpPage({
             </div>
           )}
 
-          <Button
-            type='submit'
-            variant={'default'}
-            disabled={loading}
-            className='h-10 w-full border'
-          >
+          <Button type='submit' variant={'default'} disabled={loading} className='h-10 w-full border'>
             {loading ? 'Sending...' : 'Continue with Email'}
           </Button>
         </form>
@@ -245,17 +222,11 @@ export default function SignUpPage({
         {/* Terms */}
         <p className='text-center text-xs text-slate-500'>
           By clicking Sign Up, you agree to our{' '}
-          <a
-            href='#'
-            className='text-blue-600 transition-colors hover:text-blue-500/80 dark:text-blue-400'
-          >
+          <a href='#' className='text-blue-600 transition-colors hover:text-blue-500/80 dark:text-blue-400'>
             Terms of Service
           </a>{' '}
           and{' '}
-          <a
-            href='#'
-            className='text-blue-600 transition-colors hover:text-blue-500/80 dark:text-blue-400'
-          >
+          <a href='#' className='text-blue-600 transition-colors hover:text-blue-500/80 dark:text-blue-400'>
             Privacy Policy
           </a>
         </p>

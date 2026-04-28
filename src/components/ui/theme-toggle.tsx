@@ -22,16 +22,8 @@ function ThemeToggle() {
   }
 
   return (
-    <Button
-      variant='ghost'
-      size='icon'
-      onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-    >
-      {isDark ? (
-        <HugeiconsIcon icon={Sun02Icon} />
-      ) : (
-        <HugeiconsIcon icon={Moon02Icon} />
-      )}
+    <Button variant='ghost' size='icon' onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}>
+      {isDark ? <HugeiconsIcon icon={Sun02Icon} /> : <HugeiconsIcon icon={Moon02Icon} />}
       <span className='sr-only'>Toggle theme</span>
     </Button>
   )

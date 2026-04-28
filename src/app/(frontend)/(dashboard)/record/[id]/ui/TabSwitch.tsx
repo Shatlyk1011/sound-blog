@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils'
 
 interface TabSwitcherProps {
   activeTab: 'generated' | 'raw'
@@ -15,7 +15,13 @@ export default function TabSwitcher({ activeTab, onChange, disabled }: TabSwitch
           disabled={disabled}
           onClick={() => onChange('generated')}
           aria-label={disabled ? 'Editing, disabled to switch' : 'Generated Article'}
-          className={cn('relative border-b-2 pb-3 transition-all', isGeneratedActive ? 'text-foreground border-current' : 'text-muted-foreground hover:text-foreground border-transparent', disabled && 'opacity-50 border-transparent cursor-not-allowed hover:text-current text-foreground')}
+          className={cn(
+            'relative border-b-2 pb-3 transition-all',
+            isGeneratedActive
+              ? 'text-foreground border-current'
+              : 'text-muted-foreground hover:text-foreground border-transparent',
+            disabled && 'text-foreground cursor-not-allowed border-transparent opacity-50 hover:text-current'
+          )}
         >
           Generated Article
         </button>
@@ -23,7 +29,13 @@ export default function TabSwitcher({ activeTab, onChange, disabled }: TabSwitch
           disabled={disabled}
           onClick={() => onChange('raw')}
           aria-label={disabled ? 'Editing, disabled to switch' : 'Raw Transcript'}
-          className={cn('relative border-b-2 pb-3 transition-all', !isGeneratedActive ? 'text-foreground border-current' : 'text-muted-foreground hover:text-foreground border-transparent', disabled && 'opacity-50 border-transparent cursor-not-allowed hover:text-current text-foreground')}
+          className={cn(
+            'relative border-b-2 pb-3 transition-all',
+            !isGeneratedActive
+              ? 'text-foreground border-current'
+              : 'text-muted-foreground hover:text-foreground border-transparent',
+            disabled && 'text-foreground cursor-not-allowed border-transparent opacity-50 hover:text-current'
+          )}
         >
           Raw Transcript
         </button>

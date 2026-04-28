@@ -35,19 +35,13 @@ export async function GET(req: Request) {
     }
 
     // When depth is sufficient, join field returns { docs: [...] } structure
-    const joinedData = client.creditHistory as unknown as
-      | { docs: CreditHistory[] }
-      | undefined
+    const joinedData = client.creditHistory as unknown as { docs: CreditHistory[] } | undefined
     const creditHistory = joinedData?.docs || []
 
     return NextResponse.json<UserDataResponse>({
       currentPlan: client.plan,
       creditsSpent: client.creditsSpent,
-      totalCredits: creditHistory?.reduce(
-        (prev, curr) =>
-          prev + (curr.status === 'active' ? curr.creditAmount : 0),
-        0
-      ),
+      totalCredits: creditHistory?.reduce((prev, curr) => prev + (curr.status === 'active' ? curr.creditAmount : 0), 0),
       history: creditHistory.map((h) => ({
         id: h.id,
         source: h.source,
@@ -59,9 +53,6 @@ export async function GET(req: Request) {
     })
   } catch (error) {
     console.error('Error fetching credit history:', error)
-    return NextResponse.json(
-      { error: 'Failed to fetch credit history' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to fetch credit history' }, { status: 500 })
   }
 }

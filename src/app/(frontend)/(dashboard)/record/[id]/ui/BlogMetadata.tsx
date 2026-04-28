@@ -1,16 +1,16 @@
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import MiniAudioPlayer from '@/components/VoiceRecordsGrid/AudioPlayer';
-import { Blog } from '@/payload-types';
-import { Close } from '@hugeicons/core-free-icons';
-import { HugeiconsIcon } from '@hugeicons/react';
-import { FC, useState } from 'react';
+import { FC, useState } from 'react'
+import { Blog } from '@/payload-types'
+import { Close } from '@hugeicons/core-free-icons'
+import { HugeiconsIcon } from '@hugeicons/react'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import MiniAudioPlayer from '@/components/VoiceRecordsGrid/AudioPlayer'
 
 interface Props {
   createdAt: string
   fileUrl: string
-  tone?:Blog['tone']
-};
+  tone?: Blog['tone']
+}
 
 const BlogMetadata: FC<Props> = ({ createdAt, tone, fileUrl }: Props) => {
   const [showOriginalAudio, setShowOriginalAudio] = useState(false)
@@ -19,9 +19,7 @@ const BlogMetadata: FC<Props> = ({ createdAt, tone, fileUrl }: Props) => {
     <>
       <div className='flex items-center text-sm font-medium'>
         <ul className='flex items-center gap-2 py-4'>
-          {tone && (
-            <li className='text-xs border border-border rounded-full px-2.5 py-1'>Tone: {tone}</li>
-          )}
+          {tone && <li className='border-border rounded-full border px-2.5 py-1 text-xs'>Tone: {tone}</li>}
         </ul>
         <span className='mx-2 text-lg'>•</span>
         <time className='text-muted-foreground' dateTime={createdAt}>
@@ -42,10 +40,7 @@ const BlogMetadata: FC<Props> = ({ createdAt, tone, fileUrl }: Props) => {
           </Button>
         ) : (
           <div className='relative w-full'>
-            <MiniAudioPlayer
-              classes='border border-border w-64 '
-              fileUrl={fileUrl}
-            />
+            <MiniAudioPlayer classes='border border-border w-64 ' fileUrl={fileUrl} />
             <button
               onClick={() => setShowOriginalAudio(false)}
               className='bg-muted text-muted-foreground/60 absolute -top-2 -right-2 rounded-full p-0.5'
@@ -56,7 +51,6 @@ const BlogMetadata: FC<Props> = ({ createdAt, tone, fileUrl }: Props) => {
         )}
       </div>
     </>
-
   )
-};
+}
 export default BlogMetadata

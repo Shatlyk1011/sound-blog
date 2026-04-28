@@ -24,8 +24,6 @@ interface Props {
 
 const TanstackQueryProvider: FC<Props> = ({ children }) => {
   const [queryClient] = useState(() => new QueryClient(QueryConfig))
-  return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-  )
+  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 }
 export default TanstackQueryProvider

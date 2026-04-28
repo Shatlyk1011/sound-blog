@@ -11,10 +11,7 @@ export async function POST(req: NextRequest) {
     const { audioKey, transcript, wordCount, vtt } = body
 
     if (!audioKey || !transcript) {
-      return NextResponse.json(
-        { error: 'Missing audioKey or transcript in request body' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Missing audioKey or transcript in request body' }, { status: 400 })
     }
 
     // 2. Find the corresponding VoiceRecord by audioKey
@@ -29,17 +26,11 @@ export async function POST(req: NextRequest) {
     })
 
     if (voiceRecords.length === 0) {
-      return NextResponse.json(
-        { error: 'Corresponding VoiceRecord not found' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Corresponding VoiceRecord not found' }, { status: 404 })
     }
 
     const voiceRecord = voiceRecords[0]
-    const userId =
-      typeof voiceRecord.userId === 'object'
-        ? voiceRecord.userId.id
-        : voiceRecord.userId
+    const userId = typeof voiceRecord.userId === 'object' ? voiceRecord.userId.id : voiceRecord.userId
 
     // 3. Create a new Transcript document
     const newTranscript = await payload.create({

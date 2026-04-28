@@ -94,8 +94,7 @@ const Users: CollectionConfig = {
       required: false,
       defaultValue: false,
       admin: {
-        description:
-          'When enabled, this user is blocked from accessing the application.',
+        description: 'When enabled, this user is blocked from accessing the application.',
       },
     },
   ],

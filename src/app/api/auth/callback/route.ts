@@ -1,9 +1,5 @@
 import { NextResponse } from 'next/server'
-import {
-  getClientByUserId,
-  createClientRecord,
-  createInitialCredits,
-} from '@/lib/credit-helpers'
+import { getClientByUserId, createClientRecord, createInitialCredits } from '@/lib/credit-helpers'
 import { createClient } from '@/lib/supabase-server'
 
 export async function GET(request: Request) {
@@ -28,13 +24,7 @@ export async function GET(request: Request) {
           await createClientRecord(
             user.id,
             user.email ?? undefined,
-            (provider || 'n/a') as
-              | 'email'
-              | 'google'
-              | 'github'
-              | 'n/a'
-              | null
-              | undefined
+            (provider || 'n/a') as 'email' | 'google' | 'github' | 'n/a' | null | undefined
           )
           await createInitialCredits(user.id)
         }

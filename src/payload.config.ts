@@ -24,14 +24,7 @@ export default buildConfig({
     },
   },
 
-  collections: [
-    VoiceRecords,
-    Transcripts,
-    Blogs,
-    Users,
-    CreditHistory,
-    AdminUsers,
-  ],
+  collections: [VoiceRecords, Transcripts, Blogs, Users, CreditHistory, AdminUsers],
 
   // Your Payload secret - should be a complex and secure string, unguessable
   secret: process.env.PAYLOAD_SECRET || '',

@@ -3,10 +3,7 @@ import { NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 import { createClient } from '@/lib/supabase-server'
 
-export async function DELETE(
-  req: Request,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function DELETE(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params
     const supabase = await createClient()
@@ -42,17 +39,9 @@ export async function DELETE(
       id,
     })
 
-    if (
-      !record ||
-      (typeof record.userId === 'object' ? record.userId.id : record.userId) !==
-        payloadUserId
-    ) {
-      return NextResponse.json(
-        { error: 'Not found or unauthorized' },
-        { status: 404 }
-      )
+    if (!record || (typeof record.userId === 'object' ? record.userId.id : record.userId) !== payloadUserId) {
+      return NextResponse.json({ error: 'Not found or unauthorized' }, { status: 404 })
     }
-
 
     await Promise.all([
       payload.delete({
@@ -75,7 +64,7 @@ export async function DELETE(
       payload.delete({
         collection: 'voice-records',
         id: id,
-      })
+      }),
     ])
 
     return NextResponse.json({ success: true })

@@ -65,11 +65,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  return (
-    <UserContext.Provider value={{ user, isLoading, signOut }}>
-      {children}
-    </UserContext.Provider>
-  )
+  return <UserContext.Provider value={{ user, isLoading, signOut }}>{children}</UserContext.Provider>
 }
 
 export function useUserContext() {

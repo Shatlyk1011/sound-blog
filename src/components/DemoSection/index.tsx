@@ -7,8 +7,7 @@ const DEMO_RECORD: VoiceRecord = {
   createdAt: '2026-04-24T13:11:56.728Z',
   updatedAt: '2026-04-24T13:12:32.633Z',
   userId: '69eb55f7c91f77f32f72b7dc',
-  fileUrl:
-    'https://pub-22d9ce529cfb4b3891eb3bc8dfa9dc22.r2.dev/1777036314037-voice-record-1777036309664.webm',
+  fileUrl: 'https://pub-22d9ce529cfb4b3891eb3bc8dfa9dc22.r2.dev/1777036314037-voice-record-1777036309664.webm',
   fileName: 'voice-record-1777036309664.webm',
   duration: 10,
   status: 'completed',
@@ -17,14 +16,9 @@ const DEMO_RECORD: VoiceRecord = {
 
 const DemoSection = () => {
   return (
-    <section
-      className='text-card-foreground mx-auto w-full max-w-7xl rounded-4xl px-4 pt-16 sm:px-10'
-      id='demo'
-    >
+    <section className='text-card-foreground mx-auto w-full max-w-7xl rounded-4xl px-4 pt-16 sm:px-10' id='demo'>
       <div className='mb-16 flex flex-col items-center'>
-        <h2 className='mb-4 font-sans text-4xl font-extrabold tracking-tight sm:text-5xl'>
-          Demo Sound Blog
-        </h2>
+        <h2 className='mb-4 font-sans text-4xl font-extrabold tracking-tight sm:text-5xl'>Demo Sound Blog</h2>
         <p className='text-muted-foreground max-w-2xl text-center text-lg'>
           Here is how your voice recordings will appear.
         </p>
@@ -48,17 +42,12 @@ const DemoSection = () => {
             <span className='bg-primary/10 text-primary inline-flex items-center justify-center rounded-full px-3 py-1 text-sm font-medium'>
               Interactive Demo
             </span>
-            <h3 className='text-3xl font-bold tracking-tight'>
-              Your Voice Record
-            </h3>
+            <h3 className='text-3xl font-bold tracking-tight'>Your Voice Record</h3>
             <p className='text-muted-foreground text-lg leading-relaxed'>
-              Every recording you make will be displayed with its{' '}
-              <strong>title</strong>, <strong>status</strong>, a built-in{' '}
-              <strong>Audio Player</strong>.
+              Every recording you make will be displayed with its <strong>title</strong>, <strong>status</strong>, a
+              built-in <strong>Audio Player</strong>.
             </p>
-            <p className='text-muted-foreground/80 text-base leading-relaxed'>
-              Click it to see details{' '}
-            </p>
+            <p className='text-muted-foreground/80 text-base leading-relaxed'>Click it to see details </p>
           </div>
         </div>
       </div>

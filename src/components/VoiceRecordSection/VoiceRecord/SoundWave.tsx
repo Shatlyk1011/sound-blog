@@ -15,22 +15,13 @@ const SoundWave = ({
 
   return (
     <div className={cn('flex h-3.5', containerClasses)}>
-      <div
-        className={cn(
-          'relative flex h-full items-center justify-center gap-[3px] overflow-hidden',
-          classes
-        )}
-      >
+      <div className={cn('relative flex h-full items-center justify-center gap-[3px] overflow-hidden', classes)}>
         {[...Array(BAR_COUNT)].map((_, i) => {
-          const animationName = isStatic
-            ? 'none'
-            : animations[i % animations.length]
+          const animationName = isStatic ? 'none' : animations[i % animations.length]
           return (
             <div
               key={i}
-              className={cn(
-                'bg-muted-foreground/70 h-[inherit] w-0.5 origin-bottom'
-              )}
+              className={cn('bg-muted-foreground/70 h-[inherit] w-0.5 origin-bottom')}
               style={{
                 height: '100%',
                 animationName,

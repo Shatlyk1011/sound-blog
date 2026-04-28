@@ -68,10 +68,7 @@ function MiniAudioPlayer({ fileUrl, classes }: Props) {
 
   return (
     <div
-      className={cn(
-        'bg-card border-border/50 mt-2 mb-3 flex w-full flex-col gap-2 rounded-2xl border p-3',
-        classes
-      )}
+      className={cn('bg-card border-border/50 mt-2 mb-3 flex w-full flex-col gap-2 rounded-2xl border p-3', classes)}
     >
       <audio ref={audioRef} src={fileUrl} preload='metadata' />
 
@@ -80,10 +77,7 @@ function MiniAudioPlayer({ fileUrl, classes }: Props) {
           onClick={togglePlay}
           className='dark:bg-accent bg-accent-foreground/80 text-accent/80 dark:text-accent-foreground flex h-8 w-8 shrink-0 items-center justify-center rounded-full border shadow-sm transition-all active:scale-95'
         >
-          <HugeiconsIcon
-            icon={isPlaying ? PauseIcon : PlayIcon}
-            className='size-4'
-          />
+          <HugeiconsIcon icon={isPlaying ? PauseIcon : PlayIcon} className='size-4' />
         </button>
 
         <div className='flex grow flex-col gap-1.5 pt-1'>

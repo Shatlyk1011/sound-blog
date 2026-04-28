@@ -1,21 +1,21 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import dynamic from 'next/dynamic'
-import { useBlogQuery, useUpdateBlogMutation } from '@/services/blogs'
-
-const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false })
 import { Blog, Transcript, VoiceRecord } from '@/payload-types'
+import { useBlogQuery, useUpdateBlogMutation } from '@/services/blogs'
 import { AnimatePresence } from 'motion/react'
 import { motion } from 'motion/react'
+import { useTheme } from 'next-themes'
+import dynamic from 'next/dynamic'
 import ReactMarkdown from 'react-markdown'
 import { toast } from 'sonner'
 import { copyToClipboard } from '@/lib/utils'
 import { ActionBar } from './ui/ActionBar'
-import TabSwitcher from './ui/TabSwitch'
-import BlogMetadata from './ui/BlogMetadata'
 import BlogLoading from './ui/BlogLoading'
-import { useTheme } from 'next-themes'
+import BlogMetadata from './ui/BlogMetadata'
+import TabSwitcher from './ui/TabSwitch'
+
+const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false })
 
 interface RecordClientProps {
   recordId: string
@@ -34,11 +34,7 @@ export function RecordClient({ recordId }: RecordClientProps) {
 
   const { resolvedTheme } = useTheme()
 
-  const {
-    data: blogsData,
-    isLoading,
-    error,
-  } = useBlogQuery(recordId)
+  const { data: blogsData, isLoading, error } = useBlogQuery(recordId)
 
   const blog: Blog = blogsData?.docs?.[0]
 
@@ -57,19 +53,23 @@ export function RecordClient({ recordId }: RecordClientProps) {
       { blogId: blog.id, content: blogContent },
       {
         onSuccess: () => {
-          toast.success('Article updated successfully!', { position: 'top-center' })
+          toast.success('Article updated successfully!', {
+            position: 'top-center',
+          })
           setIsEditing(false)
         },
         onError: (error) => {
-          toast.error(`Error updating article: ${(error as Error).message}`, { position: 'top-center' })
-        }
+          toast.error(`Error updating article: ${(error as Error).message}`, {
+            position: 'top-center',
+          })
+        },
       }
     )
   }
 
   const onEditClick = () => {
-    setActiveTab("generated")
-    setIsEditing(true);
+    setActiveTab('generated')
+    setIsEditing(true)
   }
 
   const onCancelClick = () => {
@@ -86,22 +86,18 @@ export function RecordClient({ recordId }: RecordClientProps) {
     <section className='gap-6 px-4'>
       <BlogLoading hidden={!isLoading} />
 
-      {error && (
-        <div className='text-destructive'>
-          Error loading blog: {(error as Error).message}
-        </div>
-      )}
+      {error && <div className='text-destructive'>Error loading blog: {(error as Error).message}</div>}
 
       {blog && (
         <>
-          <h1 className='text-5xl leading-[130%] font-bold tracking-tight'>
-            {blog.title}
-          </h1>
+          <h1 className='text-5xl leading-[130%] font-bold tracking-tight'>{blog.title}</h1>
 
           <div className='flex min-h-20 items-start justify-between'>
-            <BlogMetadata createdAt={blog.createdAt} tone={blog.tone} fileUrl={(blog.recordId as VoiceRecord).fileUrl} />
-
-
+            <BlogMetadata
+              createdAt={blog.createdAt}
+              tone={blog.tone}
+              fileUrl={(blog.recordId as VoiceRecord).fileUrl}
+            />
           </div>
           <div className='w-full'>
             <ActionBar
@@ -113,9 +109,7 @@ export function RecordClient({ recordId }: RecordClientProps) {
               onCancelClick={onCancelClick}
             />
           </div>
-          {
-            <TabSwitcher activeTab={activeTab} onChange={setActiveTab} disabled={isEditing} />
-          }
+          {<TabSwitcher activeTab={activeTab} onChange={setActiveTab} disabled={isEditing} />}
 
           <article className='bg-card w-full rounded-3xl border p-8 text-left shadow-sm'>
             <AnimatePresence mode='wait'>
@@ -133,16 +127,16 @@ export function RecordClient({ recordId }: RecordClientProps) {
                       <MDEditor
                         value={blogContent}
                         onChange={(val) => setBlogContent(val || '')}
-                        preview="edit"
+                        preview='edit'
                         commands={[]}
                         height={500}
-                        className="w-full"
+                        className='w-full'
                       />
                     </div>
                   ) : (
-                      <div className='prose prose-sm sm:prose-base dark:prose- max-w-none font-serif'>
-                        <ReactMarkdown>{blog.content}</ReactMarkdown>
-                      </div>
+                    <div className='prose prose-sm sm:prose-base dark:prose- max-w-none font-serif'>
+                      <ReactMarkdown>{blog.content}</ReactMarkdown>
+                    </div>
                   )}
                 </motion.div>
               ) : (
@@ -154,7 +148,7 @@ export function RecordClient({ recordId }: RecordClientProps) {
                   variants={animationVariants}
                   transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1.0] }}
                 >
-                    <p className='font-mono'>{(blog.transcriptId as Transcript).rawText}</p>
+                  <p className='font-mono'>{(blog.transcriptId as Transcript).rawText}</p>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -165,7 +159,8 @@ export function RecordClient({ recordId }: RecordClientProps) {
       {!isLoading && !blog && !error && (
         <div className='bg-card w-full max-w-3xl rounded-xl border p-8 text-center shadow-sm'>
           <p className='text-muted-foreground'>
-            No blog, no error found for this record yet. The workflow might still be processing. Please wait a few minutes and try reload.
+            No blog, no error found for this record yet. The workflow might still be processing. Please wait a few
+            minutes and try reload.
           </p>
         </div>
       )}

@@ -6,11 +6,7 @@ import type { User } from 'payload'
 // 2. if there are no users found, append `admin` to the roles array
 // access control is already handled by this fields `access` property
 // it ensures that only admins can create and update the `roles` field
-export const ensureFirstUserIsAdmin: FieldHook<User> = async ({
-  operation,
-  req,
-  value,
-}) => {
+export const ensureFirstUserIsAdmin: FieldHook<User> = async ({ operation, req, value }) => {
   if (operation === 'create') {
     const users = await req.payload.find({
       collection: 'adminUsers',

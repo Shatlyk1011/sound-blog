@@ -1,11 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import {
-  CheckmarkCircle01Icon,
-  Mic02Icon,
-  SparklesIcon,
-} from '@hugeicons/core-free-icons'
+import { CheckmarkCircle01Icon, Mic02Icon, SparklesIcon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { motion, Variants } from 'motion/react'
 import Link from 'next/link'
@@ -92,9 +88,7 @@ export default function Hero() {
               className='bg-secondary/70 border-foreground/10 mb-6 inline-flex items-center space-x-2 rounded-full border px-3 py-1'
             >
               <span className='flex h-2 w-2 animate-pulse rounded-full bg-violet-500' />
-              <span className='text-secondary-foreground text-xs font-medium'>
-                SoundBlog is now in beta
-              </span>
+              <span className='text-secondary-foreground text-xs font-medium'>SoundBlog is now in beta</span>
             </motion.div>
 
             <motion.h1
@@ -109,18 +103,15 @@ export default function Hero() {
               variants={itemVariants}
               className='mb-8 max-w-lg text-lg leading-relaxed text-gray-400 md:text-xl'
             >
-              Just speak naturally. SoundBlog&apos;s AI transforms your words
-              into beautifully written, publish-ready articles in seconds.
+              Just speak naturally. SoundBlog&apos;s AI transforms your words into beautifully written, publish-ready
+              articles in seconds.
             </motion.p>
 
             <motion.div
               variants={itemVariants}
               className='mb-8 flex w-full flex-col items-center space-y-4 sm:w-auto sm:flex-row sm:space-y-0 sm:space-x-4'
             >
-              <Button
-                asChild
-                className='w-max rounded-full px-8 py-6 font-semibold transition-all'
-              >
+              <Button asChild className='w-max rounded-full px-8 py-6 font-semibold transition-all'>
                 <Link href={'/sign-in'}>
                   <HugeiconsIcon className='h-5 w-5' icon={Mic02Icon} />
                   <span>Start Speaking</span>
@@ -143,24 +134,15 @@ export default function Hero() {
               className='flex items-center space-x-4 text-sm font-medium text-gray-500'
             >
               <div className='flex items-center'>
-                <HugeiconsIcon
-                  icon={CheckmarkCircle01Icon}
-                  className='mr-1.5 h-4 w-4 text-violet-500'
-                />
+                <HugeiconsIcon icon={CheckmarkCircle01Icon} className='mr-1.5 h-4 w-4 text-violet-500' />
                 No credit card required
               </div>
               <div className='hidden items-center sm:flex'>
-                <HugeiconsIcon
-                  icon={CheckmarkCircle01Icon}
-                  className='mr-1.5 h-4 w-4 text-violet-500'
-                />
+                <HugeiconsIcon icon={CheckmarkCircle01Icon} className='mr-1.5 h-4 w-4 text-violet-500' />
                 Free to start
               </div>
               <div className='flex items-center'>
-                <HugeiconsIcon
-                  icon={CheckmarkCircle01Icon}
-                  className='mr-1.5 h-4 w-4 text-violet-500'
-                />
+                <HugeiconsIcon icon={CheckmarkCircle01Icon} className='mr-1.5 h-4 w-4 text-violet-500' />
                 1,000 free tokens
               </div>
             </motion.div>
@@ -279,9 +261,7 @@ export function WaveformVisual() {
           </div>
 
           <div className='mt-2'>
-            <h4 className='mb-2 font-sans text-lg font-semibold'>
-              The Future of Content Creation
-            </h4>
+            <h4 className='mb-2 font-sans text-lg font-semibold'>The Future of Content Creation</h4>
             <div className='mb-3 flex items-center gap-2 text-xs text-gray-500'>
               <span>Today</span>
               <span>•</span>

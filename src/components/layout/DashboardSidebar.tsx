@@ -1,14 +1,9 @@
 'use client'
 
 import { ReactNode } from 'react'
+import { UserDataResponse } from '@/app/api/user-data/route'
 import { useUserCreditsQuery } from '@/services/user-credits'
-import {
-  Home01Icon,
-  UserCircleIcon,
-  MessageMultiple01Icon,
-  Crown03Icon,
-  Coins01Icon,
-} from '@hugeicons/core-free-icons'
+import { Home01Icon, UserCircleIcon, MessageMultiple01Icon, Crown03Icon, Coins01Icon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -16,9 +11,8 @@ import { cn } from '@/lib/utils'
 import { useUser } from '@/hooks/use-user'
 import { Button } from '@/components/ui/button'
 import { Separator } from '../ui/separator'
-import Header from './header'
 import { Skeleton } from '../ui/skeleton'
-import { UserDataResponse } from '@/app/api/user-data/route'
+import Header from './header'
 
 const NAV_ITEMS = [
   { href: '/dashboard', label: 'Home', icon: Home01Icon },
@@ -65,9 +59,7 @@ export function DashboardSidebar({ children }: Props) {
                       icon={icon}
                       className={cn(
                         'size-4 shrink-0 transition-colors',
-                        isActive
-                          ? 'text-sidebar-primary'
-                          : 'text-muted-foreground group-hover:text-sidebar-foreground'
+                        isActive ? 'text-sidebar-primary' : 'text-muted-foreground group-hover:text-sidebar-foreground'
                       )}
                     />
                     {label}
@@ -79,7 +71,11 @@ export function DashboardSidebar({ children }: Props) {
 
           <Separator className='my-3' />
 
-          <UserInfo name={SBUser?.user_metadata?.full_name || 'No name'} currentPlan={userData?.currentPlan} credits={remainingCredits} />
+          <UserInfo
+            name={SBUser?.user_metadata?.full_name || 'No name'}
+            currentPlan={userData?.currentPlan}
+            credits={remainingCredits}
+          />
         </nav>
 
         {/* Feedback button at bottom */}
@@ -88,10 +84,7 @@ export function DashboardSidebar({ children }: Props) {
             variant='ghost'
             className='text-sidebar-foreground/70 hover:bg-sidebar-accent/60 hover:text-sidebar-foreground w-full justify-start gap-2.5 text-sm font-medium'
           >
-            <HugeiconsIcon
-              icon={MessageMultiple01Icon}
-              className='text-muted-foreground size-4 shrink-0'
-            />
+            <HugeiconsIcon icon={MessageMultiple01Icon} className='text-muted-foreground size-4 shrink-0' />
             Feedback
           </Button>
         </div>
@@ -109,44 +102,40 @@ interface UserProps {
 
 const UserInfo = ({ name, currentPlan, credits }: UserProps) => {
   return (
-    <div className="space-y-4 px-2">
+    <div className='space-y-4 px-2'>
       {/* User Avatar */}
-      <div className="flex items-center gap-3">
-        <p className="text-base font-semibold text-sidebar-foreground">
-          {name}&apos;s workspace
-        </p>
+      <div className='flex items-center gap-3'>
+        <p className='text-sidebar-foreground text-base font-semibold'>{name}&apos;s workspace</p>
       </div>
 
       {/* Plan Info */}
-      <div className="space-y-2 text-sm capitalize">
-        <div className="flex items-center justify-between border-b border-border py-1">
-          <span className="text-sidebar-foreground/60">Current Plan:</span>
+      <div className='space-y-2 text-sm capitalize'>
+        <div className='border-border flex items-center justify-between border-b py-1'>
+          <span className='text-sidebar-foreground/60'>Current Plan:</span>
           {currentPlan ? (
-            <span className="text-sidebar-primary font-semibold">{currentPlan}</span>
+            <span className='text-sidebar-primary font-semibold'>{currentPlan}</span>
           ) : (
-            <Skeleton className='w-16 h-5' />
+            <Skeleton className='h-5 w-16' />
           )}
         </div>
 
-        <div className="flex items-center justify-between border-b border-border py-1">
-          <span className="text-sidebar-foreground/60">Credits:</span>
+        <div className='border-border flex items-center justify-between border-b py-1'>
+          <span className='text-sidebar-foreground/60'>Credits:</span>
           {credits ? (
-            <div className="flex text-sidebar-primary items-center gap-1">
-              <span className=" font-semibold">{credits}</span>
-              <span className="text-xs">(~{Math.round(credits / 60)} min)</span>
+            <div className='text-sidebar-primary flex items-center gap-1'>
+              <span className='font-semibold'>{credits}</span>
+              <span className='text-xs'>(~{Math.round(credits / 60)} min)</span>
             </div>
           ) : (
-            <Skeleton className='w-20 h-5' />
+            <Skeleton className='h-5 w-20' />
           )}
         </div>
 
-        <p className="text-xs text-sidebar-foreground/80 italic">
-          Note: 1 credit = 1 second
-        </p>
+        <p className='text-sidebar-foreground/80 text-xs italic'>Note: 1 credit = 1 second</p>
       </div>
 
       {/* Upgrade Button */}
-      <Button size="lg" asChild className='w-full bg-linear-to-l from-chart-2 to-chart-1'>
+      <Button size='lg' asChild className='from-chart-2 to-chart-1 w-full bg-linear-to-l'>
         <Link href='/pricing'>
           <HugeiconsIcon icon={Crown03Icon} className='size-5' />
           Upgrade
