@@ -5,17 +5,18 @@ import { useQuery } from '@tanstack/react-query'
 import { Blog, Transcript, VoiceRecord } from '@/payload-types'
 import { Close, Loading03Icon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
-import { AnimatePresence, Transition } from 'motion/react'
+import { AnimatePresence } from 'motion/react'
 import { motion } from 'motion/react'
 import { stringify } from 'qs-esm'
 import ReactMarkdown from 'react-markdown'
 import { toast } from 'sonner'
 import { copyToClipboard } from '@/lib/utils'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import MiniAudioPlayer from '@/components/VoiceRecordsGrid/AudioPlayer'
 import { ActionBar } from './ui/ActionBar'
 import TabSwitcher from './ui/TabSwitch'
+import BlogMetadata from './ui/BlogMetadata'
+import BlogLoading from './ui/BlogLoading'
 
 interface RecordClientProps {
   recordId: string
@@ -64,15 +65,7 @@ export function RecordClient({ recordId }: RecordClientProps) {
 
   return (
     <section className='gap-6 px-4'>
-      {isLoading && (
-        <div className='text-muted-foreground flex items-center gap-2 text-center'>
-          <HugeiconsIcon
-            icon={Loading03Icon}
-            className='animate-spin duration-2000'
-          />
-          <p>Loading blog...</p>
-        </div>
-      )}
+      <BlogLoading hidden={!isLoading} />
 
       {error && (
         <div className='text-destructive'>
@@ -87,19 +80,7 @@ export function RecordClient({ recordId }: RecordClientProps) {
           </h1>
 
           <div className='flex min-h-20 items-start justify-between'>
-            <div className='flex items-center text-sm font-medium'>
-              <ul className='flex items-center gap-2 py-4'>
-                {blog.tone && (
-                  <Badge variant={'outline'}>Tone: {blog.tone}</Badge>
-                )}
-              </ul>
-              <span className='mx-2 text-lg'>•</span>
-              <time className='text-muted-foreground' dateTime={blog.createdAt}>
-                {new Intl.DateTimeFormat('en-US', {
-                  dateStyle: 'long',
-                }).format(new Date(blog.createdAt))}
-              </time>
-            </div>
+            <BlogMetadata createdAt={blog.createdAt} tone={blog.tone} />
 
             <div className='flex flex-col'>
               {!showOriginalAudio ? (
@@ -157,7 +138,7 @@ export function RecordClient({ recordId }: RecordClientProps) {
                   variants={animationVariants}
                   transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1.0] }}
                 >
-                  <p>{(blog.transcriptId as Transcript).rawText}</p>
+                    <p className='font-mono'>{(blog.transcriptId as Transcript).rawText}</p>
                 </motion.div>
               )}
             </AnimatePresence>
