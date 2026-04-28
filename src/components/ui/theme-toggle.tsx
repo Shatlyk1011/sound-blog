@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { Moon02Icon, MoonIcon, Sun02Icon } from '@hugeicons/core-free-icons'
+import { Moon02Icon, Sun02Icon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { useTheme } from 'next-themes'
 import { Button } from '@/components/ui/button'

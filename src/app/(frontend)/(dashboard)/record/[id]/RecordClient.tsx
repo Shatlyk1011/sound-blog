@@ -1,22 +1,21 @@
 'use client'
 
-import { useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { useState, useEffect } from 'react'
+import dynamic from 'next/dynamic'
+import { useBlogQuery, useUpdateBlogMutation } from '@/services/blogs'
+
+const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false })
 import { Blog, Transcript, VoiceRecord } from '@/payload-types'
-import { Close, Loading03Icon } from '@hugeicons/core-free-icons'
-import { HugeiconsIcon } from '@hugeicons/react'
 import { AnimatePresence } from 'motion/react'
 import { motion } from 'motion/react'
-import { stringify } from 'qs-esm'
 import ReactMarkdown from 'react-markdown'
 import { toast } from 'sonner'
 import { copyToClipboard } from '@/lib/utils'
-import { Button } from '@/components/ui/button'
-import MiniAudioPlayer from '@/components/VoiceRecordsGrid/AudioPlayer'
 import { ActionBar } from './ui/ActionBar'
 import TabSwitcher from './ui/TabSwitch'
 import BlogMetadata from './ui/BlogMetadata'
 import BlogLoading from './ui/BlogLoading'
+import { useTheme } from 'next-themes'
 
 interface RecordClientProps {
   recordId: string
@@ -29,34 +28,44 @@ const animationVariants = {
 }
 
 export function RecordClient({ recordId }: RecordClientProps) {
-  const [showOriginalAudio, setShowOriginalAudio] = useState(false)
   const [activeTab, setActiveTab] = useState<'generated' | 'raw'>('generated')
+  const [isEditing, setIsEditing] = useState(false)
+  const [blogContent, setBlogContent] = useState<string>('')
 
-  const stringifiedQuery = stringify(
-    {
-      where: { recordId: { equals: recordId } },
-      depth: 1,
-      limit: 1,
-    },
-    { addQueryPrefix: true }
-  )
+  const { resolvedTheme } = useTheme()
 
   const {
     data: blogsData,
     isLoading,
     error,
-  } = useQuery({
-    queryKey: ['blog', recordId],
-    queryFn: async () => {
-      const res = await fetch(`/api/blogs${stringifiedQuery}`)
-      if (!res.ok) {
-        throw new Error('Failed to fetch blog')
-      }
-      return res.json()
-    },
-  })
+  } = useBlogQuery(recordId)
 
   const blog: Blog = blogsData?.docs?.[0]
+
+  useEffect(() => {
+    if (blog && !isEditing) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setBlogContent(blog.content || '')
+    }
+  }, [blog, isEditing])
+
+  const { mutate: updateBlogMutation, isPending } = useUpdateBlogMutation(recordId)
+
+  const handleSave = () => {
+    if (!blog) return
+    updateBlogMutation(
+      { blogId: blog.id, content: blogContent },
+      {
+        onSuccess: () => {
+          toast.success('Article updated successfully!', { position: 'top-center' })
+          setIsEditing(false)
+        },
+        onError: (error) => {
+          toast.error(`Error updating article: ${(error as Error).message}`, { position: 'top-center' })
+        }
+      }
+    )
+  }
 
   const handleCopy = async (text: string) => {
     await copyToClipboard(text)
@@ -80,39 +89,21 @@ export function RecordClient({ recordId }: RecordClientProps) {
           </h1>
 
           <div className='flex min-h-20 items-start justify-between'>
-            <BlogMetadata createdAt={blog.createdAt} tone={blog.tone} />
+            <BlogMetadata createdAt={blog.createdAt} tone={blog.tone} fileUrl={(blog.recordId as VoiceRecord).fileUrl} />
 
-            <div className='flex flex-col'>
-              {!showOriginalAudio ? (
-                <Button
-                  variant={'outline'}
-                  size='sm'
-                  onClick={() => setShowOriginalAudio(true)}
-                  className='text-xs font-medium'
-                >
-                  Show original audio
-                </Button>
-              ) : (
-                <div className='relative w-full'>
-                  <MiniAudioPlayer
-                    classes='border border-border w-64 '
-                    fileUrl={(blog.recordId as VoiceRecord).fileUrl}
-                  />
-                  <button
-                    onClick={() => setShowOriginalAudio(false)}
-                    className='bg-muted text-muted-foreground/60 absolute -top-2 -right-2 rounded-full p-0.5'
-                  >
-                    <HugeiconsIcon icon={Close} size={12} />
-                  </button>
-                </div>
-              )}
-            </div>
+
           </div>
           <div className='w-full'>
-            <ActionBar handleCopy={() => handleCopy(blog.content!)} />
+            <ActionBar
+              handleCopy={() => handleCopy(blog.content!)}
+              isEditing={isEditing}
+              isSaving={isPending}
+              onEditClick={() => setIsEditing(true)}
+              onSaveClick={handleSave}
+            />
           </div>
 
-          <TabSwitcher activeTab={activeTab} onChange={setActiveTab} />
+          <TabSwitcher activeTab={activeTab} onChange={setActiveTab} disabled={isEditing} />
 
           <article className='bg-card w-full rounded-3xl border p-8 text-left shadow-sm'>
             <AnimatePresence mode='wait'>
@@ -125,9 +116,21 @@ export function RecordClient({ recordId }: RecordClientProps) {
                   variants={animationVariants}
                   transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1.0] }}
                 >
-                  <div className='prose prose-sm sm:prose-base dark:prose- max-w-none font-serif'>
-                    <ReactMarkdown>{blog.content}</ReactMarkdown>
-                  </div>
+                  {isEditing ? (
+                    <div data-color-mode={resolvedTheme}>
+                      <MDEditor
+                        value={blogContent}
+                        onChange={(val) => setBlogContent(val || '')}
+                        preview="edit"
+                        height={500}
+                        className="w-full"
+                      />
+                    </div>
+                  ) : (
+                      <div className='prose prose-sm sm:prose-base dark:prose- max-w-none font-serif'>
+                        <ReactMarkdown>{blog.content}</ReactMarkdown>
+                      </div>
+                  )}
                 </motion.div>
               ) : (
                 <motion.div
@@ -149,8 +152,7 @@ export function RecordClient({ recordId }: RecordClientProps) {
       {!isLoading && !blog && !error && (
         <div className='bg-card w-full max-w-3xl rounded-xl border p-8 text-center shadow-sm'>
           <p className='text-muted-foreground'>
-            No blog found for this record yet. The AI might still be processing
-            it.
+            No blog, no error found for this record yet. The workflow might still be processing. Please wait a few minutes and try reload.
           </p>
         </div>
       )}
