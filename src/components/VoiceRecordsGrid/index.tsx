@@ -3,16 +3,10 @@
 import { useEffect } from 'react'
 import { useUserContext } from '@/app/_providers/user-provider'
 import { useVoiceRecordsInfiniteQuery } from '@/services/voice-records'
-import {
-  Calendar04Icon,
-  Clock03Icon,
-  FileAudioIcon,
-} from '@hugeicons/core-free-icons'
+import { FileAudioIcon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
-import Link from 'next/link'
 import { useInView } from 'react-intersection-observer'
 import { Skeleton } from '@/components/ui/skeleton'
-import MiniAudioPlayer from './AudioPlayer'
 import VoiceRecordCard from './VoiceRecordCard'
 
 export default function VoiceRecordsGrid() {
@@ -65,7 +59,7 @@ export default function VoiceRecordsGrid() {
         </div>
       ) : (
         <>
-          <div className='grid grid-cols-3 gap-6 max-lg:grid-cols-2 max-lg:gap-5 max-sm:grid-cols-1 max-sm:gap-6'>
+              <div className='grid grid-cols-3 gap-4 max-lg:grid-cols-2 max-lg:gap-4 max-sm:grid-cols-1 max-sm:gap-6'>
             {records.map((record) => (
               <VoiceRecordCard key={record.id} record={record} />
             ))}
