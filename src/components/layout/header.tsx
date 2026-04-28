@@ -54,8 +54,6 @@ const Header = ({ isDashboardPage }: Props) => {
     await signOut()
   }
 
-  console.log('user', user)
-
   return (
     <>
       <header
@@ -63,7 +61,6 @@ const Header = ({ isDashboardPage }: Props) => {
           'fixed top-0 z-20 mx-auto flex h-14 border-b w-full items-center justify-between px-8 py-2 max-md:px-4',
           isScrolled && 'bg-background/50 backdrop-blur-sm ',
           user && 'bg-sidebar backdrop-blur-none border-none',
-          isScrolled && user && 'border-b'
         )}
       >
         <Link
@@ -78,7 +75,7 @@ const Header = ({ isDashboardPage }: Props) => {
           className={cn(
             'text-muted-foreground z-49 flex flex-1 justify-start transition-all max-md:absolute max-md:inset-0 max-md:ml-0 max-md:h-svh max-md:w-screen max-md:translate-x-full',
             menu ? 'max-md:translate-x-0' : 'max-md:translate-x-full',
-            isDashboardPage && 'hidden'
+            (isDashboardPage || user) && 'hidden'
           )}
         >
           <ul className='-tracking-one max-md:bg-muted flex items-center text-sm font-medium max-md:w-full max-md:flex-col max-md:gap-3 max-md:pt-40 max-md:text-base'>

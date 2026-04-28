@@ -59,7 +59,7 @@ export default function VoiceRecordsGrid() {
         </div>
       ) : (
         <>
-              <div className='grid grid-cols-3 gap-4 max-lg:grid-cols-2 max-lg:gap-4 max-sm:grid-cols-1 max-sm:gap-6'>
+              <div className='grid grid-cols-3 gap-5 max-xl:grid-cols-2 max-xl:gap-5 max-md:grid-cols-1 max-sm:gap-6'>
             {records.map((record) => (
               <VoiceRecordCard key={record.id} record={record} />
             ))}

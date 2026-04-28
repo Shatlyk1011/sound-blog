@@ -17,6 +17,8 @@ import { useUser } from '@/hooks/use-user'
 import { Button } from '@/components/ui/button'
 import { Separator } from '../ui/separator'
 import Header from './header'
+import { Skeleton } from '../ui/skeleton'
+import { UserDataResponse } from '@/app/api/user-data/route'
 
 const NAV_ITEMS = [
   { href: '/dashboard', label: 'Home', icon: Home01Icon },
@@ -32,7 +34,9 @@ export function DashboardSidebar({ children }: Props) {
 
   const { user: SBUser } = useUser()
 
-  const { data: userData, isLoading, isError } = useUserCreditsQuery(SBUser?.id)
+  const { data: userData } = useUserCreditsQuery(SBUser?.id)
+
+  const remainingCredits = userData ? userData.totalCredits - (userData?.creditsSpent || 0) : undefined
 
   return (
     <>
@@ -75,7 +79,7 @@ export function DashboardSidebar({ children }: Props) {
 
           <Separator className='my-3' />
 
-          <div className='mt-6 space-y-2 px-2 text-xs'>
+          {/* <div className='mt-6 space-y-2 px-2 text-xs'>
             <p className='mb-4 text-base font-semibold'>
               {SBUser?.user_metadata?.full_name || 'No name'}&apos;s workspace
             </p>
@@ -83,11 +87,11 @@ export function DashboardSidebar({ children }: Props) {
             <div className='tracking-one text-muted-foreground mb-2 flex items-center gap-2 text-sm font-semibold'>
               <span>Current Plan:</span>
               {userData && !isLoading ? (
-                <span className='text-primary'>
+                <span className='text-primary text-nowrap'>
                   {userData.currentPlan === 'free' ? 'Free Plan' : 'Pro Plan'}
                 </span>
               ) : (
-                <span>Loading...</span>
+                  <Skeleton className='w-20 h-5'></Skeleton>
               )}
               {isError && (
                 <span className='text-destructive'>
@@ -98,10 +102,15 @@ export function DashboardSidebar({ children }: Props) {
 
             <div className='text-muted-foreground mb-2 flex items-center gap-2 text-sm font-semibold'>
               <span>Credits: </span>
-              <span className='text-primary flex items-center gap-0.5'>
-                {userData?.totalCredits}
-                <HugeiconsIcon size={18} icon={Coins01Icon} />
-              </span>
+              {isLoading ? (
+                <Skeleton className='h-5 w-20' />
+              ) : (
+                  <span className='text-primary flex items-center gap-0.5'>
+                    {userData?.totalCredits}
+                    <HugeiconsIcon size={18} icon={Coins01Icon} />
+                  </span>
+              )}
+
             </div>
 
             <div className='text-muted-foreground/70 flex gap-1 text-xs font-semibold'>
@@ -116,7 +125,9 @@ export function DashboardSidebar({ children }: Props) {
                 Upgrade
               </Link>
             </Button>
-          </div>
+          </div> */}
+
+          <UserInfo name={SBUser?.user_metadata?.full_name || 'No name'} currentPlan={userData?.currentPlan} credits={remainingCredits} />
         </nav>
 
         {/* Feedback button at bottom */}
@@ -135,5 +146,60 @@ export function DashboardSidebar({ children }: Props) {
       </aside>
       {children}
     </>
+  )
+}
+
+interface UserProps {
+  name?: string
+  currentPlan?: UserDataResponse['currentPlan']
+  credits?: UserDataResponse['totalCredits']
+}
+
+const UserInfo = ({ name, currentPlan, credits }: UserProps) => {
+  return (
+    <div className="space-y-4 px-2">
+      {/* User Avatar */}
+      <div className="flex items-center gap-3">
+        <p className="text-base font-semibold text-sidebar-foreground">
+          {name}&apos;s workspace
+        </p>
+      </div>
+
+      {/* Plan Info */}
+      <div className="space-y-2 text-sm capitalize">
+        <div className="flex items-center justify-between border-b border-border py-1">
+          <span className="text-sidebar-foreground/60">Current Plan:</span>
+          {currentPlan ? (
+            <span className="text-sidebar-primary font-semibold">{currentPlan}</span>
+          ) : (
+            <Skeleton className='w-16 h-5' />
+          )}
+        </div>
+
+        <div className="flex items-center justify-between border-b border-border py-1">
+          <span className="text-sidebar-foreground/60">Credits:</span>
+          {credits ? (
+            <div className="flex text-sidebar-primary items-center gap-1">
+              <span className=" font-semibold">{credits}</span>
+              <span className="text-xs">(~{Math.round(credits / 60)} min)</span>
+            </div>
+          ) : (
+            <Skeleton className='w-20 h-5' />
+          )}
+        </div>
+
+        <p className="text-xs text-sidebar-foreground/80 italic">
+          Note: 1 credit = 1 second
+        </p>
+      </div>
+
+      {/* Upgrade Button */}
+      <Button size="lg" asChild className='w-full bg-linear-to-l from-chart-2 to-chart-1'>
+        <Link href='/pricing'>
+          <HugeiconsIcon icon={Crown03Icon} className='size-5' />
+          Upgrade
+        </Link>
+      </Button>
+    </div>
   )
 }

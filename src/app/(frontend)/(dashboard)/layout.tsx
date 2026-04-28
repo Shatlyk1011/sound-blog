@@ -14,10 +14,10 @@ export default function DashboardLayout({
   children: React.ReactNode
 }>) {
   return (
-    <main className='flex min-h-svh'>
+    <div className='flex min-h-svh'>
       <DashboardSidebar>
         <div className='ml-60 flex-1'>{children}</div>
       </DashboardSidebar>
-    </main>
+    </div>
   )
 }

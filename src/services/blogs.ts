@@ -1,5 +1,9 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { stringify } from 'qs-esm'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { stringify } from 'qs-esm';
+
+
+
+
 
 export const useBlogQuery = (recordId: string) => {
   const stringifiedQuery = stringify(
@@ -14,7 +18,7 @@ export const useBlogQuery = (recordId: string) => {
   return useQuery({
     queryKey: ['blog', recordId],
     queryFn: async () => {
-      const res = await fetch(`/api/blogs${stringifiedQuery}`)
+      const res = await fetch(`/api/blogs${stringifiedQuery}&summary=true`)
       if (!res.ok) {
         throw new Error('Failed to fetch blog')
       }

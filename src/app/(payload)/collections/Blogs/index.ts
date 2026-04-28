@@ -25,6 +25,14 @@ const Blogs: CollectionConfig = {
       type: 'relationship',
       relationTo: 'users',
       required: true,
+      access: {
+        read: ({ req }) => {
+          if (req?.query?.summary) {
+            return false
+          }
+          return true
+        },
+      },
       admin: {
         readOnly: true,
         position: 'sidebar',
