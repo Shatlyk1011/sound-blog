@@ -2,8 +2,14 @@
 import { useEffect, useRef, useState } from 'react'
 import { PauseIcon, PlayIcon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
+import { cn } from '@/lib/utils'
 
-function MiniAudioPlayer({ fileUrl }: { fileUrl?: string }) {
+interface Props {
+  fileUrl: string
+  classes?: string
+}
+
+function MiniAudioPlayer({ fileUrl, classes }: Props) {
   const audioRef = useRef<HTMLAudioElement>(null)
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
@@ -61,7 +67,7 @@ function MiniAudioPlayer({ fileUrl }: { fileUrl?: string }) {
   if (!fileUrl) return null
 
   return (
-    <div className='bg-card border-border/50 mt-2 mb-3 flex w-full flex-col gap-2 rounded-2xl border p-3'>
+    <div className={cn('bg-card border-border/50 mt-2 mb-3 flex w-full flex-col gap-2 rounded-2xl border p-3', classes)}>
       <audio ref={audioRef} src={fileUrl} preload='metadata' />
 
       <div className='flex items-center gap-3'>

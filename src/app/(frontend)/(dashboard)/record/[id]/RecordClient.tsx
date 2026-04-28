@@ -1,19 +1,22 @@
 'use client'
 
 import { useQuery } from '@tanstack/react-query'
-import { Blog } from '@/payload-types'
-import { Loading03Icon } from '@hugeicons/core-free-icons'
+import { Blog, VoiceRecord } from '@/payload-types'
+import { Close, Loading03Icon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { stringify } from 'qs-esm'
 import ReactMarkdown from 'react-markdown'
 import { Badge } from '@/components/ui/badge'
 import MiniAudioPlayer from '@/components/VoiceRecordsGrid/AudioPlayer'
+import { useState } from 'react'
+import { Button } from '@/components/ui/button'
 
 interface RecordClientProps {
   recordId: string
 }
 
 export function RecordClient({ recordId }: RecordClientProps) {
+  const [showOriginalAudio, setShowOriginalAudio] = useState(false)
   const stringifiedQuery = stringify(
     {
       where: { recordId: { equals: recordId } },
@@ -67,19 +70,34 @@ export function RecordClient({ recordId }: RecordClientProps) {
           </h1>
 
           <div className='flex justify-between'>
-            <div className='mb-6 flex items-center text-sm font-medium'>
-              <ul className='flex items-center gap-2 py-4'>
-                <Badge variant={'secondary'}>Status: {blog.status}</Badge>
-                {blog.tone && <Badge>Tone: {blog.tone}</Badge>}
-              </ul>
-              <span className='mx-2 text-lg'>•</span>
-              <time className='text-muted-foreground' dateTime={blog.createdAt}>
-                {new Intl.DateTimeFormat('en-US', {
-                  dateStyle: 'long',
-                }).format(new Date(blog.createdAt))}
-              </time>
+            <div className='mb-6 flex flex-col text-sm font-medium'>
+              <div className='flex items-center '>
+                <ul className='flex items-center gap-2 py-4'>
+                  {blog.tone && <Badge variant={'secondary'}>Tone: {blog.tone}</Badge>}
+                </ul>
+                <span className='mx-2 text-lg'>•</span>
+                <time className='text-muted-foreground' dateTime={blog.createdAt}>
+                  {new Intl.DateTimeFormat('en-US', {
+                    dateStyle: 'long',
+                  }).format(new Date(blog.createdAt))}
+                </time>
+              </div>
+
+              123
+
             </div>
-            <MiniAudioPlayer />
+            <div className='flex flex-col'>
+              {!showOriginalAudio ? (
+                <Button variant={'outline'} size="sm" onClick={() => setShowOriginalAudio(true)} className='text-xs text-muted-foreground font-medium'>Show original audio</Button>
+              ) : (
+                <div className='w-full relative'>
+                  <MiniAudioPlayer classes='border border-border w-64 ' fileUrl={(blog.recordId as VoiceRecord).fileUrl} />
+                  <button onClick={() => setShowOriginalAudio(false)} className=' absolute -top-2 -right-2 bg-muted text-muted-foreground/60 p-0.5 rounded-full'>
+                    <HugeiconsIcon icon={Close} size={12} />
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
 
           <article className='bg-card w-full max-w-full rounded-3xl border p-8 text-left shadow-sm'>
