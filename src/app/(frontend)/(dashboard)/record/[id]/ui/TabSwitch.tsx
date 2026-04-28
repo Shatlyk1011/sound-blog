@@ -14,14 +14,16 @@ export default function TabSwitcher({ activeTab, onChange, disabled }: TabSwitch
         <button
           disabled={disabled}
           onClick={() => onChange('generated')}
-          className={cn('relative border-b-2 pb-3 transition-all', isGeneratedActive ? 'text-foreground border-current' : 'text-muted-foreground hover:text-foreground border-transparent', disabled && 'opacity-50 border-transparent hover:text-current text-foreground')}
+          aria-label={disabled ? 'Editing, disabled to switch' : 'Generated Article'}
+          className={cn('relative border-b-2 pb-3 transition-all', isGeneratedActive ? 'text-foreground border-current' : 'text-muted-foreground hover:text-foreground border-transparent', disabled && 'opacity-50 border-transparent cursor-not-allowed hover:text-current text-foreground')}
         >
           Generated Article
         </button>
         <button
           disabled={disabled}
           onClick={() => onChange('raw')}
-          className={cn('relative border-b-2 pb-3 transition-all', !isGeneratedActive ? 'text-foreground border-current' : 'text-muted-foreground hover:text-foreground border-transparent', disabled && 'opacity-50 border-transparent hover:text-current text-foreground')}
+          aria-label={disabled ? 'Editing, disabled to switch' : 'Raw Transcript'}
+          className={cn('relative border-b-2 pb-3 transition-all', !isGeneratedActive ? 'text-foreground border-current' : 'text-muted-foreground hover:text-foreground border-transparent', disabled && 'opacity-50 border-transparent cursor-not-allowed hover:text-current text-foreground')}
         >
           Raw Transcript
         </button>

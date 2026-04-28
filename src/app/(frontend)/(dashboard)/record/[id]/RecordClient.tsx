@@ -114,9 +114,7 @@ export function RecordClient({ recordId }: RecordClientProps) {
             />
           </div>
           {
-            !isEditing && (
-              <TabSwitcher activeTab={activeTab} onChange={setActiveTab} disabled={isEditing} />
-            )
+            <TabSwitcher activeTab={activeTab} onChange={setActiveTab} disabled={isEditing} />
           }
 
           <article className='bg-card w-full rounded-3xl border p-8 text-left shadow-sm'>
@@ -136,6 +134,7 @@ export function RecordClient({ recordId }: RecordClientProps) {
                         value={blogContent}
                         onChange={(val) => setBlogContent(val || '')}
                         preview="edit"
+                        commands={[]}
                         height={500}
                         className="w-full"
                       />

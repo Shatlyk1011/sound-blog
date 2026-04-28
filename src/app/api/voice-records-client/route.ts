@@ -1,7 +1,13 @@
-import configPromise from '@payload-config'
-import { NextResponse } from 'next/server'
-import { getPayload } from 'payload'
-import { createClient } from '@/lib/supabase-server'
+import configPromise from '@payload-config';
+import { NextResponse } from 'next/server';
+import { getPayload } from 'payload';
+import { createClient } from '@/lib/supabase-server';
+
+
+
+
+
+
 
 export async function GET() {
   try {
@@ -32,7 +38,7 @@ export async function GET() {
 
     const payloadUserId = users[0].id
 
-    const { docs, totalDocs } = await payload.find({
+    const { docs, totalDocs, hasNextPage } = await payload.find({
       collection: 'voice-records',
       depth: 0,
       where: {
@@ -44,7 +50,7 @@ export async function GET() {
       limit: 100,
     })
 
-    return NextResponse.json({ docs, totalDocs })
+    return NextResponse.json({ docs, totalDocs, hasNextPage })
   } catch (err: unknown) {
     console.error('Error fetching voice records:', err)
     const message = err instanceof Error ? err.message : 'Internal server error'

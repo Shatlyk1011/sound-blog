@@ -29,7 +29,7 @@ export function ActionBar({ handleCopy, isEditing, isSaving, onEditClick, onSave
             {isSaving && <HugeiconsIcon icon={Loading03Icon} size={16} />}
             Save Article
           </Button>
-          <Button className='rounded-full' variant={'destructive'} onClick={onCancelClick} disabled={isSaving}>
+          <Button className='rounded-full text-destructive/90 bg-destructive/40' variant={'destructive'} onClick={onCancelClick} disabled={isSaving}>
             {isSaving && <HugeiconsIcon icon={Loading03Icon} size={16} />}
             Cancel Editing
           </Button>
