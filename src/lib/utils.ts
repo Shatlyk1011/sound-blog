@@ -1,5 +1,9 @@
-import { clsx, type ClassValue } from 'clsx'
-import { twMerge } from 'tailwind-merge'
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
+
+
+
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -21,5 +25,13 @@ export function getStatusColor(status: string) {
       return 'text-red-500 bg-red-50 dark:bg-red-500/10'
     default:
       return 'text-gray-500 bg-gray-50 dark:bg-gray-500/10'
+  }
+}
+
+export const copyToClipboard = async (textToCopy: string) => {
+  if ('clipboard' in navigator) {
+    return await navigator.clipboard.writeText(textToCopy)
+  } else {
+    return document.execCommand('copy', true, textToCopy)
   }
 }

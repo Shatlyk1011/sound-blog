@@ -7,6 +7,8 @@ import { Toaster } from 'sonner'
 import TanstackQueryProvider from '../_providers/tanstack-query'
 import { UserProvider } from '../_providers/user-provider'
 import './globals.css'
+import { TooltipProvider } from "@/components/ui/tooltip"
+
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -44,13 +46,16 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            <TooltipProvider>
+
             <TanstackQueryProvider>
               {children}
               {modal}
             </TanstackQueryProvider>
+            </TooltipProvider>
           </ThemeProvider>
         </UserProvider>
-        <Toaster position='bottom-right' />
+        <Toaster position='top-center' />
       </body>
     </html>
   )

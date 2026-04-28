@@ -1,7 +1,7 @@
 'use client'
 
 import { useQuery } from '@tanstack/react-query'
-import { Blog, VoiceRecord } from '@/payload-types'
+import { Blog, Transcript, VoiceRecord } from '@/payload-types'
 import { Close, Loading03Icon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { stringify } from 'qs-esm'
@@ -10,13 +10,27 @@ import { Badge } from '@/components/ui/badge'
 import MiniAudioPlayer from '@/components/VoiceRecordsGrid/AudioPlayer'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
+import { AnimatePresence, Transition } from 'motion/react'
+import { motion } from 'motion/react'
+import TabSwitcher from './ui/TabSwitch'
+import { ActionBar } from './ui/ActionBar'
+import { copyToClipboard } from '@/lib/utils'
+import { toast } from 'sonner'
 
 interface RecordClientProps {
   recordId: string
 }
 
+const animationVariants = {
+  hidden: { opacity: 0, y: 15 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -15 },
+};
+
 export function RecordClient({ recordId }: RecordClientProps) {
   const [showOriginalAudio, setShowOriginalAudio] = useState(false)
+  const [activeTab, setActiveTab] = useState<'generated' | 'raw'>('generated')
+
   const stringifiedQuery = stringify(
     {
       where: { recordId: { equals: recordId } },
@@ -43,12 +57,15 @@ export function RecordClient({ recordId }: RecordClientProps) {
 
   const blog: Blog = blogsData?.docs?.[0]
 
-  console.log('blog', blog)
+  const handleCopy = async (text: string) => {
+    await copyToClipboard(text)
+    toast.success('Blog copied successfully!', { position: 'top-center' })
+  }
 
   return (
     <section className='gap-6 px-4'>
       {isLoading && (
-        <div className='text-muted-foreground flex items-center gap-2'>
+        <div className='text-muted-foreground flex items-center text-center gap-2'>
           <HugeiconsIcon
             icon={Loading03Icon}
             className='animate-spin duration-2000'
@@ -69,26 +86,23 @@ export function RecordClient({ recordId }: RecordClientProps) {
             {blog.title}
           </h1>
 
-          <div className='flex justify-between'>
-            <div className='mb-6 flex flex-col text-sm font-medium'>
-              <div className='flex items-center '>
-                <ul className='flex items-center gap-2 py-4'>
-                  {blog.tone && <Badge variant={'secondary'}>Tone: {blog.tone}</Badge>}
-                </ul>
-                <span className='mx-2 text-lg'>•</span>
-                <time className='text-muted-foreground' dateTime={blog.createdAt}>
-                  {new Intl.DateTimeFormat('en-US', {
-                    dateStyle: 'long',
-                  }).format(new Date(blog.createdAt))}
-                </time>
-              </div>
-
-              123
-
+          <div className='flex justify-between items-start min-h-20'>
+            <div className='flex text-sm font-medium items-center '>
+              <ul className='flex items-center gap-2 py-4'>
+                {blog.tone && <Badge variant={'outline'}>Tone: {blog.tone}</Badge>}
+              </ul>
+              <span className='mx-2 text-lg'>•</span>
+              <time className='text-muted-foreground' dateTime={blog.createdAt}>
+                {new Intl.DateTimeFormat('en-US', {
+                  dateStyle: 'long',
+                }).format(new Date(blog.createdAt))}
+              </time>
             </div>
+
+
             <div className='flex flex-col'>
               {!showOriginalAudio ? (
-                <Button variant={'outline'} size="sm" onClick={() => setShowOriginalAudio(true)} className='text-xs text-muted-foreground font-medium'>Show original audio</Button>
+                <Button variant={'outline'} size="sm" onClick={() => setShowOriginalAudio(true)} className='text-xs font-medium'>Show original audio</Button>
               ) : (
                 <div className='w-full relative'>
                   <MiniAudioPlayer classes='border border-border w-64 ' fileUrl={(blog.recordId as VoiceRecord).fileUrl} />
@@ -99,11 +113,42 @@ export function RecordClient({ recordId }: RecordClientProps) {
               )}
             </div>
           </div>
+          <div className='w-full'>
+            <ActionBar handleCopy={() => handleCopy(blog.content!)} />
+          </div>
 
-          <article className='bg-card w-full max-w-full rounded-3xl border p-8 text-left shadow-sm'>
-            <div className='prose prose-sm sm:prose-base dark:prose- max-w-none font-serif'>
-              <ReactMarkdown>{blog.content}</ReactMarkdown>
-            </div>
+
+          <TabSwitcher activeTab={activeTab} onChange={setActiveTab} />
+
+          <article className='bg-card w-full rounded-3xl border p-8 text-left shadow-sm'>
+            <AnimatePresence mode="wait">
+              {activeTab === 'generated' ? (
+                <motion.div
+                  key="generated"
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                  variants={animationVariants}
+                  transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1.0] }}
+                >
+                  <div className='prose prose-sm sm:prose-base dark:prose- max-w-none font-serif'>
+                    <ReactMarkdown>{blog.content}</ReactMarkdown>
+                  </div>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="raw"
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                  variants={animationVariants}
+                  transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1.0] }}
+                >
+                  <p>{(blog.transcriptId as Transcript).rawText}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
           </article>
         </>
       )}
