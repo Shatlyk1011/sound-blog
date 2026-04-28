@@ -37,7 +37,7 @@ export function DashboardSidebar({ children }: Props) {
   return (
     <>
       <Header isDashboardPage />
-      <aside className='border-sidebar-border bg-sidebar fixed top-14 left-0 z-40 flex h-[calc(100vh-56px)] w-60 flex-col border-r'>
+      <aside className='border-sidebar-border bg-sidebar fixed top-14 left-0 z-40 flex h-[calc(100vh-56px)] w-60 flex-col'>
         {/* Nav */}
         <nav className='flex-1 overflow-y-auto px-3 py-4'>
           <span className='text-muted-foreground/70 mb-2 inline-block px-2 text-xs font-semibold tracking-widest uppercase'>

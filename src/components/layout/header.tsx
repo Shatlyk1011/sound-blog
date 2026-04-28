@@ -54,12 +54,16 @@ const Header = ({ isDashboardPage }: Props) => {
     await signOut()
   }
 
+  console.log('user', user)
+
   return (
     <>
       <header
         className={cn(
-          'fixed top-0 z-20 mx-auto flex h-14 w-full items-center justify-between border-b px-8 py-2 max-md:px-4',
-          isScrolled && 'bg-background/90 backdrop-blur-sm'
+          'fixed top-0 z-20 mx-auto flex h-14 border-b w-full items-center justify-between px-8 py-2 max-md:px-4',
+          isScrolled && 'bg-background/50 backdrop-blur-sm ',
+          user && 'bg-sidebar backdrop-blur-none border-none',
+          isScrolled && user && 'border-b'
         )}
       >
         <Link

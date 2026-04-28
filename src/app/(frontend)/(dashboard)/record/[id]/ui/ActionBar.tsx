@@ -25,11 +25,11 @@ export function ActionBar({ handleCopy, isEditing, isSaving, onEditClick, onSave
     <div className='mb-4 flex flex-wrap items-center gap-2 py-2'>
       {isEditing ? (
         <>
-          <Button variant={'default'} onClick={onSaveClick} disabled={isSaving}>
+          <Button className='rounded-full' onClick={onSaveClick} disabled={isSaving}>
             {isSaving && <HugeiconsIcon icon={Loading03Icon} size={16} />}
             Save Article
           </Button>
-          <Button variant={'destructive'} onClick={onCancelClick} disabled={isSaving}>
+          <Button className='rounded-full' variant={'destructive'} onClick={onCancelClick} disabled={isSaving}>
             {isSaving && <HugeiconsIcon icon={Loading03Icon} size={16} />}
             Cancel Editing
           </Button>

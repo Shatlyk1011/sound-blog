@@ -34,9 +34,9 @@ export default function VoiceRecordsGrid() {
   return (
     <section className='mx-auto w-full max-w-6xl px-6 py-10 max-md:px-4'>
       <div className='mb-6 flex flex-col items-start justify-between gap-1'>
-        <h2 className='text-2xl font-bold tracking-tight'>Your Recordings</h2>
-        <p className='text-muted-foreground text-sm'>
-          Manage and view your voice records
+        <h2 className='text-4xl font-bold tracking-tight'>Your Recordings</h2>
+        <p className='text-muted-foreground text-base'>
+          Explore your voice records
         </p>
       </div>
 
