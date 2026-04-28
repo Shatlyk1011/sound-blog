@@ -79,54 +79,6 @@ export function DashboardSidebar({ children }: Props) {
 
           <Separator className='my-3' />
 
-          {/* <div className='mt-6 space-y-2 px-2 text-xs'>
-            <p className='mb-4 text-base font-semibold'>
-              {SBUser?.user_metadata?.full_name || 'No name'}&apos;s workspace
-            </p>
-
-            <div className='tracking-one text-muted-foreground mb-2 flex items-center gap-2 text-sm font-semibold'>
-              <span>Current Plan:</span>
-              {userData && !isLoading ? (
-                <span className='text-primary text-nowrap'>
-                  {userData.currentPlan === 'free' ? 'Free Plan' : 'Pro Plan'}
-                </span>
-              ) : (
-                  <Skeleton className='w-20 h-5'></Skeleton>
-              )}
-              {isError && (
-                <span className='text-destructive'>
-                  Something went wrong. <br /> Call 112
-                </span>
-              )}
-            </div>
-
-            <div className='text-muted-foreground mb-2 flex items-center gap-2 text-sm font-semibold'>
-              <span>Credits: </span>
-              {isLoading ? (
-                <Skeleton className='h-5 w-20' />
-              ) : (
-                  <span className='text-primary flex items-center gap-0.5'>
-                    {userData?.totalCredits}
-                    <HugeiconsIcon size={18} icon={Coins01Icon} />
-                  </span>
-              )}
-
-            </div>
-
-            <div className='text-muted-foreground/70 flex gap-1 text-xs font-semibold'>
-              <span>Note: 1 credit</span>
-              <span>=</span>
-              <span>1 second</span>
-            </div>
-
-            <Button asChild className='w-full'>
-              <Link href='/pricing'>
-                <HugeiconsIcon icon={Crown03Icon} />
-                Upgrade
-              </Link>
-            </Button>
-          </div> */}
-
           <UserInfo name={SBUser?.user_metadata?.full_name || 'No name'} currentPlan={userData?.currentPlan} credits={remainingCredits} />
         </nav>
 

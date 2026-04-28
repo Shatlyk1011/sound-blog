@@ -1,4 +1,4 @@
-import { useInfiniteQuery } from '@tanstack/react-query'
+import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { VoiceRecord } from '@/payload-types'
 
 interface VoiceRecordsResponse {
@@ -34,5 +34,24 @@ export const useVoiceRecordsInfiniteQuery = (
       lastPage.hasNextPage ? lastPage.nextPage : undefined,
     enabled: !!userId,
     refetchInterval: isRefetchAvailable ? 3000 : false,
+  })
+}
+
+const deleteVoiceRecord = async (id: string): Promise<void> => {
+  const response = await fetch(`/api/voice-records-client/${id}`, {
+    method: 'DELETE',
+  })
+  if (!response.ok) {
+    throw new Error('Failed to delete voice record')
+  }
+}
+
+export const useDeleteVoiceRecordMutation = (userId: string | undefined) => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: deleteVoiceRecord,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['voice-records', userId] })
+    },
   })
 }

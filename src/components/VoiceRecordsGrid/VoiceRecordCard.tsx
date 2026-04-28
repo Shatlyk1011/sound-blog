@@ -1,4 +1,6 @@
-import { FC } from 'react'
+'use client'
+
+import { FC, useState } from 'react'
 import { VoiceRecord } from '@/payload-types'
 import {
   Calendar04Icon,
@@ -6,6 +8,7 @@ import {
   MoreVerticalIcon,
   Delete01Icon,
   ProfileIcon,
+  Loading03Icon,
 } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import Link from 'next/link'
@@ -18,19 +21,44 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '../ui/alert-dialog'
+import { useUserContext } from '@/app/_providers/user-provider'
+import { useDeleteVoiceRecordMutation } from '@/services/voice-records'
 
 interface Props {
   record: VoiceRecord
 }
 
 const VoiceRecordCard: FC<Props> = ({ record }) => {
+  const { user } = useUserContext()
+  const { mutate: deleteRecord, isPending } = useDeleteVoiceRecordMutation(user?.id)
+  const [showDeleteAlert, setShowDeleteAlert] = useState(false)
+
   return (
-    <div
+    <>
+      <div
       key={record.id}
-      className='group bg-card hover:border-accent/50 relative flex flex-col justify-between overflow-hidden rounded-2xl border p-6 pb-4 shadow-sm transition-all hover:shadow-md'
+        className='group bg-card hover:border-accent/50 relative flex flex-col justify-between overflow-hidden rounded-2xl border px-6 pt-5 pb-4 shadow-sm transition-all hover:shadow-md'
     >
+        {isPending && (
+          <div className='absolute bg-card/80 backdrop-blur-[2px] inset-0 flex items-center justify-center'>
+            <span className='flex items-center gap-2'>
+              <HugeiconsIcon icon={Loading03Icon} className='size-4 animate-spin ease-in-out duration-3000 delay-200' />
+              <span className='text-sm text-card-foreground/80'>deleting...</span>
+            </span>
+          </div>
+        )}
       <div>
-        <div className='mb-3 flex items-center justify-between'>
+          <div className='mb-3 flex items-start justify-between'>
           <div className='bg-input/70 rounded-xl p-3'>
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" data-id="element-30"><path d="M2 10v3"></path><path d="M6 6v11"></path><path d="M10 3v18"></path><path d="M14 8v7"></path><path d="M18 5v13"></path><path d="M22 10v3"></path></svg>
           </div>
@@ -43,7 +71,7 @@ const VoiceRecordCard: FC<Props> = ({ record }) => {
             </span>
 
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
+                <DropdownMenuTrigger asChild className='-mr-2'>
                 <Button variant={'ghost'} size={'icon-sm'}>
                   <HugeiconsIcon icon={MoreVerticalIcon} className='size-4' />
                 </Button>
@@ -55,7 +83,10 @@ const VoiceRecordCard: FC<Props> = ({ record }) => {
                     Details
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer text-destructive focus:bg-destructive/10 focus:text-destructive flex items-center gap-2">
+                  <DropdownMenuItem
+                    className="cursor-pointer text-destructive focus:bg-destructive/10 focus:text-destructive flex items-center gap-2"
+                    onSelect={() => setShowDeleteAlert(true)}
+                  >
                   <HugeiconsIcon icon={Delete01Icon} className='size-4' />
                   Delete
                 </DropdownMenuItem>
@@ -87,6 +118,32 @@ const VoiceRecordCard: FC<Props> = ({ record }) => {
         </div>
       </div>
     </div>
+
+      <AlertDialog open={showDeleteAlert} onOpenChange={setShowDeleteAlert}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure you want to delete this?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will permanently delete your record: <b>{record.fileName}</b>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              disabled={isPending}
+              onClick={(e) => {
+                e.preventDefault()
+                setShowDeleteAlert(false)
+                deleteRecord(record.id)
+              }}
+            >
+              {isPending ? 'Deleting...' : 'Delete'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   )
 }
 export default VoiceRecordCard
