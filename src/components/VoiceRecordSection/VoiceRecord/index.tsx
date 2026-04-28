@@ -17,6 +17,7 @@ import { cn } from '@/lib/utils'
 import { useAudioRecorder } from '@/hooks/use-audio-recorder'
 import { Button } from '@/components/ui/button'
 import SoundWave from './SoundWave'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 
 export default function VoiceRecord() {
   const [isUploading, setIsUploading] = useState(false)
@@ -120,21 +121,44 @@ export default function VoiceRecord() {
           />
         )}
 
+        {/* <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant={'ghost'}
+              onClick={handleCopy}
+              className='text-muted-foreground hover:text-foreground hover:bg-muted flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors'
+            >
+              <HugeiconsIcon icon={CopyIcon} />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Copy MDX</p>
+          </TooltipContent>
+        </Tooltip> */}
         {/* ── IDLE ───────────────────────────── */}
         {status === 'idle' && (
           <>
-            <Button
-              className='group flex h-20 w-20 items-center justify-center'
-              type='button'
-              variant='outline'
-              onClick={startRecording}
-              aria-label='Start recording'
-            >
-              <HugeiconsIcon
-                icon={Mic01Icon}
-                className='text-foreground/90 size-6 transition duration-300 group-hover:-translate-y-0.5 group-hover:scale-108'
-              />
-            </Button>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  className='group flex h-20 w-20 items-center justify-center'
+                  type='button'
+                  variant='outline'
+                  onClick={startRecording}
+                  aria-label='Start recording'
+                >
+                  <HugeiconsIcon
+                    icon={Mic01Icon}
+                    className='text-foreground/90 size-6 transition duration-300 group-hover:-translate-y-0.5 group-hover:scale-108'
+                  />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                Click to start recording
+              </TooltipContent>
+
+            </Tooltip>
+
 
             <span className='text-foreground/70 font-mono text-sm'>00:00</span>
 
@@ -156,18 +180,28 @@ export default function VoiceRecord() {
         {status === 'recording' && (
           <>
             {/* Pulsing stop button */}
-            <Button
-              className='group flex h-20 w-20 items-center justify-center transition-colors'
-              type='button'
-              variant='outline'
-              onClick={stopRecording}
-              aria-label='Stop recording'
-            >
-              <div
-                className='bg-foreground/85 h-6 w-6 animate-spin rounded-md transition duration-300 group-hover:scale-108'
-                style={{ animationDuration: '3s' }}
-              />
-            </Button>
+            <Tooltip>
+              <TooltipTrigger asChild>
+
+                <Button
+                  className='group flex h-20 w-20 items-center justify-center transition-colors'
+                  type='button'
+                  variant='outline'
+                  onClick={stopRecording}
+                  aria-label='Stop recording'
+                >
+                  <div
+                    className='bg-foreground/85 h-6 w-6 animate-spin rounded-md transition duration-300 group-hover:scale-108'
+                    style={{ animationDuration: '3s' }}
+                  />
+                </Button>
+              </TooltipTrigger>
+
+              <TooltipContent>
+                Stop recording
+              </TooltipContent>
+
+            </Tooltip>
 
             {/* Live timer */}
             <span className='text-foreground/70 font-mono text-sm'>{formatTime(recordingTime)}</span>
@@ -191,19 +225,27 @@ export default function VoiceRecord() {
         {status === 'recorded' && (
           <>
             {/* Play / Pause button */}
-            <Button
-              className='group flex h-20 w-20 items-center justify-center transition-colors'
-              type='button'
-              variant='outline'
-              onClick={togglePlayback}
-              aria-label={isPlaying ? 'Pause' : 'Play'}
-            >
-              {isPlaying ? (
-                <HugeiconsIcon icon={PauseIcon} className='text-foreground/90 size-6 transition duration-300' />
-              ) : (
-                <HugeiconsIcon icon={PlayCircle02Icon} className='text-foreground/90 size-6 transition duration-300' />
-              )}
-            </Button>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  className='group flex h-20 w-20 items-center justify-center transition-colors'
+                  type='button'
+                  variant='outline'
+                  onClick={togglePlayback}
+                  aria-label={isPlaying ? 'Pause' : 'Play'}
+                >
+                  {isPlaying ? (
+                    <HugeiconsIcon icon={PauseIcon} className='text-foreground/90 size-6 transition duration-300' />
+                  ) : (
+                    <HugeiconsIcon icon={PlayCircle02Icon} className='text-foreground/90 size-6 transition duration-300' />
+                  )}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                {isPlaying ? 'Pause' : 'Play'}
+              </TooltipContent>
+            </Tooltip>
+
 
             {/* Playback timer */}
             <span className='text-foreground/70 font-mono text-sm'>
