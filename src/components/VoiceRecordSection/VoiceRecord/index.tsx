@@ -12,12 +12,12 @@ import {
   Upload01Icon,
 } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
+import { useTheme } from 'next-themes'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
+import { useAudioRecorder } from '@/hooks/use-wavesurfer'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import { useTheme } from 'next-themes'
-import { useAudioRecorder } from '@/hooks/use-wavesurfer'
 
 export default function VoiceRecord() {
   const { resolvedTheme } = useTheme()
@@ -37,7 +37,10 @@ export default function VoiceRecord() {
     resetRecording,
     formatTime,
     totalDuration,
-    containerRef, wavesurfer, isPlaying, wsCurrentTime
+    containerRef,
+    wavesurfer,
+    isPlaying,
+    wsCurrentTime,
   } = useAudioRecorder(isDark)
 
   const queryClient = useQueryClient()
@@ -166,7 +169,10 @@ export default function VoiceRecord() {
                   {isPlaying ? (
                     <HugeiconsIcon icon={PauseIcon} className='text-foreground/90 size-8 transition duration-300' />
                   ) : (
-                      <HugeiconsIcon icon={PlayCircle02Icon} className='text-foreground/90 size-8 transition duration-300' />
+                    <HugeiconsIcon
+                      icon={PlayCircle02Icon}
+                      className='text-foreground/90 size-8 transition duration-300'
+                    />
                   )}
                 </Button>
               </TooltipTrigger>
@@ -179,15 +185,12 @@ export default function VoiceRecord() {
         )}
 
         {/* ── COMMON WAVEFORM AREA (Stable DOM Node) ──────────────────────── */}
-        <div className="w-full flex flex-col items-center justify-center my-2">
-          <div
-            ref={containerRef}
-            className={cn('w-full h-16 ', status === 'idle' && 'hidden')}
-          />
+        <div className='my-2 flex w-full flex-col items-center justify-center'>
+          <div ref={containerRef} className={cn('h-16 w-full', status === 'idle' && 'hidden')} />
           {status === 'idle' && (
-            <div className="flex h-16 w-full items-center justify-center gap-[3px] overflow-hidden">
+            <div className='flex h-16 w-full items-center justify-center gap-[3px] overflow-hidden'>
               {[...Array(128)].map((_, i) => (
-                <div key={i} className="bg-muted-foreground/70 h-0.5 w-0.5" />
+                <div key={i} className='bg-muted-foreground/70 h-0.5 w-0.5' />
               ))}
             </div>
           )}
@@ -217,7 +220,7 @@ export default function VoiceRecord() {
         {status === 'recorded' && (
           <div className='flex h-32 w-full flex-col justify-end gap-2'>
             <p className='text-foreground/70 h-4 text-xs'>Recording ready</p>
-            <div className='flex w-full justify-center items-center gap-2'>
+            <div className='flex w-full items-center justify-center gap-2'>
               <Button
                 type='button'
                 variant='outline'
@@ -234,7 +237,7 @@ export default function VoiceRecord() {
                 type='submit'
                 disabled={isUploading}
                 size='lg'
-                className='flex-1 min-w-30 items-center gap-1.5'
+                className='min-w-30 flex-1 items-center gap-1.5'
                 aria-label='Use recording'
               >
                 {isUploading ? (

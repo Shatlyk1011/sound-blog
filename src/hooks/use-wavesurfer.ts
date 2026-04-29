@@ -1,8 +1,8 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
-import { useDropzone } from 'react-dropzone'
 import { useWavesurfer as useWavesurferLib } from '@wavesurfer/react'
+import { useDropzone } from 'react-dropzone'
 import RecordPlugin from 'wavesurfer.js/dist/plugins/record.esm.js'
 
 export type RecordStatus = 'idle' | 'recording' | 'recorded'
@@ -16,7 +16,6 @@ export const formatTime = (seconds: number): string => {
 }
 
 export function useAudioRecorder(isDark: boolean) {
-
   /* ── Recording state ─────────────────────────────── */
   const [status, setStatus] = useState<RecordStatus>('idle')
   const [recordingTime, setRecordingTime] = useState(0)
@@ -28,9 +27,8 @@ export function useAudioRecorder(isDark: boolean) {
   const audioChunksRef = useRef<Blob[]>([])
   const timerIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
-    /* ── WaveSurfer + RecordPlugin ───────────────────── */
+  /* ── WaveSurfer + RecordPlugin ───────────────────── */
   const containerRef = useRef<HTMLDivElement>(null)
-
 
   const recordPlugin = useMemo(
     () =>
@@ -41,7 +39,11 @@ export function useAudioRecorder(isDark: boolean) {
     []
   )
 
-    const { wavesurfer, isPlaying, currentTime: wsCurrentTime } = useWavesurferLib({
+  const {
+    wavesurfer,
+    isPlaying,
+    currentTime: wsCurrentTime,
+  } = useWavesurferLib({
     container: containerRef,
     waveColor: isDark ? '#eee' : '#808080',
     progressColor: !isDark ? '#23ba7d' : '#49af7e',
@@ -55,28 +57,31 @@ export function useAudioRecorder(isDark: boolean) {
   })
 
   /* ── Dropzone ─────────────────────────────── */
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    if (acceptedFiles.length > 0) {
-      const file = acceptedFiles[0]
-      const url = URL.createObjectURL(file)
-      setAudioUrl(url)
-      setStatus('recorded')
-      setDuration(wavesurfer?.getDuration())
-      wavesurfer?.load(url)
-    }
-  }, [wavesurfer])
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      if (acceptedFiles.length > 0) {
+        const file = acceptedFiles[0]
+        const url = URL.createObjectURL(file)
+        setAudioUrl(url)
+        setStatus('recorded')
+        setDuration(wavesurfer?.getDuration())
+        wavesurfer?.load(url)
+      }
+    },
+    [wavesurfer]
+  )
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: { 'audio/*': [] },
     maxFiles: 1,
     noClick: true,
-    onDropAccepted:async (acceptedFiles) => {
-      if(acceptedFiles.length >= 1) {
+    onDropAccepted: async (acceptedFiles) => {
+      if (acceptedFiles.length >= 1) {
         const duration = wavesurfer?.getDuration()
         console.log('duration', duration)
       }
-    }
+    },
   })
 
   /* ── Cleanup on unmount ─────────────────────────── */
