@@ -1,6 +1,6 @@
 'use client'
 
-import { SubmitEventHandler, useState, useMemo, useEffect } from 'react'
+import { SubmitEventHandler, useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import {
   Check,
@@ -16,7 +16,6 @@ import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import RecordPlugin from 'wavesurfer.js/dist/plugins/record.esm.js'
 import { useTheme } from 'next-themes'
 import { useAudioRecorder } from '@/hooks/use-wavesurfer'
 
@@ -40,24 +39,6 @@ export default function VoiceRecord() {
     totalDuration,
     containerRef, wavesurfer, isPlaying, wsCurrentTime
   } = useAudioRecorder(isDark)
-
-  const recordPlugin = useMemo(
-    () =>
-      RecordPlugin.create({
-        scrollingWaveform: true,
-        renderRecordedAudio: false,
-      }),
-    []
-  )
-
-  useEffect(() => {
-    if (status === 'recording') {
-      recordPlugin.startMic()
-    } else {
-      recordPlugin.stopMic()
-    }
-
-  }, [status, recordPlugin])
 
   const queryClient = useQueryClient()
 
