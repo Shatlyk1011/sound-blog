@@ -1,6 +1,6 @@
 export interface FilterOption<T extends string> {
-  title: string;
-  value: T;
+  title: string
+  value: T
 }
 
 export const TONES = [
@@ -20,9 +20,9 @@ export const TONES = [
     title: 'Professional',
     value: 'professional',
   },
-] as const;
+] as const
 
-export type ToneValue = (typeof TONES)[number]['value'];
+export type ToneValue = (typeof TONES)[number]['value']
 
 export const LENGTHS = [
   {
@@ -41,9 +41,9 @@ export const LENGTHS = [
     title: 'Long',
     value: 'long',
   },
-] as const;
+] as const
 
-export type LengthValue = (typeof LENGTHS)[number]['value'];
+export type LengthValue = (typeof LENGTHS)[number]['value']
 
 export const ENHANCEMENTS = [
   {
@@ -70,11 +70,11 @@ export const ENHANCEMENTS = [
     title: 'Bullet points',
     value: 'bullets',
   },
-] as const;
+] as const
 
-export type EnhancementValue = (typeof ENHANCEMENTS)[number]['value'];
+export type EnhancementValue = (typeof ENHANCEMENTS)[number]['value']
 
-export type FilterValue = ToneValue | LengthValue | EnhancementValue;
+export type FilterValue = ToneValue | LengthValue | EnhancementValue
 
 export const ALL_FILTERS: Record<FilterValue, string> = {
   informal: 'Informal',
@@ -91,5 +91,4 @@ export const ALL_FILTERS: Record<FilterValue, string> = {
   summary: 'Summary (TLDR)',
   intro: 'Intro hook',
   bullets: 'Bullet points',
-  
-};
+}
