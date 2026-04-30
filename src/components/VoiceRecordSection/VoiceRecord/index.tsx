@@ -18,6 +18,7 @@ import { cn } from '@/lib/utils'
 import { useAudioRecorder } from '@/hooks/use-wavesurfer'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import RecordFilter from '../RecordFilter'
 
 export default function VoiceRecord() {
   const { resolvedTheme } = useTheme()
@@ -97,7 +98,7 @@ export default function VoiceRecord() {
         isDragActive ? 'bg-primary/5 border-primary border-2 border-dashed' : 'border-2 border-transparent'
       )}
     >
-      <input {...getInputProps()} />
+      <input tabIndex={-1} {...getInputProps()} />
       {isDragActive && (
         <div className='bg-background/80 absolute inset-0 z-50 flex flex-col items-center justify-center rounded-xl backdrop-blur-sm'>
           <HugeiconsIcon icon={Upload01Icon} className='text-primary mb-4 size-12 animate-bounce' />
@@ -195,6 +196,8 @@ export default function VoiceRecord() {
             </div>
           )}
         </div>
+
+        <RecordFilter />
 
         {/* ── BOTTOM ACTIONS ───────────────────────────── */}
         {status === 'idle' && (

@@ -1,9 +1,9 @@
-import configPromise from '@payload-config'
-import { NextResponse } from 'next/server'
-import { getPayload } from 'payload'
+import configPromise from '@payload-config';
+import { NextResponse } from 'next/server';
+import { getPayload } from 'payload';
 import { createClient } from '@/lib/supabase-server'
 
-export async function DELETE(req: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function DELETE(_: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params
     const supabase = await createClient()

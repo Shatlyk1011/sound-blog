@@ -92,7 +92,7 @@ function MiniAudioPlayer({ fileUrl, classes }: Props) {
             }}
             className='bg-input accent-primary hover:accent-primary/80 dark:[&::-webkit-slider-thumb]:bg-accent [&::-webkit-slider-thumb]:bg-accent-foreground h-1.5 w-full cursor-pointer appearance-none rounded-full transition-all [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full'
           />
-          <div className='text-muted-foreground flex justify-between px-0.5 text-[10px] font-medium'>
+          <div className='text-muted-foreground flex justify-between px-0.5 text-[11px] font-medium'>
             <span>{formatTime(currentTime)}</span>
             <span>{formatTime(duration)}</span>
           </div>

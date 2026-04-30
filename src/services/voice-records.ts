@@ -1,6 +1,11 @@
-import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { VoiceRecord } from '@/payload-types'
-import { toast } from 'sonner'
+import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { VoiceRecord } from '@/payload-types';
+import { toast } from 'sonner';
+
+
+
+
+
 
 interface VoiceRecordsResponse {
   docs: VoiceRecord[]
@@ -44,7 +49,7 @@ export const useDeleteVoiceRecordMutation = (userId: string | undefined) => {
   return useMutation({
     mutationFn: deleteVoiceRecord,
     onSuccess: () => {
-      toast.success('Your record deleted. Refetching list')
+      toast.success('Your record deleted. Updating your list')
       queryClient.invalidateQueries({ queryKey: ['voice-records', userId] })
     },
   })
