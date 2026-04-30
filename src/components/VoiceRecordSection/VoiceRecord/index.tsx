@@ -198,7 +198,7 @@ export default function VoiceRecord() {
 
         {/* ── BOTTOM ACTIONS ───────────────────────────── */}
         {status === 'idle' && (
-          <div className='flex h-32 w-full flex-col justify-end gap-2'>
+          <div className='flex h-20 w-full flex-col justify-end gap-2'>
             <p className='text-foreground/70 text-xs'>Click to speak</p>
             <Button type='button' onClick={startRecording} size='lg' aria-label='Start recording'>
               <HugeiconsIcon icon={Mic01Icon} className='size-4' />
@@ -208,7 +208,7 @@ export default function VoiceRecord() {
         )}
 
         {status === 'recording' && (
-          <div className='flex h-32 w-full flex-col justify-end gap-2'>
+          <div className='flex h-20 w-full flex-col justify-end gap-2'>
             <p className='text-foreground/70 text-xs'>Listening…</p>
             <Button type='button' size='lg' variant='destructive' onClick={stopRecording} className='w-full'>
               <HugeiconsIcon icon={StopCircleIcon} className='size-4' />
@@ -218,7 +218,7 @@ export default function VoiceRecord() {
         )}
 
         {status === 'recorded' && (
-          <div className='flex h-32 w-full flex-col justify-end gap-2'>
+          <div className='flex h-20 w-full flex-col justify-end gap-2'>
             <p className='text-foreground/70 h-4 text-xs'>Recording ready</p>
             <div className='flex w-full items-center justify-center gap-2'>
               <Button
