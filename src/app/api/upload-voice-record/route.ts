@@ -1,7 +1,7 @@
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
-import configPromise from '@payload-config';
-import { NextRequest, NextResponse } from 'next/server';
-import { getPayload } from 'payload';
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
+import configPromise from '@payload-config'
+import { NextRequest, NextResponse } from 'next/server'
+import { getPayload } from 'payload'
 import { createClient } from '@/lib/supabase-server'
 
 export async function POST(req: NextRequest) {

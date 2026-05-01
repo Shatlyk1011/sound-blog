@@ -22,7 +22,7 @@ interface Props {
   setSelectedFilters: Dispatch<SetStateAction<FilterValue[]>>
 }
 
-const RecordFilter = ({selectedFilters, setSelectedFilters}: Props) => {
+const RecordFilter = ({ selectedFilters, setSelectedFilters }: Props) => {
   const [open, setOpen] = useState(false)
 
   const [tone, setTone] = useState<ToneValue>(TONES[0].value)
@@ -36,7 +36,6 @@ const RecordFilter = ({selectedFilters, setSelectedFilters}: Props) => {
   useEffect(() => {
     setSelectedFilters([tone, blogLength, ...selectedEnhancements])
   }, [tone, blogLength, selectedEnhancements, setSelectedFilters])
-
 
   return (
     <>

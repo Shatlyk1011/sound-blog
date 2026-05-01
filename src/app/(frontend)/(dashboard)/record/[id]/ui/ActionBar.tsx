@@ -14,7 +14,15 @@ interface Props {
   textReaderSlot?: ReactNode
 }
 
-export function ActionBar({ handleCopy, isEditing, isSaving, onEditClick, onSaveClick, onCancelClick, textReaderSlot }: Props) {
+export function ActionBar({
+  handleCopy,
+  isEditing,
+  isSaving,
+  onEditClick,
+  onSaveClick,
+  onCancelClick,
+  textReaderSlot,
+}: Props) {
   return (
     <div className='mb-4 flex flex-wrap items-center gap-2 py-2'>
       {isEditing ? (

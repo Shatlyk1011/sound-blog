@@ -1,17 +1,11 @@
 'use client'
 
-import { useTTS, TTSStatus } from '@/hooks/use-tts'
+import { PauseIcon, PlayIcon, Loading03Icon, StopIcon, VoiceIcon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
-import {
-  PauseIcon,
-  PlayIcon,
-  Loading03Icon,
-  StopIcon,
-  VoiceIcon,
-} from '@hugeicons/core-free-icons'
 import { cn } from '@/lib/utils'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { useTTS, TTSStatus } from '@/hooks/use-tts'
 import { Button } from '@/components/ui/button'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 
 interface TextReaderProps {
   text: string
@@ -44,9 +38,7 @@ export default function TextReader({ text, className }: TextReaderProps) {
     <div
       className={cn(
         'flex items-center gap-2 rounded-full border px-1 py-1 transition-all duration-300',
-        isActive
-          ? 'border-primary/30 bg-primary/5 shadow-sm'
-          : 'border-border bg-background hover:border-border/70',
+        isActive ? 'border-primary/30 bg-primary/5 shadow-sm' : 'border-border bg-background hover:border-border/70',
         className
       )}
     >
@@ -54,9 +46,9 @@ export default function TextReader({ text, className }: TextReaderProps) {
       <Tooltip>
         <TooltipTrigger asChild>
           <Button
-            id="text-reader-toggle"
-            variant="ghost"
-            size="icon"
+            id='text-reader-toggle'
+            variant='ghost'
+            size='icon'
             disabled={isLoading}
             onClick={toggle}
             className={cn(
@@ -68,7 +60,7 @@ export default function TextReader({ text, className }: TextReaderProps) {
             aria-label={isPlaying ? 'Pause reading' : 'Play reading'}
           >
             {isLoading ? (
-              <HugeiconsIcon icon={Loading03Icon} size={16} className="animate-spin" />
+              <HugeiconsIcon icon={Loading03Icon} size={16} className='animate-spin' />
             ) : isPlaying ? (
               <HugeiconsIcon icon={PauseIcon} size={16} />
             ) : (
@@ -76,30 +68,30 @@ export default function TextReader({ text, className }: TextReaderProps) {
             )}
           </Button>
         </TooltipTrigger>
-        <TooltipContent side="bottom">
+        <TooltipContent side='bottom'>
           <p>{STATUS_LABEL[status]}</p>
         </TooltipContent>
       </Tooltip>
 
       {/* Progress bar + time — only visible when active */}
       {isActive && (
-        <div className="flex items-center gap-2 pr-1">
+        <div className='flex items-center gap-2 pr-1'>
           {/* Mini waveform / progress bar */}
-          <div className="relative h-1.5 w-24 overflow-hidden rounded-full bg-muted">
+          <div className='bg-muted relative h-1.5 w-24 overflow-hidden rounded-full'>
             <div
-              className="bg-primary absolute inset-y-0 left-0 rounded-full transition-all duration-200"
+              className='bg-primary absolute inset-y-0 left-0 rounded-full transition-all duration-200'
               style={{ width: `${progress * 100}%` }}
             />
             {/* Animated pulse at playhead when playing */}
             {isPlaying && (
               <div
-                className="bg-primary/60 absolute top-1/2 h-3 w-3 -translate-y-1/2 rounded-full animate-ping"
+                className='bg-primary/60 absolute top-1/2 h-3 w-3 -translate-y-1/2 animate-ping rounded-full'
                 style={{ left: `calc(${progress * 100}% - 6px)` }}
               />
             )}
           </div>
 
-          <span className="text-muted-foreground font-mono text-[11px] tabular-nums">
+          <span className='text-muted-foreground font-mono text-[11px] tabular-nums'>
             {formatTime(currentTime)}
             {duration > 0 && ` / ${formatTime(duration)}`}
           </span>
@@ -108,17 +100,17 @@ export default function TextReader({ text, className }: TextReaderProps) {
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
-                id="text-reader-stop"
-                variant="ghost"
-                size="icon"
+                id='text-reader-stop'
+                variant='ghost'
+                size='icon'
                 onClick={stop}
-                className="text-muted-foreground hover:text-foreground h-6 w-6 rounded-full"
-                aria-label="Stop reading"
+                className='text-muted-foreground hover:text-foreground h-6 w-6 rounded-full'
+                aria-label='Stop reading'
               >
                 <HugeiconsIcon icon={StopIcon} size={12} />
               </Button>
             </TooltipTrigger>
-            <TooltipContent side="bottom">
+            <TooltipContent side='bottom'>
               <p>Stop</p>
             </TooltipContent>
           </Tooltip>
@@ -127,7 +119,7 @@ export default function TextReader({ text, className }: TextReaderProps) {
 
       {/* Idle label */}
       {status === 'idle' && (
-        <span className="text-muted-foreground flex items-center gap-1 pr-2 text-xs font-medium">
+        <span className='text-muted-foreground flex items-center gap-1 pr-2 text-xs font-medium'>
           <HugeiconsIcon icon={VoiceIcon} size={13} />
           Listen
         </span>
@@ -135,7 +127,7 @@ export default function TextReader({ text, className }: TextReaderProps) {
 
       {/* Error hint */}
       {status === 'error' && (
-        <span className="text-destructive pr-2 text-xs font-medium" title={error ?? undefined}>
+        <span className='text-destructive pr-2 text-xs font-medium' title={error ?? undefined}>
           Failed — tap to retry
         </span>
       )}
