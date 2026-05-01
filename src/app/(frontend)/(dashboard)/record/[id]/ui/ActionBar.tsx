@@ -1,3 +1,4 @@
+import { ReactNode } from 'react'
 import { CopyIcon, Loading03Icon, PencilEdit02Icon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { Button } from '@/components/ui/button'
@@ -10,9 +11,10 @@ interface Props {
   onEditClick: () => void
   onSaveClick: () => void
   onCancelClick: () => void
+  textReaderSlot?: ReactNode
 }
 
-export function ActionBar({ handleCopy, isEditing, isSaving, onEditClick, onSaveClick, onCancelClick }: Props) {
+export function ActionBar({ handleCopy, isEditing, isSaving, onEditClick, onSaveClick, onCancelClick, textReaderSlot }: Props) {
   return (
     <div className='mb-4 flex flex-wrap items-center gap-2 py-2'>
       {isEditing ? (
@@ -38,6 +40,8 @@ export function ActionBar({ handleCopy, isEditing, isSaving, onEditClick, onSave
         </Button>
       )}
 
+      {textReaderSlot}
+
       <div className='flex flex-1 justify-end'>
         <Tooltip>
           <TooltipTrigger asChild>
@@ -53,18 +57,6 @@ export function ActionBar({ handleCopy, isEditing, isSaving, onEditClick, onSave
             <p>Copy MDX</p>
           </TooltipContent>
         </Tooltip>
-
-        {/* <Tooltip >
-          <TooltipTrigger asChild >
-            <Button variant={'ghost'} className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted rounded-md transition-colors">
-        <HugeiconsIcon icon={SparklesIcon} />
-        
-      </Button>
-          </TooltipTrigger>
-          <TooltipContent >
-            <p>Regenerate</p>
-          </TooltipContent>
-        </Tooltip> */}
       </div>
     </div>
   )

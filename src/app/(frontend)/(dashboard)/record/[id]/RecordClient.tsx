@@ -14,6 +14,7 @@ import { ActionBar } from './ui/ActionBar'
 import BlogLoading from './ui/BlogLoading'
 import BlogMetadata from './ui/BlogMetadata'
 import TabSwitcher from './ui/TabSwitch'
+import TextReader from './ui/TextReader'
 
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false })
 
@@ -107,6 +108,11 @@ export function RecordClient({ recordId }: RecordClientProps) {
               onEditClick={onEditClick}
               onSaveClick={handleSave}
               onCancelClick={onCancelClick}
+              textReaderSlot={
+                !isEditing && activeTab === 'generated' ? (
+                  <TextReader text={blog.content ?? ''} />
+                ) : null
+              }
             />
           </div>
           {<TabSwitcher activeTab={activeTab} onChange={setActiveTab} disabled={isEditing} />}
