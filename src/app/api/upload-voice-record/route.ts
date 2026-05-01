@@ -1,7 +1,7 @@
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
-import configPromise from '@payload-config'
-import { NextRequest, NextResponse } from 'next/server'
-import { getPayload } from 'payload'
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import configPromise from '@payload-config';
+import { NextRequest, NextResponse } from 'next/server';
+import { getPayload } from 'payload';
 import { createClient } from '@/lib/supabase-server'
 
 export async function POST(req: NextRequest) {
@@ -20,8 +20,11 @@ export async function POST(req: NextRequest) {
     // 2. Parse form data
     const formData = await req.formData()
     const file = formData.get('file') as File | null
+
     const durationStr = formData.get('duration') as string | null
     const duration = durationStr ? Math.ceil(parseFloat(durationStr)) : 0
+
+    const filtersStr = formData.get('filters')
 
     if (!file) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 })
@@ -143,6 +146,7 @@ export async function POST(req: NextRequest) {
             fileName: file.name,
             contentType: file.type || 'audio/webm',
             size: file.size,
+            filters: filtersStr,
           }),
         })
 

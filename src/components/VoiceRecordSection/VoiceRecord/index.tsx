@@ -3,11 +3,11 @@
 import { SubmitEventHandler, useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import {
-  Check,
   Mic01Icon,
   PauseIcon,
   PlayCircle02Icon,
   Refresh03Icon,
+  Sparkle,
   StopCircleIcon,
   Upload01Icon,
 } from '@hugeicons/core-free-icons'
@@ -18,12 +18,15 @@ import { cn } from '@/lib/utils'
 import { useAudioRecorder } from '@/hooks/use-wavesurfer'
 import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import RecordFilter from '../RecordFilter'
+import RecordFilter from './RecordFilter'
+import { FilterValue } from '@/lib/constants'
 
 export default function VoiceRecord() {
   const { resolvedTheme } = useTheme()
 
   const [isUploading, setIsUploading] = useState(false)
+  const [selectedFilters, setSelectedFilters] = useState<FilterValue[]>([])
+
   const isDark = resolvedTheme === 'dark'
 
   const {
@@ -66,6 +69,8 @@ export default function VoiceRecord() {
       const formData = new FormData()
       formData.append('file', file)
       formData.append('duration', totalDuration.toString())
+      formData.append('filters', JSON.stringify(selectedFilters))
+
 
       const uploadRes = await fetch('/api/upload-voice-record', {
         method: 'POST',
@@ -98,7 +103,7 @@ export default function VoiceRecord() {
         isDragActive ? 'bg-primary/5 border-primary border-2 border-dashed' : 'border-2 border-transparent'
       )}
     >
-      <input tabIndex={-1} {...getInputProps()} />
+      <input  {...getInputProps()} tabIndex={-1} />
       {isDragActive && (
         <div className='bg-background/80 absolute inset-0 z-50 flex flex-col items-center justify-center rounded-xl backdrop-blur-sm'>
           <HugeiconsIcon icon={Upload01Icon} className='text-primary mb-4 size-12 animate-bounce' />
@@ -107,7 +112,7 @@ export default function VoiceRecord() {
       )}
       <form
         onSubmit={handleSubmit}
-        className='relative mx-auto flex w-full max-w-xl min-w-66 flex-col items-center gap-2.5'
+        className='relative mx-auto flex w-full max-w-xl min-w-66 flex-col items-center gap-2.5 border-none'
       >
         {/* ── TOP CONTROLS & TIMER ───────────────────────────── */}
         {status === 'idle' && (
@@ -197,9 +202,9 @@ export default function VoiceRecord() {
           )}
         </div>
 
-        {status === 'recorded' && (
-          <RecordFilter />
-        )}
+        {/* {status === 'recorded' && ( */}
+        <RecordFilter selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters} />
+        {/* )} */}
 
         {/* ── BOTTOM ACTIONS ───────────────────────────── */}
         {status === 'idle' && (
@@ -249,8 +254,8 @@ export default function VoiceRecord() {
                   <div className='h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent bg-transparent' />
                 ) : (
                   <>
-                    <HugeiconsIcon icon={Check} className='size-4' />
-                    Use Audio
+                      <HugeiconsIcon icon={Sparkle} className='size-4' />
+                      Start Generating
                   </>
                 )}
               </Button>
