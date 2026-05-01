@@ -78,14 +78,15 @@ export type EnhancementValue = (typeof ENHANCEMENTS)[number]['value']
 export type FilterValue = ToneValue | LengthValue | EnhancementValue
 
 export const ALL_FILTERS: Record<FilterValue, string> = {
+  'as-it-is-tone': 'Tone: As it is',
   informal: 'Informal',
   casual: 'Casual',
   professional: 'Professional',
+  'as-it-is-length': 'Length: As it is',
   short: 'Short',
   medium: 'Medium',
-  'as-it-is-tone': 'Tone: As it is',
-  'as-it-is-length': 'Length: As it is',
   long: 'Long',
+
   examples: 'Add examples',
   storytelling: 'Storytelling',
   headings: 'Headings',

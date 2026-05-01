@@ -285,6 +285,10 @@ export interface Blog {
    */
   title: string;
   /**
+   * The language of the generated blog post.
+   */
+  language: string;
+  /**
    * The AI-generated blog content in Markdown format.
    */
   content?: string | null;
@@ -461,6 +465,7 @@ export interface BlogsSelect<T extends boolean = true> {
   recordId?: T;
   transcriptId?: T;
   title?: T;
+  language?: T;
   content?: T;
   status?: T;
   tone?: T;

@@ -46,7 +46,7 @@ export function useAudioRecorder(isDark: boolean) {
   } = useWavesurferLib({
     container: containerRef,
     waveColor: isDark ? '#eee' : '#808080',
-    progressColor: !isDark ? '#23ba7d' : '#49af7e',
+    progressColor: !isDark ? '#4393e1' : '#5194d5',
     barWidth: 3,
     barGap: 2,
     barRadius: 3,
@@ -76,6 +76,7 @@ export function useAudioRecorder(isDark: boolean) {
     accept: { 'audio/*': [] },
     maxFiles: 1,
     noClick: true,
+    noKeyboard: true,
     onDropAccepted: async (acceptedFiles) => {
       if (acceptedFiles.length >= 1) {
         const duration = wavesurfer?.getDuration()
