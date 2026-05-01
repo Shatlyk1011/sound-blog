@@ -108,10 +108,10 @@ export function RecordClient({ recordId }: RecordClientProps) {
               onEditClick={onEditClick}
               onSaveClick={handleSave}
               onCancelClick={onCancelClick}
-              textReaderSlot={!isEditing && activeTab === 'generated' ? <TextReader text={blog.content ?? ''} /> : null}
+              textReaderSlot={!isEditing && activeTab === 'generated' ? <TextReader text={blog.content ?? ''} lang={blog.language} /> : null}
             />
           </div>
-          {<TabSwitcher activeTab={activeTab} onChange={setActiveTab} disabled={isEditing} />}
+          <TabSwitcher activeTab={activeTab} onChange={setActiveTab} disabled={isEditing} />
 
           <article className='bg-card w-full rounded-3xl border p-8 text-left shadow-sm'>
             <AnimatePresence mode='wait'>

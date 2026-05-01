@@ -1,4 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server';
+
+
+
 
 const WORKER_URL = process.env.WORKER_URL
 
@@ -41,7 +44,7 @@ function stripMarkdown(md: string): string {
 
 export async function POST(req: NextRequest) {
   try {
-    const { text } = await req.json()
+    const { text, lang } = await req.json()
 
     if (!text || typeof text !== 'string') {
       return NextResponse.json({ error: 'Missing or invalid text field' }, { status: 400 })
@@ -56,8 +59,10 @@ export async function POST(req: NextRequest) {
     const workerRes = await fetch(`${WORKER_URL}/text-to-sound`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text: cleanText }),
+      body: JSON.stringify({ text: cleanText, lang }),
     })
+
+    console.log('workerRes', workerRes)
 
     if (!workerRes.ok) {
       const errorBody = await workerRes.text()
@@ -65,13 +70,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'TTS generation failed', details: errorBody }, { status: workerRes.status })
     }
 
-    // Stream the audio binary back
+    // MeloTTS worker returns raw binary MP3 with Content-Type: audio/mpeg
     const audioBuffer = await workerRes.arrayBuffer()
 
     return new NextResponse(audioBuffer, {
       status: 200,
       headers: {
-        'Content-Type': workerRes.headers.get('Content-Type') ?? 'audio/mpeg',
+        'Content-Type': 'audio/mpeg',
         'Cache-Control': 'no-store',
       },
     })

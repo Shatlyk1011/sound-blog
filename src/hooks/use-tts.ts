@@ -1,4 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { toast } from 'sonner';
+
+
+
+
 
 export type TTSStatus = 'idle' | 'loading' | 'playing' | 'paused' | 'error'
 
@@ -14,7 +19,7 @@ interface UseTTSReturn {
   error: string | null
 }
 
-export function useTTS(text: string): UseTTSReturn {
+export function useTTS(text: string, lang: string): UseTTSReturn {
   const [status, setStatus] = useState<TTSStatus>('idle')
   const [progress, setProgress] = useState(0)
   const [duration, setDuration] = useState(0)
@@ -58,7 +63,7 @@ export function useTTS(text: string): UseTTSReturn {
       const res = await fetch('/api/tts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text }),
+        body: JSON.stringify({ text, lang }),
       })
 
       if (!res.ok) {
@@ -68,6 +73,8 @@ export function useTTS(text: string): UseTTSReturn {
 
       const blob = await res.blob()
       const url = URL.createObjectURL(blob)
+
+      console.log('XXXX url', url)
       objectUrlRef.current = url
 
       const audio = new Audio(url)
@@ -100,7 +107,7 @@ export function useTTS(text: string): UseTTSReturn {
       setError(message)
       setStatus('error')
     }
-  }, [text])
+  }, [text, lang])
 
   const play = useCallback(() => {
     if (status === 'idle' || status === 'error') {
@@ -119,6 +126,10 @@ export function useTTS(text: string): UseTTSReturn {
   }, [status])
 
   const toggle = useCallback(() => {
+    if (status === 'loading') {
+      toast.info('Please wait. Loading audio', { richColors: true })
+      return
+    }
     if (status === 'playing') {
       pause()
     } else {

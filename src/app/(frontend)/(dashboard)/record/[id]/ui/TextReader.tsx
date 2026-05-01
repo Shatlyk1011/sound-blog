@@ -9,6 +9,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 
 interface TextReaderProps {
   text: string
+  lang: string
   className?: string
 }
 
@@ -27,18 +28,18 @@ const STATUS_LABEL: Record<TTSStatus, string> = {
   error: 'Retry audio',
 }
 
-export default function TextReader({ text, className }: TextReaderProps) {
-  const { status, progress, duration, currentTime, toggle, stop, error } = useTTS(text)
+export default function TextReader({ text, lang, className }: TextReaderProps) {
+  const { status, progress, duration, currentTime, toggle, stop, error } = useTTS(text, lang)
 
   const isLoading = status === 'loading'
   const isPlaying = status === 'playing'
   const isActive = status === 'playing' || status === 'paused'
+  const isError = status === 'error'
 
   return (
     <div
       className={cn(
-        'flex items-center gap-2 rounded-full border px-1 py-1 transition-all duration-300',
-        isActive ? 'border-primary/30 bg-primary/5 shadow-sm' : 'border-border bg-background hover:border-border/70',
+        'flex items-center gap-2 rounded-full border transition-all duration-300',
         className
       )}
     >
@@ -47,15 +48,11 @@ export default function TextReader({ text, className }: TextReaderProps) {
         <TooltipTrigger asChild>
           <Button
             id='text-reader-toggle'
-            variant='ghost'
-            size='icon'
-            disabled={isLoading}
+            variant={isError && 'descrtuctive' || isPlaying ? "secondary" : 'outline'}
+            size='icon-sm'
             onClick={toggle}
             className={cn(
-              'h-8 w-8 shrink-0 rounded-full transition-all duration-200',
-              isPlaying
-                ? 'bg-primary text-primary-foreground hover:bg-primary/90'
-                : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+
             )}
             aria-label={isPlaying ? 'Pause reading' : 'Play reading'}
           >
@@ -68,7 +65,7 @@ export default function TextReader({ text, className }: TextReaderProps) {
             )}
           </Button>
         </TooltipTrigger>
-        <TooltipContent side='bottom'>
+        <TooltipContent side='top'>
           <p>{STATUS_LABEL[status]}</p>
         </TooltipContent>
       </Tooltip>
@@ -117,17 +114,9 @@ export default function TextReader({ text, className }: TextReaderProps) {
         </div>
       )}
 
-      {/* Idle label */}
-      {status === 'idle' && (
-        <span className='text-muted-foreground flex items-center gap-1 pr-2 text-xs font-medium'>
-          <HugeiconsIcon icon={VoiceIcon} size={13} />
-          Listen
-        </span>
-      )}
-
       {/* Error hint */}
-      {status === 'error' && (
-        <span className='text-destructive pr-2 text-xs font-medium' title={error ?? undefined}>
+      {isError && (
+        <span className='text-destructive/80 pr-2 text-xs font-medium' title={error ?? undefined}>
           Failed — tap to retry
         </span>
       )}
