@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { ChevronDown, Info } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import {
@@ -17,7 +17,12 @@ import { ButtonGroup } from '@/components/ui/button-group'
 import { Switch } from '@/components/ui/switch'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 
-const RecordFilter: FC = () => {
+interface Props {
+  selectedFilters: FilterValue[]
+  setSelectedFilters: Dispatch<SetStateAction<FilterValue[]>>
+}
+
+const RecordFilter = ({selectedFilters, setSelectedFilters}: Props) => {
   const [open, setOpen] = useState(false)
 
   const [tone, setTone] = useState<ToneValue>(TONES[0].value)
@@ -28,7 +33,10 @@ const RecordFilter: FC = () => {
     setSelectedEnhancements((prev) => (prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value]))
   }
 
-  const selectedFilters: FilterValue[] = [tone, blogLength, ...selectedEnhancements]
+  useEffect(() => {
+    setSelectedFilters([tone, blogLength, ...selectedEnhancements])
+  }, [tone, blogLength, selectedEnhancements, setSelectedFilters])
+
 
   return (
     <>
@@ -48,7 +56,7 @@ const RecordFilter: FC = () => {
           </Tooltip>
         </h4>
 
-        <ul className='flex flex-wrap gap-x-3 gap-y-2 text-[13px]'>
+        <ul className='flex flex-wrap gap-x-2.5 gap-y-2 text-[13px]'>
           {selectedFilters.map((key) => (
             <li className='bg-chart-2/10 text-chart-2 rounded-full border border-current/20 px-2.5 py-0.75' key={key}>
               {ALL_FILTERS[key as keyof typeof ALL_FILTERS]}
