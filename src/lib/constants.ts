@@ -47,28 +47,29 @@ export type LengthValue = (typeof LENGTHS)[number]['value']
 
 export const ENHANCEMENTS = [
   {
-    title: 'Add examples',
-    value: 'examples',
+    title: 'Intro hook',
+    value: 'intro',
   },
   {
     title: 'Storytelling',
     value: 'storytelling',
   },
   {
-    title: 'Headings',
-    value: 'headings',
+    title: 'Add examples',
+    value: 'examples',
   },
   {
     title: 'Summary (TLDR)',
     value: 'summary',
   },
-  {
-    title: 'Intro hook',
-    value: 'intro',
-  },
+
   {
     title: 'Bullet points',
     value: 'bullets',
+  },
+  {
+    title: 'Headings',
+    value: 'headings',
   },
 ] as const
 

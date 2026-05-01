@@ -1,9 +1,9 @@
 'use client'
 
-import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
-import { useWavesurfer as useWavesurferLib } from '@wavesurfer/react'
-import { useDropzone } from 'react-dropzone'
-import RecordPlugin from 'wavesurfer.js/dist/plugins/record.esm.js'
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { useWavesurfer as useWavesurferLib } from '@wavesurfer/react';
+import { useDropzone } from 'react-dropzone';
+import RecordPlugin from 'wavesurfer.js/dist/plugins/record.esm.js';
 
 export type RecordStatus = 'idle' | 'recording' | 'recorded'
 
@@ -51,7 +51,7 @@ export function useAudioRecorder(isDark: boolean) {
     barGap: 2,
     barRadius: 3,
     barHeight: 3,
-    height: 64,
+    height: 56,
     url: status === 'recorded' && audioUrl ? audioUrl : undefined,
     plugins: useMemo(() => [recordPlugin], [recordPlugin]),
   })

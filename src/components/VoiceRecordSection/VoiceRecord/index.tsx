@@ -187,9 +187,9 @@ export default function VoiceRecord() {
 
         {/* ── COMMON WAVEFORM AREA (Stable DOM Node) ──────────────────────── */}
         <div className='my-2 flex w-full flex-col items-center justify-center'>
-          <div ref={containerRef} className={cn('h-16 w-full', status === 'idle' && 'hidden')} />
+          <div ref={containerRef} className={cn('h-14 w-full', status === 'idle' && 'hidden')} />
           {status === 'idle' && (
-            <div className='flex h-16 w-full items-center justify-center gap-[3px] overflow-hidden'>
+            <div className='flex h-14 w-full items-center justify-center gap-[3px] overflow-hidden'>
               {[...Array(128)].map((_, i) => (
                 <div key={i} className='bg-muted-foreground/70 h-0.5 w-0.5' />
               ))}
@@ -197,7 +197,9 @@ export default function VoiceRecord() {
           )}
         </div>
 
-        <RecordFilter />
+        {status === 'recorded' && (
+          <RecordFilter />
+        )}
 
         {/* ── BOTTOM ACTIONS ───────────────────────────── */}
         {status === 'idle' && (

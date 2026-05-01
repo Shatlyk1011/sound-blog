@@ -21,8 +21,8 @@ const RecordFilter: FC = () => {
   const [open, setOpen] = useState(false)
 
   const [tone, setTone] = useState<ToneValue>(TONES[0].value)
-  const [blogLength, setBlogeLength] = useState<LengthValue>(LENGTHS[1].value)
-  const [selectedEnhancements, setSelectedEnhancements] = useState<EnhancementValue[]>([])
+  const [blogLength, setBlogeLength] = useState<LengthValue>(LENGTHS[0].value)
+  const [selectedEnhancements, setSelectedEnhancements] = useState<EnhancementValue[]>(['summary', 'headings'])
 
   const toggleEnhancement = (value: EnhancementValue) => {
     setSelectedEnhancements((prev) => (prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value]))
