@@ -1,5 +1,9 @@
-import type { CollectionConfig } from 'payload'
-import { admins } from '../../utils/admins'
+import type { CollectionConfig } from 'payload';
+import { admins } from '../../utils/admins';
+
+
+
+
 
 const Blogs: CollectionConfig = {
   slug: 'blogs',
@@ -73,6 +77,17 @@ const Blogs: CollectionConfig = {
       required: true,
       admin: {
         description: 'The title of the generated blog post.',
+      },
+    },
+
+    {
+      name: 'language',
+      label: 'Language (en, ru, etc...)',
+      type: 'text',
+      required: true,
+      admin: {
+        position: 'sidebar',
+        description: 'The language of the generated blog post.',
       },
     },
 
