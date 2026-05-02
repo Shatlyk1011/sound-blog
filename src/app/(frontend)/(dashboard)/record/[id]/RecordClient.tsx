@@ -93,11 +93,7 @@ export function RecordClient({ recordId }: RecordClientProps) {
         <>
           <h1 className='text-5xl leading-[130%] font-bold tracking-tight'>{blog.title}</h1>
 
-            <BlogMetadata
-              createdAt={blog.createdAt}
-              tone={blog.tone}
-              fileUrl={(blog.recordId as VoiceRecord).fileUrl}
-          />
+          <BlogMetadata createdAt={blog.createdAt} tone={blog.tone} fileUrl={(blog.recordId as VoiceRecord).fileUrl} />
           <div className='w-full'>
             <ActionBar
               handleCopy={() => handleCopy(blog.content!)}

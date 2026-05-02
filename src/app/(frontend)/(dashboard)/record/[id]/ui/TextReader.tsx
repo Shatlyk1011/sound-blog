@@ -40,7 +40,7 @@ export default function TextReader({ text, lang, className }: TextReaderProps) {
               size='sm'
               onClick={toggle}
               aria-label={STATUS_LABEL[status]}
-              className='gap-2 w-9 h-9 rounded-full'
+              className='h-9 w-9 gap-2 rounded-full'
             >
               {isLoading ? (
                 <HugeiconsIcon icon={Loading03Icon} size={16} className='animate-spin' />

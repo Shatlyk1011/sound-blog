@@ -24,7 +24,7 @@ export function ActionBar({
   textReaderSlot,
 }: Props) {
   return (
-    <div className='mb-4 flex flex-wrap items-start gap-2 min-h-14 '>
+    <div className='mb-4 flex min-h-14 flex-wrap items-start gap-2'>
       {isEditing ? (
         <>
           <Button className='rounded-full' onClick={onSaveClick} disabled={isSaving}>
@@ -52,11 +52,7 @@ export function ActionBar({
       <div className='flex flex-1 justify-end'>
         <Tooltip>
           <TooltipTrigger asChild>
-            <Button
-              variant={'ghost'}
-              size="icon"
-              onClick={handleCopy}
-            >
+            <Button variant={'ghost'} size='icon' onClick={handleCopy}>
               <HugeiconsIcon icon={CopyIcon} />
             </Button>
           </TooltipTrigger>

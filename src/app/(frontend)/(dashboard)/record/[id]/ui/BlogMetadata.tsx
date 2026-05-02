@@ -39,10 +39,10 @@ const BlogMetadata: FC<Props> = ({ createdAt, tone, fileUrl }: Props) => {
           </Button>
         ) : (
           <div className='relative w-full'>
-              <MiniAudioPlayer classes='border border-border w-64  my-0' fileUrl={fileUrl} />
+            <MiniAudioPlayer classes='border border-border w-64  my-0' fileUrl={fileUrl} />
             <button
               onClick={() => setShowOriginalAudio(false)}
-                className='bg-muted text-muted-foreground/60 absolute -top-5 -right-0 rounded-full p-0.5'
+              className='bg-muted text-muted-foreground/60 absolute -top-5 -right-0 rounded-full p-0.5'
             >
               <HugeiconsIcon icon={Close} size={12} />
             </button>
