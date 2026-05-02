@@ -1,5 +1,9 @@
-import type { CollectionConfig } from 'payload'
-import { admins } from '../../utils/admins'
+import type { CollectionConfig } from 'payload';
+import { admins } from '../../utils/admins';
+
+
+
+
 
 const Blogs: CollectionConfig = {
   slug: 'blogs',
@@ -73,6 +77,16 @@ const Blogs: CollectionConfig = {
       required: true,
       admin: {
         description: 'The title of the generated blog post.',
+      },
+    },
+
+    {
+      name: 'filters',
+      label: 'Filters (array strings)',
+      type: 'text',
+      required: false,
+      admin: {
+        description: 'The filters used to generate the blog post.',
       },
     },
 
