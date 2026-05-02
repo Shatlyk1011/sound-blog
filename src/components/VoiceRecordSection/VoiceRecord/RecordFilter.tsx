@@ -39,8 +39,8 @@ const RecordFilter = ({ selectedFilters, setSelectedFilters }: Props) => {
 
   return (
     <>
-      <div className='mb-4 flex w-full flex-col items-start gap-2.5 text-[13px]'>
-        <h4 className='text-muted-foreground flex items-center gap-1.5 uppercase'>
+      <div className='mb-4 flex w-full flex-col items-start gap-3 text-sm'>
+        <h4 className='text-foreground/80 font-medium tracking-one flex items-center gap-1.5 uppercase'>
           Selected Filters
           <Tooltip>
             <TooltipTrigger asChild>
@@ -55,9 +55,9 @@ const RecordFilter = ({ selectedFilters, setSelectedFilters }: Props) => {
           </Tooltip>
         </h4>
 
-        <ul className='flex flex-wrap gap-x-2.5 gap-y-2 text-[13px]'>
+        <ul className='flex flex-wrap gap-2.5 text-sm text-secondary-foreground font-medium'>
           {selectedFilters.map((key) => (
-            <li className='bg-chart-2/10 text-chart-2 rounded-full border border-current/20 px-2.5 py-0.75' key={key}>
+            <li className='bg-secondary/60  rounded-full border border-current/20 px-3 py-1' key={key}>
               {ALL_FILTERS[key as keyof typeof ALL_FILTERS]}
             </li>
           ))}
@@ -76,7 +76,7 @@ const RecordFilter = ({ selectedFilters, setSelectedFilters }: Props) => {
             role='button'
             className='relative z-10 flex h-auto items-center justify-between gap-4'
           >
-            <h4 className='tracking-one text-start text-base leading-7 font-semibold'>Adjust Filters</h4>
+            <h4 className='tracking-one text-start text-lg leading-7 font-semibold'>Adjust Filters</h4>
             <button type='button' className={cn('duration-300', open ? 'rotate-180' : 'rotate-0')} title='Expand'>
               <HugeiconsIcon icon={ChevronDown} />
             </button>
@@ -93,16 +93,16 @@ const RecordFilter = ({ selectedFilters, setSelectedFilters }: Props) => {
               {/* Blog tone filter  */}
               <div className='space-y-2.5'>
                 <h4 className='text-muted-foreground -tracking-one text-sm font-medium uppercase'>Tone</h4>
-                <ButtonGroup>
+                <ButtonGroup className='w-full'>
                   {TONES.map(({ title, value }) => (
                     <Button
                       key={value}
                       variant='default'
-                      size='sm'
+                      size='lg'
                       type='button'
                       onClick={() => setTone(value)}
                       className={cn(
-                        'bg-chart-2/80 border-chart-2/30 tracking-two hover:bg-chart-2 text-xs',
+                        'bg-chart-2/80 flex-1 border-chart-2/30 tracking-two hover:bg-chart-2 text-sm',
                         tone !== value && 'bg-secondary/80 hover:bg-secondary text-muted-foreground'
                       )}
                     >
@@ -115,16 +115,16 @@ const RecordFilter = ({ selectedFilters, setSelectedFilters }: Props) => {
               {/* Blog length filter  */}
               <div className='space-y-2.5'>
                 <h4 className='text-muted-foreground -tracking-one text-sm font-medium uppercase'>Length</h4>
-                <ButtonGroup>
+                <ButtonGroup className='w-full'>
                   {LENGTHS.map(({ title, value }) => (
                     <Button
                       key={value}
                       variant='default'
-                      size='sm'
+                      size='lg'
                       type='button'
                       onClick={() => setBlogeLength(value)}
                       className={cn(
-                        'bg-chart-2/80 border-chart-2/30 tracking-two hover:bg-chart-2 text-xs',
+                        'bg-chart-2/80 flex-1 border-chart-2/30 tracking-two hover:bg-chart-2 text-sm',
                         blogLength !== value && 'bg-secondary/80 hover:bg-secondary text-muted-foreground'
                       )}
                     >
@@ -137,12 +137,24 @@ const RecordFilter = ({ selectedFilters, setSelectedFilters }: Props) => {
               {/* Enhancements  */}
               <div className='space-y-2.5'>
                 <h4 className='text-muted-foreground -tracking-one text-sm font-medium uppercase'>Enhancements</h4>
-                <ul className='tracking-one grid grid-cols-2 gap-x-14 gap-y-3 text-[13px] leading-[150%] text-nowrap'>
-                  {ENHANCEMENTS.map(({ title, value }) => (
+                <ul className='tracking-one grid grid-cols-2 gap-x-14 gap-y-3 text-sm leading-[150%] text-nowrap'>
+                  {ENHANCEMENTS.map(({ title, value, tooltip }) => (
                     <li key={value} className='-tracking-one flex basis-[40%] items-center justify-between gap-2'>
-                      <label className='flex-1 cursor-pointer' htmlFor={value}>
-                        {title}
-                      </label>
+                      <div className='flex items-center gap-2'>
+                        <label className='flex-1 cursor-pointer' htmlFor={value}>
+                          {title}
+                        </label>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <HugeiconsIcon icon={Info} size={16} />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            {tooltip}
+                          </TooltipContent>
+                        </Tooltip>
+
+                      </div>
+
                       <Switch
                         id={value}
                         checked={selectedEnhancements.includes(value)}

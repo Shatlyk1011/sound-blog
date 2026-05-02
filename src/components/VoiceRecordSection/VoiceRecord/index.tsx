@@ -98,7 +98,7 @@ export default function VoiceRecord() {
     <div
       {...getRootProps()}
       className={cn(
-        'relative mt-4 w-full transition-colors',
+        'relative w-full transition-colors',
         isDragActive ? 'bg-primary/5 border-primary border-2 border-dashed' : 'border-2 border-transparent'
       )}
     >
@@ -208,7 +208,7 @@ export default function VoiceRecord() {
         {/* ── BOTTOM ACTIONS ───────────────────────────── */}
         {status === 'idle' && (
           <div className='flex h-20 w-full flex-col justify-end gap-2'>
-            <p className='text-foreground/70 text-xs'>Click to speak</p>
+            <p className='text-foreground/70 text-sm'>Click to speak</p>
             <Button type='button' onClick={startRecording} size='lg' aria-label='Start recording'>
               <HugeiconsIcon icon={Mic01Icon} className='size-4' />
               Start Recording
