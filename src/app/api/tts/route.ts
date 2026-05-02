@@ -4,6 +4,13 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 import { TTS_VOICE_HEADER_URL } from '@/lib/constants'
 
+
+
+
+
+
+
+
 const WORKER_URL = process.env.WORKER_URL
 
 /**
@@ -83,9 +90,9 @@ export async function POST(req: NextRequest) {
     const accessKeyId = process.env.R2_ACCESS_KEY_ID
     const secretAccessKey = process.env.R2_SECRET_ACCESS_KEY
     const publicUrl = process.env.R2_PUBLIC_URL
-    const ttsBucket = process.env.R2_TTS_BUCKET || 'voice-records/tts'
+    const voiceBucket = process.env.R2_VOICE_RECORD_BUCKET
 
-    if (accessKeyId && secretAccessKey && publicUrl && ttsBucket) {
+    if (accessKeyId && secretAccessKey && publicUrl && voiceBucket) {
       try {
         const s3 = new S3Client({
           region: 'auto',
@@ -93,11 +100,11 @@ export async function POST(req: NextRequest) {
           credentials: { accessKeyId, secretAccessKey },
         })
 
-        const fileName = `tts-${blogId ?? Date.now()}-${Date.now()}.mp3`
+        const fileName = `tts/${blogId}-${Date.now()}.mp3`
 
         await s3.send(
           new PutObjectCommand({
-            Bucket: ttsBucket,
+            Bucket: voiceBucket,
             Key: fileName,
             Body: audioBuffer,
             ContentType: 'audio/mpeg',
