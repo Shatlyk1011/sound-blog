@@ -31,12 +31,7 @@ export function ActionBar({
             {isSaving && <HugeiconsIcon icon={Loading03Icon} size={16} />}
             Save Article
           </Button>
-          <Button
-            className='rounded-full'
-            variant={'destructive'}
-            onClick={onCancelClick}
-            disabled={isSaving}
-          >
+          <Button className='rounded-full' variant={'destructive'} onClick={onCancelClick} disabled={isSaving}>
             Cancel
           </Button>
         </>

@@ -8,9 +8,8 @@ interface Props {
 }
 
 const BlogMetadata: FC<Props> = ({ createdAt, tone }: Props) => {
-
   return (
-    <div className='flex mb-4 items-start justify-between'>
+    <div className='mb-4 flex items-start justify-between'>
       <div className='flex items-center text-sm font-medium'>
         <ul className='flex items-center gap-2 py-4'>
           {tone && <li className='border-border rounded-full border px-2.5 py-1 text-xs'>Tone: {tone}</li>}
@@ -22,7 +21,6 @@ const BlogMetadata: FC<Props> = ({ createdAt, tone }: Props) => {
           }).format(new Date(createdAt))}
         </time>
       </div>
-
     </div>
   )
 }

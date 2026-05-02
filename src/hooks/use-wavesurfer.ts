@@ -1,15 +1,9 @@
 'use client'
 
-import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { useWavesurfer as useWavesurferLib } from '@wavesurfer/react';
-import { useDropzone } from 'react-dropzone';
-import RecordPlugin from 'wavesurfer.js/dist/plugins/record.esm.js';
-
-
-
-
-
-
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
+import { useWavesurfer as useWavesurferLib } from '@wavesurfer/react'
+import { useDropzone } from 'react-dropzone'
+import RecordPlugin from 'wavesurfer.js/dist/plugins/record.esm.js'
 
 export type RecordStatus = 'idle' | 'recording' | 'recorded'
 

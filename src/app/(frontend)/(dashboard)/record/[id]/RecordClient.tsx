@@ -10,12 +10,12 @@ import dynamic from 'next/dynamic'
 import ReactMarkdown from 'react-markdown'
 import { toast } from 'sonner'
 import { copyToClipboard } from '@/lib/utils'
+import MiniAudioPlayer from '@/components/VoiceRecordsGrid/AudioPlayer'
 import { ActionBar } from './ui/ActionBar'
 import BlogLoading from './ui/BlogLoading'
 import BlogMetadata from './ui/BlogMetadata'
 import TabSwitcher from './ui/TabSwitch'
 import TextReader from './ui/TextReader'
-import MiniAudioPlayer from '@/components/VoiceRecordsGrid/AudioPlayer'
 
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false })
 
@@ -94,7 +94,7 @@ export function RecordClient({ recordId }: RecordClientProps) {
 
       {blog && (
         <>
-          <h1 className='text-5xl leading-[140%] font-bold tracking-tight mb-2'>{blog.title}</h1>
+          <h1 className='mb-2 text-5xl leading-[140%] font-bold tracking-tight'>{blog.title}</h1>
 
           <BlogMetadata createdAt={blog.createdAt} tone={blog.tone} fileUrl={(blog.recordId as VoiceRecord).fileUrl} />
           <div className='w-full'>
@@ -110,7 +110,7 @@ export function RecordClient({ recordId }: RecordClientProps) {
           </div>
           <TabSwitcher activeTab={activeTab} onChange={setActiveTab} disabled={isEditing} />
 
-          <article className=' w-full rounded-3xl py-8'>
+          <article className='w-full rounded-3xl py-8'>
             <AnimatePresence mode='wait'>
               {activeTab === 'generated' ? (
                 <motion.div
@@ -149,15 +149,17 @@ export function RecordClient({ recordId }: RecordClientProps) {
                 >
                   <p className='font-mono'>{(blog.transcriptId as Transcript).rawText}</p>
                 </motion.div>
-                ) : (
-                  <motion.div className='flex flex-col'>
-                    <div className='relative w-full flex items-center gap-6'>
-                        <MiniAudioPlayer classes='border border-border w-64  my-0' fileUrl={(blog.recordId as VoiceRecord).fileUrl} />
-                      <span className='text-sm font-medium'>Original Voice</span>
-                    </div>
-                  </motion.div>
+              ) : (
+                <motion.div className='flex flex-col'>
+                  <div className='relative flex w-full items-center gap-6'>
+                    <MiniAudioPlayer
+                      classes='border border-border w-64  my-0'
+                      fileUrl={(blog.recordId as VoiceRecord).fileUrl}
+                    />
+                    <span className='text-sm font-medium'>Original Voice</span>
+                  </div>
+                </motion.div>
               )}
-
             </AnimatePresence>
           </article>
         </>
