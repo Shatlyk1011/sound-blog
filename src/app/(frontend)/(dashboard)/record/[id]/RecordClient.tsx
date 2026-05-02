@@ -15,6 +15,7 @@ import BlogLoading from './ui/BlogLoading'
 import BlogMetadata from './ui/BlogMetadata'
 import TabSwitcher from './ui/TabSwitch'
 import TextReader from './ui/TextReader'
+import MiniAudioPlayer from '@/components/VoiceRecordsGrid/AudioPlayer'
 
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false })
 
@@ -28,8 +29,10 @@ const animationVariants = {
   exit: { opacity: 0, y: -15 },
 }
 
+export type TabVariants = 'generated' | 'raw' | 'originalAudio'
+
 export function RecordClient({ recordId }: RecordClientProps) {
-  const [activeTab, setActiveTab] = useState<'generated' | 'raw'>('generated')
+  const [activeTab, setActiveTab] = useState<TabVariants>('generated')
   const [isEditing, setIsEditing] = useState(false)
   const [blogContent, setBlogContent] = useState<string>('')
 
@@ -91,7 +94,7 @@ export function RecordClient({ recordId }: RecordClientProps) {
 
       {blog && (
         <>
-          <h1 className='text-5xl leading-[130%] font-bold tracking-tight'>{blog.title}</h1>
+          <h1 className='text-5xl leading-[140%] font-bold tracking-tight mb-2'>{blog.title}</h1>
 
           <BlogMetadata createdAt={blog.createdAt} tone={blog.tone} fileUrl={(blog.recordId as VoiceRecord).fileUrl} />
           <div className='w-full'>
@@ -135,7 +138,7 @@ export function RecordClient({ recordId }: RecordClientProps) {
                     </div>
                   )}
                 </motion.div>
-              ) : (
+              ) : activeTab === 'raw' ? (
                 <motion.div
                   key='raw'
                   initial='initial'
@@ -146,7 +149,15 @@ export function RecordClient({ recordId }: RecordClientProps) {
                 >
                   <p className='font-mono'>{(blog.transcriptId as Transcript).rawText}</p>
                 </motion.div>
+                ) : (
+                  <motion.div className='flex flex-col'>
+                    <div className='relative w-full flex items-center gap-6'>
+                      <MiniAudioPlayer classes='border border-border w-64  my-0' fileUrl={'fileUrl'} />
+                      <span className='text-sm font-medium'>Original Voice</span>
+                    </div>
+                  </motion.div>
               )}
+
             </AnimatePresence>
           </article>
         </>

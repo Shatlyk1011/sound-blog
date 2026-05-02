@@ -8,6 +8,7 @@ import { TooltipProvider } from '@/components/ui/tooltip'
 import TanstackQueryProvider from '../_providers/tanstack-query'
 import { UserProvider } from '../_providers/user-provider'
 import './globals.css'
+import './blog.css'
 
 const poppins = Poppins({
   subsets: ['latin'],

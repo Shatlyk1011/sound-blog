@@ -285,6 +285,10 @@ export interface Blog {
    */
   title: string;
   /**
+   * The filters used to generate the blog post.
+   */
+  filters?: string | null;
+  /**
    * The language of the generated blog post.
    */
   language: string;
@@ -465,6 +469,7 @@ export interface BlogsSelect<T extends boolean = true> {
   recordId?: T;
   transcriptId?: T;
   title?: T;
+  filters?: T;
   language?: T;
   content?: T;
   status?: T;
