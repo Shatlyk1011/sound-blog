@@ -277,7 +277,7 @@
 .prose h2 {
   position: relative;
   padding-bottom: 1rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border);
   margin-top: 2rem;
   margin-bottom: rem;
   font-weight: 600;
@@ -285,7 +285,7 @@
 
 .prose ul {
   padding-left: 20px;
-  margin-block:20px
+  margin-block: 20px
 }
 
 .prose ul li {
@@ -296,16 +296,12 @@
 .prose ul li:before {
   content: '';
   position: absolute;
-  top: 50%;
+  top: 10px;
   left: -16px;
   width: 8px;
   height: 1px;
   background-color: var(--muted-foreground);
   transform: translateY(-50%)
-}
-
-.dark .prose h2 {
-  border-bottom-color: #1a1a1a;
 }
 
 .prose p {
@@ -386,27 +382,12 @@
 .prose pre {
   background: #0f0f0f !important;
   border: 1px solid #1f1f1f;
+  padding: 10px;
   box-shadow:
     0 4px 6px -1px rgba(0, 0, 0, 0.3),
     0 2px 4px -1px rgba(0, 0, 0, 0.2);
 }
 
-.prose pre code {
-  background: transparent !important;
-  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-  font-size: 0.875rem;
-  font-weight: 400;
-  line-height: 1.6;
-}
-
-.prose pre code .line {
-  display: block;
-  background: transparent !important;
-}
-
-.prose pre code span {
-  background: transparent !important;
-}
 
 .prose ul > li::marker {
   color: #3b82f6;
