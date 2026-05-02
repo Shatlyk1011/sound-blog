@@ -32,12 +32,12 @@ export function ActionBar({
             Save Article
           </Button>
           <Button
-            className='text-destructive/90 bg-destructive/40 rounded-full'
+            className='rounded-full'
             variant={'destructive'}
             onClick={onCancelClick}
             disabled={isSaving}
           >
-            Cancel Editing
+            Cancel
           </Button>
         </>
       ) : (

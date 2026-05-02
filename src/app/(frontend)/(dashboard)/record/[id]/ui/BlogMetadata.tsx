@@ -1,9 +1,5 @@
 import { FC, useState } from 'react'
 import { Blog } from '@/payload-types'
-import { Close } from '@hugeicons/core-free-icons'
-import { HugeiconsIcon } from '@hugeicons/react'
-import { Button } from '@/components/ui/button'
-import MiniAudioPlayer from '@/components/VoiceRecordsGrid/AudioPlayer'
 
 interface Props {
   createdAt: string
@@ -11,8 +7,7 @@ interface Props {
   tone?: Blog['tone']
 }
 
-const BlogMetadata: FC<Props> = ({ createdAt, tone, fileUrl }: Props) => {
-  const [showOriginalAudio, setShowOriginalAudio] = useState(false)
+const BlogMetadata: FC<Props> = ({ createdAt, tone }: Props) => {
 
   return (
     <div className='flex min-h-20 items-start justify-between'>
@@ -27,32 +22,7 @@ const BlogMetadata: FC<Props> = ({ createdAt, tone, fileUrl }: Props) => {
           }).format(new Date(createdAt))}
         </time>
       </div>
-      <div className='flex flex-col'>
-        {!showOriginalAudio ? (
-          <Button
-            variant={'ghost'}
-            size='sm'
-            onClick={() => setShowOriginalAudio(true)}
-            className='text-xs font-medium opacity-70'
-          >
-            Show original audio
-          </Button>
-        ) : (
-          <div className='relative w-full'>
-            <MiniAudioPlayer classes='border border-border w-64  my-0' fileUrl={fileUrl} />
-              <div className='absolute -top-5 w-full flex justify-between right-0'>
-                <span className='text-[11px] font-medium tracking-two text-muted-foreground/80'>Original Audio</span>
-                <button
-                  onClick={() => setShowOriginalAudio(false)}
-                  className='bg-muted text-muted-foreground/60  rounded-full p-0.5'
-                >
-                  <HugeiconsIcon icon={Close} size={12} />
-                </button>
-              </div>
 
-          </div>
-        )}
-      </div>
     </div>
   )
 }
