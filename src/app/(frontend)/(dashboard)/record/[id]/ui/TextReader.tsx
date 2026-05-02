@@ -40,7 +40,7 @@ export default function TextReader({ text, lang, className }: TextReaderProps) {
               size='sm'
               onClick={toggle}
               aria-label={STATUS_LABEL[status]}
-              className='h-9 w-9 gap-2 rounded-full'
+              className='gap-2 w-9 h-9 rounded-full'
             >
               {isLoading ? (
                 <HugeiconsIcon icon={Loading03Icon} size={16} className='animate-spin' />
@@ -63,7 +63,7 @@ export default function TextReader({ text, lang, className }: TextReaderProps) {
       )}
 
       {/* Audio player — shown once audio is generated */}
-      {audioUrl && <AudioPlayer classes='px-2 py-2 m-0' fileUrl={'123'} autoPlay />}
+      {audioUrl && <AudioPlayer classes='px-2 py-2 m-0' fileUrl={audioUrl} autoPlay />}
     </div>
   )
 }

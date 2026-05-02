@@ -260,22 +260,48 @@
 
 .prose h1 {
   font-size: 3rem;
+  line-height: 110%;
+  margin-bottom: 30px;
 }
 
 .prose h2 {
   font-size: 2rem;
+  line-height: 120%;
 }
 
 .prose h3 {
-  font-size: 1.6rem;
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
 }
 .prose h2 {
   position: relative;
-  padding-bottom: 0.5rem;
+  padding-bottom: 1rem;
   border-bottom: 1px solid #e5e7eb;
   margin-top: 2rem;
-  margin-bottom: 1rem;
+  margin-bottom: rem;
   font-weight: 600;
+}
+
+.prose ul {
+  padding-left: 20px;
+  margin-block:20px
+}
+
+.prose ul li {
+  position: relative;
+  margin-bottom: 4px;
+}
+
+.prose ul li:before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -16px;
+  width: 8px;
+  height: 1px;
+  background-color: var(--muted-foreground);
+  transform: translateY(-50%)
 }
 
 .dark .prose h2 {
@@ -285,7 +311,7 @@
 .prose p {
   font-size: 1.1rem;
   line-height: 1.5;
-  margin-bottom: 1.25em;
+  margin-bottom: 1.5em;
 }
 
 .prose blockquote {
