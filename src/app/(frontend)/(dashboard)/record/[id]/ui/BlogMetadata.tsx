@@ -1,21 +1,24 @@
+import { ALL_FILTERS, FilterValue } from '@/lib/constants'
 import { FC } from 'react'
-import { Blog } from '@/payload-types'
 
 interface Props {
   createdAt: string
   fileUrl: string
-  tone?: Blog['tone']
+  filters?: string | null
 }
 
-const BlogMetadata: FC<Props> = ({ createdAt, tone }: Props) => {
+const BlogMetadata: FC<Props> = ({ createdAt, filters }: Props) => {
+  const filtersArr = JSON.parse(filters || '')
+
   return (
     <div className='mb-4 flex items-start justify-between'>
       <div className='flex items-center text-sm font-medium'>
         <ul className='flex items-center gap-2 py-4'>
-          {tone && <li className='border-border rounded-full border px-2.5 py-1 text-xs'>Tone: {tone}</li>}
+          {filtersArr.map((filter: string) => (
+            <li key={filter} className='border-border rounded-full border px-2.5 py-1 text-sm'>{ALL_FILTERS[filter as FilterValue]}</li>
+          ))}
         </ul>
-        <span className='mx-2 text-lg'>•</span>
-        <time className='text-muted-foreground' dateTime={createdAt}>
+        <time className='text-muted-foreground ml-4' dateTime={createdAt}>
           {new Intl.DateTimeFormat('en-US', {
             dateStyle: 'long',
           }).format(new Date(createdAt))}
