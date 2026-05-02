@@ -59,9 +59,6 @@ export function useTTS(text: string, lang: string): UseTTSReturn {
         body: JSON.stringify({ text, lang }),
       })
 
-      console.log('HEREEREREXXXXXX')
-      console.log('res', res)
-
       if (!res.ok) {
         const json = await res.json().catch(() => ({ error: 'TTS request failed' }))
         throw new Error(json.error ?? 'TTS request failed')
