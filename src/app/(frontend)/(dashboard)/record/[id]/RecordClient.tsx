@@ -87,7 +87,7 @@ export function RecordClient({ recordId }: RecordClientProps) {
   }
 
   return (
-    <section className='gap-6 px-4'>
+    <section className='gap-6'>
       <BlogLoading hidden={!isLoading} />
 
       {error && <div className='text-destructive'>Error loading blog: {(error as Error).message}</div>}
@@ -110,7 +110,7 @@ export function RecordClient({ recordId }: RecordClientProps) {
           </div>
           <TabSwitcher activeTab={activeTab} onChange={setActiveTab} disabled={isEditing} />
 
-          <article className='bg-card w-full rounded-3xl border p-8 text-left shadow-sm'>
+          <article className=' w-full rounded-3xl py-8'>
             <AnimatePresence mode='wait'>
               {activeTab === 'generated' ? (
                 <motion.div
@@ -152,7 +152,7 @@ export function RecordClient({ recordId }: RecordClientProps) {
                 ) : (
                   <motion.div className='flex flex-col'>
                     <div className='relative w-full flex items-center gap-6'>
-                      <MiniAudioPlayer classes='border border-border w-64  my-0' fileUrl={'fileUrl'} />
+                        <MiniAudioPlayer classes='border border-border w-64  my-0' fileUrl={(blog.recordId as VoiceRecord).fileUrl} />
                       <span className='text-sm font-medium'>Original Voice</span>
                     </div>
                   </motion.div>

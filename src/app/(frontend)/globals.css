@@ -296,8 +296,8 @@
 .prose ul li:before {
   content: '';
   position: absolute;
-  top: 10px;
-  left: -16px;
+  top: 12px;
+  left: -14px;
   width: 8px;
   height: 1px;
   background-color: var(--muted-foreground);

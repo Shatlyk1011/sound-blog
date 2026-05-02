@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC } from 'react'
 import { Blog } from '@/payload-types'
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 const BlogMetadata: FC<Props> = ({ createdAt, tone }: Props) => {
 
   return (
-    <div className='flex min-h-20 items-start justify-between'>
+    <div className='flex mb-4 items-start justify-between'>
       <div className='flex items-center text-sm font-medium'>
         <ul className='flex items-center gap-2 py-4'>
           {tone && <li className='border-border rounded-full border px-2.5 py-1 text-xs'>Tone: {tone}</li>}
