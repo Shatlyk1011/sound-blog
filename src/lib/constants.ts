@@ -1,3 +1,5 @@
+export const TTS_VOICE_HEADER_URL = 'X-TTS-Voice-Url'
+
 export interface FilterOption<T extends string> {
   title: string
   value: T

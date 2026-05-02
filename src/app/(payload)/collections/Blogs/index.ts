@@ -140,6 +140,18 @@ const Blogs: CollectionConfig = {
         description: 'The writing tone used when generating this blog post with GPT.',
       },
     },
+
+    {
+      name: 'ttsVoiceUrl',
+      label: 'TTS Voice URL',
+      type: 'text',
+      required: false,
+      admin: {
+        readOnly: true,
+        position: 'sidebar',
+        description: 'The public URL of the AI-generated TTS audio file stored in Cloudflare R2.',
+      },
+    },
   ],
 
   timestamps: true,

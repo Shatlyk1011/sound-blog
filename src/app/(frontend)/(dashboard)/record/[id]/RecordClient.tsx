@@ -105,7 +105,17 @@ export function RecordClient({ recordId }: RecordClientProps) {
               onEditClick={onEditClick}
               onSaveClick={handleSave}
               onCancelClick={onCancelClick}
-              textReaderSlot={!isEditing && <TextReader text={blog.content ?? ''} lang={blog.language} />}
+              textReaderSlot={
+                !isEditing && (
+                  <TextReader
+                    text={blog.content ?? ''}
+                    lang={blog.language}
+                    blogId={blog.id}
+                    recordId={recordId}
+                    existingTtsUrl={blog.ttsVoiceUrl}
+                  />
+                )
+              }
             />
           </div>
           <TabSwitcher activeTab={activeTab} onChange={setActiveTab} disabled={isEditing} />

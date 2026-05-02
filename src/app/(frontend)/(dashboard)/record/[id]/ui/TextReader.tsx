@@ -12,6 +12,12 @@ interface TextReaderProps {
   text: string
   lang: string
   className?: string
+  /** Payload blog document ID — forwarded to the TTS hook for URL persistence. */
+  blogId?: string
+  /** Voice record ID — used to invalidate the blog React Query cache after TTS is saved. */
+  recordId?: string
+  /** Pre-existing TTS voice URL from the blog doc. If present, skips the API call. */
+  existingTtsUrl?: string | null
 }
 
 const STATUS_LABEL: Record<TTSStatus, string> = {
@@ -22,8 +28,19 @@ const STATUS_LABEL: Record<TTSStatus, string> = {
   error: 'Retry audio',
 }
 
-export default function TextReader({ text, lang, className }: TextReaderProps) {
-  const { status, audioUrl, toggle, error } = useTTS(text, lang)
+export default function TextReader({
+  text,
+  lang,
+  className,
+  blogId,
+  recordId,
+  existingTtsUrl,
+}: TextReaderProps) {
+  const { status, audioUrl, toggle, error } = useTTS(text, lang, {
+    blogId,
+    recordId,
+    existingTtsUrl,
+  })
 
   const isLoading = status === 'loading'
   const isError = status === 'error'
