@@ -7,9 +7,10 @@ import { cn } from '@/lib/utils'
 interface Props {
   fileUrl: string
   classes?: string
+  autoPlay?: boolean
 }
 
-function MiniAudioPlayer({ fileUrl, classes }: Props) {
+function MiniAudioPlayer({ fileUrl, classes, autoPlay = false }: Props) {
   const audioRef = useRef<HTMLAudioElement>(null)
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
@@ -70,7 +71,7 @@ function MiniAudioPlayer({ fileUrl, classes }: Props) {
     <div
       className={cn('bg-card border-border/50 mt-2 mb-3 flex w-full flex-col gap-2 rounded-2xl border p-3', classes)}
     >
-      <audio ref={audioRef} src={fileUrl} preload='metadata' />
+      <audio ref={audioRef} src={fileUrl} preload='metadata' autoPlay={autoPlay} />
 
       <div className='flex items-center gap-3'>
         <button

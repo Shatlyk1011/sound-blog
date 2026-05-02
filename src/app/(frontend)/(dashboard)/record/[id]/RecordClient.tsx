@@ -93,13 +93,11 @@ export function RecordClient({ recordId }: RecordClientProps) {
         <>
           <h1 className='text-5xl leading-[130%] font-bold tracking-tight'>{blog.title}</h1>
 
-          <div className='flex min-h-20 items-start justify-between'>
             <BlogMetadata
               createdAt={blog.createdAt}
               tone={blog.tone}
               fileUrl={(blog.recordId as VoiceRecord).fileUrl}
-            />
-          </div>
+          />
           <div className='w-full'>
             <ActionBar
               handleCopy={() => handleCopy(blog.content!)}
@@ -108,7 +106,7 @@ export function RecordClient({ recordId }: RecordClientProps) {
               onEditClick={onEditClick}
               onSaveClick={handleSave}
               onCancelClick={onCancelClick}
-              textReaderSlot={!isEditing && activeTab === 'generated' ? <TextReader text={blog.content ?? ''} lang={blog.language} /> : null}
+              textReaderSlot={!isEditing && <TextReader text={blog.content ?? ''} lang={blog.language} />}
             />
           </div>
           <TabSwitcher activeTab={activeTab} onChange={setActiveTab} disabled={isEditing} />

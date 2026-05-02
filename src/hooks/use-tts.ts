@@ -1,9 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { toast } from 'sonner';
-
-
-
-
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { toast } from 'sonner'
 
 export type TTSStatus = 'idle' | 'loading' | 'playing' | 'paused' | 'error'
 
@@ -12,6 +8,7 @@ interface UseTTSReturn {
   progress: number // 0–1
   duration: number // seconds
   currentTime: number // seconds
+  audioUrl: string | null
   play: () => void
   pause: () => void
   toggle: () => void
@@ -24,18 +21,13 @@ export function useTTS(text: string, lang: string): UseTTSReturn {
   const [progress, setProgress] = useState(0)
   const [duration, setDuration] = useState(0)
   const [currentTime, setCurrentTime] = useState(0)
+  const [audioUrl, setAudioUrl] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
 
-  const audioRef = useRef<HTMLAudioElement | null>(null)
   const objectUrlRef = useRef<string | null>(null)
 
   // Clean up object URL and audio when unmounting or text changes
   const cleanup = useCallback(() => {
-    if (audioRef.current) {
-      audioRef.current.pause()
-      audioRef.current.src = ''
-      audioRef.current = null
-    }
     if (objectUrlRef.current) {
       URL.revokeObjectURL(objectUrlRef.current)
       objectUrlRef.current = null
@@ -44,6 +36,7 @@ export function useTTS(text: string, lang: string): UseTTSReturn {
     setProgress(0)
     setDuration(0)
     setCurrentTime(0)
+    setAudioUrl(null)
     setError(null)
   }, [])
 
@@ -66,6 +59,9 @@ export function useTTS(text: string, lang: string): UseTTSReturn {
         body: JSON.stringify({ text, lang }),
       })
 
+      console.log('HEREEREREXXXXXX')
+      console.log('res', res)
+
       if (!res.ok) {
         const json = await res.json().catch(() => ({ error: 'TTS request failed' }))
         throw new Error(json.error ?? 'TTS request failed')
@@ -73,34 +69,9 @@ export function useTTS(text: string, lang: string): UseTTSReturn {
 
       const blob = await res.blob()
       const url = URL.createObjectURL(blob)
-
-      console.log('XXXX url', url)
       objectUrlRef.current = url
+      setAudioUrl(url)
 
-      const audio = new Audio(url)
-      audioRef.current = audio
-
-      audio.addEventListener('loadedmetadata', () => {
-        setDuration(audio.duration)
-      })
-
-      audio.addEventListener('timeupdate', () => {
-        setCurrentTime(audio.currentTime)
-        setProgress(audio.duration > 0 ? audio.currentTime / audio.duration : 0)
-      })
-
-      audio.addEventListener('ended', () => {
-        setStatus('idle')
-        setProgress(0)
-        setCurrentTime(0)
-      })
-
-      audio.addEventListener('error', () => {
-        setError('Audio playback error')
-        setStatus('error')
-      })
-
-      await audio.play()
       setStatus('playing')
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Unknown TTS error'
@@ -112,15 +83,13 @@ export function useTTS(text: string, lang: string): UseTTSReturn {
   const play = useCallback(() => {
     if (status === 'idle' || status === 'error') {
       fetchAndPlay()
-    } else if (status === 'paused' && audioRef.current) {
-      audioRef.current.play()
+    } else if (status === 'paused') {
       setStatus('playing')
     }
   }, [status, fetchAndPlay])
 
   const pause = useCallback(() => {
-    if (status === 'playing' && audioRef.current) {
-      audioRef.current.pause()
+    if (status === 'playing') {
       setStatus('paused')
     }
   }, [status])
@@ -141,5 +110,5 @@ export function useTTS(text: string, lang: string): UseTTSReturn {
     cleanup()
   }, [cleanup])
 
-  return { status, progress, duration, currentTime, play, pause, toggle, stop, error }
+  return { status, progress, duration, currentTime, audioUrl, play, pause, toggle, stop, error }
 }

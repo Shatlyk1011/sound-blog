@@ -3,6 +3,12 @@ import { NextRequest, NextResponse } from 'next/server';
 
 
 
+
+
+
+
+
+
 const WORKER_URL = process.env.WORKER_URL
 
 /**
@@ -62,16 +68,19 @@ export async function POST(req: NextRequest) {
       body: JSON.stringify({ text: cleanText, lang }),
     })
 
-    console.log('workerRes', workerRes)
-
     if (!workerRes.ok) {
       const errorBody = await workerRes.text()
       console.error('Worker TTS error:', errorBody)
       return NextResponse.json({ error: 'TTS generation failed', details: errorBody }, { status: workerRes.status })
     }
 
-    // MeloTTS worker returns raw binary MP3 with Content-Type: audio/mpeg
-    const audioBuffer = await workerRes.arrayBuffer()
+    // Worker returns { audio: "<base64 encoded MP3>" }
+    const audio = await workerRes.json()
+    if (!audio) {
+      return NextResponse.json({ error: 'No audio returned from worker' }, { status: 502 })
+    }
+
+    const audioBuffer = Buffer.from(audio, 'base64')
 
     return new NextResponse(audioBuffer, {
       status: 200,

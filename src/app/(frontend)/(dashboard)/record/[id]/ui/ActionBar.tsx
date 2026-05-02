@@ -24,7 +24,7 @@ export function ActionBar({
   textReaderSlot,
 }: Props) {
   return (
-    <div className='mb-4 flex flex-wrap items-center gap-2 py-2'>
+    <div className='mb-4 flex flex-wrap items-start gap-2 min-h-14 '>
       {isEditing ? (
         <>
           <Button className='rounded-full' onClick={onSaveClick} disabled={isSaving}>
@@ -37,7 +37,6 @@ export function ActionBar({
             onClick={onCancelClick}
             disabled={isSaving}
           >
-            {isSaving && <HugeiconsIcon icon={Loading03Icon} size={16} />}
             Cancel Editing
           </Button>
         </>
