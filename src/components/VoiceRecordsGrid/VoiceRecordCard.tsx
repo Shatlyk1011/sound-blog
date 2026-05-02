@@ -137,13 +137,13 @@ const VoiceRecordCard: FC<Props> = ({ record }) => {
           <AlertDialogHeader>
             <AlertDialogTitle>Are you sure you want to delete this?</AlertDialogTitle>
             <AlertDialogDescription>
-              This will permanently delete your record: <b>{record.fileName}</b>
+              This will permanently delete your record: <br /> <b>{record.fileName}</b>
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
             <AlertDialogAction
-              className='bg-destructive text-destructive-foreground hover:bg-destructive/90'
+              variant={'destructive'}
               disabled={isPending}
               onClick={(e) => {
                 e.preventDefault()

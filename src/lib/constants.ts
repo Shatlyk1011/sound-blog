@@ -97,7 +97,7 @@ export const ALL_FILTERS: Record<FilterValue, string> = {
   examples: 'Add examples',
   storytelling: 'Storytelling',
   headings: 'Headings',
-  summary: 'Summary (TLDR)',
+  summary: 'Summary',
   intro: 'Intro hook',
   bullets: 'Bullet points',
 }
