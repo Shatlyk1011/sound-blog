@@ -1,5 +1,5 @@
-import { ALL_FILTERS, FilterValue } from '@/lib/constants'
 import { FC } from 'react'
+import { ALL_FILTERS, FilterValue } from '@/lib/constants'
 
 interface Props {
   createdAt: string
@@ -15,7 +15,9 @@ const BlogMetadata: FC<Props> = ({ createdAt, filters }: Props) => {
       <div className='flex items-center text-sm font-medium'>
         <ul className='flex items-center gap-2 py-4'>
           {filtersArr.map((filter: string) => (
-            <li key={filter} className='border-border rounded-full border px-2.5 py-1 text-sm'>{ALL_FILTERS[filter as FilterValue]}</li>
+            <li key={filter} className='border-border rounded-full border px-2.5 py-1 text-sm'>
+              {ALL_FILTERS[filter as FilterValue]}
+            </li>
           ))}
         </ul>
         <time className='text-muted-foreground ml-4' dateTime={createdAt}>

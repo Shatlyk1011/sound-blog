@@ -10,13 +10,13 @@ import dynamic from 'next/dynamic'
 import ReactMarkdown from 'react-markdown'
 import { toast } from 'sonner'
 import { copyToClipboard } from '@/lib/utils'
+import { useUser } from '@/hooks/use-user'
 import MiniAudioPlayer from '@/components/VoiceRecordsGrid/AudioPlayer'
 import { ActionBar } from './ui/ActionBar'
 import BlogLoading from './ui/BlogLoading'
 import BlogMetadata from './ui/BlogMetadata'
 import TabSwitcher from './ui/TabSwitch'
 import TextReader from './ui/TextReader'
-import { useUser } from '@/hooks/use-user'
 
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false })
 
@@ -98,7 +98,11 @@ export function RecordClient({ recordId }: RecordClientProps) {
         <>
           <h1 className='mb-2 text-5xl leading-[140%] font-bold tracking-tight'>{blog.title}</h1>
 
-          <BlogMetadata createdAt={blog.createdAt} filters={blog.filters} fileUrl={(blog.recordId as VoiceRecord).fileUrl} />
+          <BlogMetadata
+            createdAt={blog.createdAt}
+            filters={blog.filters}
+            fileUrl={(blog.recordId as VoiceRecord).fileUrl}
+          />
           <div className='w-full'>
             <ActionBar
               handleCopy={() => handleCopy(blog.content!)}
@@ -158,15 +162,15 @@ export function RecordClient({ recordId }: RecordClientProps) {
                   exit='exit'
                   variants={animationVariants}
                   transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1.0] }}
-                  >
-                    <div className='relative flex w-full items-center gap-6 mb-10'>
+                >
+                  <div className='relative mb-10 flex w-full items-center gap-6'>
                     <MiniAudioPlayer
                       classes='border border-border w-64  my-0'
                       fileUrl={(blog.recordId as VoiceRecord).fileUrl}
                     />
                     <span className='text-sm font-medium'>Original Voice</span>
                   </div>
-                    <p className='font-mono'>{(blog.transcriptId as Transcript).rawText}</p>
+                  <p className='font-mono'>{(blog.transcriptId as Transcript).rawText}</p>
                 </motion.div>
               )}
             </AnimatePresence>

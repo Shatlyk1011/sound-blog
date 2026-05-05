@@ -1,4 +1,4 @@
-import { User } from '@/payload-types';
+import { User } from '@/payload-types'
 import config from '@payload-config'
 import { getPayload } from 'payload'
 

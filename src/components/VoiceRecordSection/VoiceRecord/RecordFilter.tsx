@@ -40,7 +40,7 @@ const RecordFilter = ({ selectedFilters, setSelectedFilters }: Props) => {
   return (
     <>
       <div className='mb-4 flex w-full flex-col items-start gap-3 text-sm'>
-        <h4 className='text-foreground/80 font-medium tracking-one flex items-center gap-1.5 uppercase'>
+        <h4 className='text-foreground/80 tracking-one flex items-center gap-1.5 font-medium uppercase'>
           Selected Filters
           <Tooltip>
             <TooltipTrigger asChild>
@@ -55,9 +55,9 @@ const RecordFilter = ({ selectedFilters, setSelectedFilters }: Props) => {
           </Tooltip>
         </h4>
 
-        <ul className='flex flex-wrap gap-2.5 text-sm text-secondary-foreground font-medium'>
+        <ul className='text-secondary-foreground flex flex-wrap gap-2.5 text-sm font-medium'>
           {selectedFilters.map((key) => (
-            <li className='bg-secondary/60  rounded-full border border-current/20 px-3 py-1' key={key}>
+            <li className='bg-secondary/60 rounded-full border border-current/20 px-3 py-1' key={key}>
               {ALL_FILTERS[key as keyof typeof ALL_FILTERS]}
             </li>
           ))}
@@ -102,7 +102,7 @@ const RecordFilter = ({ selectedFilters, setSelectedFilters }: Props) => {
                       type='button'
                       onClick={() => setTone(value)}
                       className={cn(
-                        'bg-chart-2/80 flex-1 border-chart-2/30 tracking-two hover:bg-chart-2 text-sm',
+                        'bg-chart-2/80 border-chart-2/30 tracking-two hover:bg-chart-2 flex-1 text-sm',
                         tone !== value && 'bg-secondary/80 hover:bg-secondary text-muted-foreground'
                       )}
                     >
@@ -124,7 +124,7 @@ const RecordFilter = ({ selectedFilters, setSelectedFilters }: Props) => {
                       type='button'
                       onClick={() => setBlogeLength(value)}
                       className={cn(
-                        'bg-chart-2/80 flex-1 border-chart-2/30 tracking-two hover:bg-chart-2 text-sm',
+                        'bg-chart-2/80 border-chart-2/30 tracking-two hover:bg-chart-2 flex-1 text-sm',
                         blogLength !== value && 'bg-secondary/80 hover:bg-secondary text-muted-foreground'
                       )}
                     >
@@ -148,11 +148,8 @@ const RecordFilter = ({ selectedFilters, setSelectedFilters }: Props) => {
                           <TooltipTrigger>
                             <HugeiconsIcon icon={Info} size={16} />
                           </TooltipTrigger>
-                          <TooltipContent>
-                            {tooltip}
-                          </TooltipContent>
+                          <TooltipContent>{tooltip}</TooltipContent>
                         </Tooltip>
-
                       </div>
 
                       <Switch

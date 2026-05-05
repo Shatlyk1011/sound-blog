@@ -264,7 +264,9 @@ export default function ProfilePage() {
           {!mockInvoices.length && (
             <div className='py-2 text-center'>
               <Button variant='link' size='sm' asChild className='text-blue-500 hover:text-blue-600'>
-                <Link href='/pricing' prefetch={false}>Upgrade your plan to receive invoices.</Link>
+                <Link href='/pricing' prefetch={false}>
+                  Upgrade your plan to receive invoices.
+                </Link>
               </Button>
             </div>
           )}

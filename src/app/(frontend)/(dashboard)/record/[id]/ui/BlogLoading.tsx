@@ -5,7 +5,6 @@ interface Props {
 }
 
 const BlogLoading = ({ hidden }: Props) => {
-
   return (
     <div hidden={hidden} className='animate-in fade-in slide-in-from-bottom-4 duration-500'>
       {/* Title Skeleton */}
@@ -47,13 +46,13 @@ const BlogLoading = ({ hidden }: Props) => {
           <Skeleton className='h-4 w-5/6' />
         </div>
 
-        <div className='pt-4 space-y-3'>
+        <div className='space-y-3 pt-4'>
           <Skeleton className='h-4 w-full' />
           <Skeleton className='h-4 w-full' />
           <Skeleton className='h-4 w-4/5' />
         </div>
 
-        <div className='pt-4 space-y-3'>
+        <div className='space-y-3 pt-4'>
           <Skeleton className='h-4 w-full' />
           <Skeleton className='h-4 w-full' />
           <Skeleton className='h-4 w-3/4' />

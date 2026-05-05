@@ -28,14 +28,7 @@ const STATUS_LABEL: Record<TTSStatus, string> = {
   error: 'Retry audio',
 }
 
-export default function TextReader({
-  text,
-  lang,
-  className,
-  blogId,
-  recordId,
-  existingTtsUrl,
-}: TextReaderProps) {
+export default function TextReader({ text, lang, className, blogId, recordId, existingTtsUrl }: TextReaderProps) {
   const { status, audioUrl, toggle, error } = useTTS(text, lang, {
     blogId,
     recordId,

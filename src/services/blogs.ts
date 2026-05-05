@@ -1,10 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { stringify } from 'qs-esm'
 
-
-
-
-
 export const useBlogQuery = (recordId: string, userId?: string) => {
   const stringifiedQuery = stringify(
     {

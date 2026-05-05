@@ -4,13 +4,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 import { TTS_VOICE_HEADER_URL } from '@/lib/constants'
 
-
-
-
-
-
-
-
 const WORKER_URL = process.env.WORKER_URL
 
 /**

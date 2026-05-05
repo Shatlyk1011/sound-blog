@@ -1,5 +1,5 @@
 import { S3Client, DeleteObjectCommand } from '@aws-sdk/client-s3'
-import type { CollectionConfig } from 'payload';
+import type { CollectionConfig } from 'payload'
 import { adminsAndUserById, adminsAndUserCreate } from './hooks'
 
 const Blogs: CollectionConfig = {
