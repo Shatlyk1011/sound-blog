@@ -148,7 +148,7 @@ export function RecordClient({ recordId }: RecordClientProps) {
                     </div>
                   )}
                 </motion.div>
-              ) : activeTab === 'raw' ? (
+              ) : (
                 <motion.div
                   key='raw'
                   initial='initial'
@@ -156,18 +156,15 @@ export function RecordClient({ recordId }: RecordClientProps) {
                   exit='exit'
                   variants={animationVariants}
                   transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1.0] }}
-                >
-                  <p className='font-mono'>{(blog.transcriptId as Transcript).rawText}</p>
-                </motion.div>
-              ) : (
-                <motion.div className='flex flex-col'>
-                  <div className='relative flex w-full items-center gap-6'>
+                  >
+                    <div className='relative flex w-full items-center gap-6 mb-10'>
                     <MiniAudioPlayer
                       classes='border border-border w-64  my-0'
                       fileUrl={(blog.recordId as VoiceRecord).fileUrl}
                     />
                     <span className='text-sm font-medium'>Original Voice</span>
                   </div>
+                    <p className='font-mono'>{(blog.transcriptId as Transcript).rawText}</p>
                 </motion.div>
               )}
             </AnimatePresence>
