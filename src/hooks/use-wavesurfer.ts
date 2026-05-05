@@ -51,7 +51,7 @@ export function useAudioRecorder(isDark: boolean) {
     barGap: 2,
     barRadius: 3,
     barHeight: 3,
-    height: 56,
+    height: 96,
     url: status === 'recorded' && audioUrl ? audioUrl : undefined,
     plugins: useMemo(() => [recordPlugin], [recordPlugin]),
   })

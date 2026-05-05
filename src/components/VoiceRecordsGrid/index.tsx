@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react'
 import { useUserContext } from '@/app/_providers/user-provider'
+import { VoiceRecord } from '@/payload-types'
 import { useVoiceRecordsInfiniteQuery } from '@/services/voice-records'
 import { FileAudioIcon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
@@ -9,9 +10,21 @@ import { useInView } from 'react-intersection-observer'
 import { Skeleton } from '@/components/ui/skeleton'
 import VoiceRecordCard from './VoiceRecordCard'
 
+const demo: VoiceRecord = {
+  createdAt: '123',
+  fileName: '123123',
+  id: '123',
+  status: 'processing',
+  updatedAt: '123',
+  fileUrl: '123123',
+  userId: '123123',
+  duration: 123,
+}
+
 export default function VoiceRecordsGrid() {
   const { user } = useUserContext()
   const { ref, inView } = useInView()
+  let isRefetchAvailable = false
 
   const {
     data: recordsResponse,
@@ -19,7 +32,7 @@ export default function VoiceRecordsGrid() {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useVoiceRecordsInfiniteQuery(user?.id, false)
+  } = useVoiceRecordsInfiniteQuery(user?.id, isRefetchAvailable)
 
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
@@ -28,6 +41,8 @@ export default function VoiceRecordsGrid() {
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage])
 
   const records = recordsResponse?.pages.flatMap((page) => page.docs) || []
+
+  isRefetchAvailable = records.some(({ status }) => status === 'processing')
 
   return (
     <section className='mx-auto w-full max-w-7xl px-12 py-10 max-md:px-4'>

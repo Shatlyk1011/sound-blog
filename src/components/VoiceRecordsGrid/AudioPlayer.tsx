@@ -12,7 +12,7 @@ interface Props {
 
 function MiniAudioPlayer({ fileUrl, classes, autoPlay = false }: Props) {
   const audioRef = useRef<HTMLAudioElement>(null)
-  const [isPlaying, setIsPlaying] = useState(false)
+  const [isPlaying, setIsPlaying] = useState(autoPlay)
   const [currentTime, setCurrentTime] = useState(0)
   const [duration, setDuration] = useState(0)
 

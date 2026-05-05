@@ -26,7 +26,7 @@ export const useVoiceRecordsInfiniteQuery = (userId: string | undefined, isRefet
     initialPageParam: 1,
     getNextPageParam: (lastPage) => (lastPage.hasNextPage ? lastPage.nextPage : undefined),
     enabled: !!userId,
-    refetchInterval: isRefetchAvailable ? 3000 : false,
+    refetchInterval: isRefetchAvailable ? 3000 : 0,
   })
 }
 
