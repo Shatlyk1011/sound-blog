@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { admins } from '../../utils/admins'
+import { adminsAndUserCreate } from '../Blogs/hooks'
 
 const Transcripts: CollectionConfig = {
   slug: 'transcripts',
@@ -13,7 +14,7 @@ const Transcripts: CollectionConfig = {
 
   access: {
     read: admins,
-    create: admins,
+    create: adminsAndUserCreate,
     update: admins,
     delete: admins,
   },

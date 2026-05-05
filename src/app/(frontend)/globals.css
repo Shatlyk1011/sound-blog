@@ -271,7 +271,7 @@
 
 .prose h3 {
   font-size: 1.4rem;
-  margin-bottom: 0.5rem;
+  margin-block: 0.5rem;
   font-weight: 500;
 }
 .prose h2 {
@@ -307,7 +307,7 @@
 .prose p {
   font-size: 1.1rem;
   line-height: 1.5;
-  margin-bottom: 1.5em;
+  margin-block: 1.1em;
 }
 
 .prose blockquote {
