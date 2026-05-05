@@ -51,6 +51,7 @@ export async function DELETE(_: Request, { params }: { params: Promise<{ id: str
             equals: id,
           },
         },
+        overrideAccess: true,
       }),
       payload.delete({
         collection: 'transcripts',
@@ -59,11 +60,13 @@ export async function DELETE(_: Request, { params }: { params: Promise<{ id: str
             equals: id,
           },
         },
+        overrideAccess: true,
       }),
 
       payload.delete({
         collection: 'voice-records',
         id: id,
+        overrideAccess: true,
       }),
     ])
 

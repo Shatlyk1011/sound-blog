@@ -31,7 +31,7 @@ export const useVoiceRecordsInfiniteQuery = (userId: string | undefined, isRefet
 }
 
 const deleteVoiceRecord = async (id: string): Promise<void> => {
-  const response = await fetch(`/api/voice-records-client/${id}`, {
+  const response = await fetch(`/api/delete-voice-record/${id}`, {
     method: 'DELETE',
   })
   if (!response.ok) {

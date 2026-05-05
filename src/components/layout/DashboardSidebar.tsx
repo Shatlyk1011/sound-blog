@@ -105,11 +105,11 @@ const UserInfo = ({ name, currentPlan, credits }: UserProps) => {
     <div className='space-y-4 px-2'>
       {/* User Avatar */}
       <div className='flex items-center gap-3'>
-        <p className='text-sidebar-foreground text-base font-semibold'>{name}&apos;s workspace</p>
+        <p className='text-sidebar-foreground text-base font-medium'>{name}&apos;s workspace</p>
       </div>
 
       {/* Plan Info */}
-      <div className='space-y-2 text-sm capitalize'>
+      <div className='space-y-3 text-sm capitalize'>
         <div className='border-border flex items-center justify-between border-b py-1'>
           <span className='text-sidebar-foreground/60'>Current Plan:</span>
           {currentPlan ? (
@@ -135,9 +135,9 @@ const UserInfo = ({ name, currentPlan, credits }: UserProps) => {
       </div>
 
       {/* Upgrade Button */}
-      <Button size='lg' asChild className='from-chart-2 to-chart-1 w-full bg-linear-to-l'>
+      <Button size='sm' asChild className='from-chart-2 to-chart-1 w-full bg-linear-to-l'>
         <Link href='/pricing' prefetch={false}>
-          <HugeiconsIcon icon={Crown03Icon} className='size-5' />
+          <HugeiconsIcon icon={Crown03Icon} className='size-4' strokeWidth={2} />
           Upgrade
         </Link>
       </Button>

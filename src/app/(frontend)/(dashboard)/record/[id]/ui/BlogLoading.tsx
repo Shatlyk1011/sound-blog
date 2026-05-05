@@ -5,13 +5,12 @@ interface Props {
 }
 
 const BlogLoading = ({ hidden }: Props) => {
-  if (hidden) return null
 
   return (
-    <div className='animate-in fade-in slide-in-from-bottom-4 duration-500'>
+    <div hidden={hidden} className='animate-in fade-in slide-in-from-bottom-4 duration-500'>
       {/* Title Skeleton */}
       <div className='mb-6 space-y-2'>
-        <Skeleton className='h-14 w-full max-w-[800px]' />
+        <Skeleton className='h-14 w-full max-w-200' />
         <Skeleton className='h-14 w-2/3' />
       </div>
 

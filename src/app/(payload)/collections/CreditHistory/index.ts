@@ -1,22 +1,21 @@
 import { CollectionConfig } from 'payload'
 import { admins } from '../../utils/admins'
 
+
+
+
+
 const CreditHistory: CollectionConfig = {
   slug: 'credit-history',
   access: {
     // Only admins can create via admin panel
-    // INVESTIGATE
-    create: ({ req }) => {
-      // Allow if user is authenticated through Supabase and has userId
-      if (req.user && req.context?.userId) {
+    create: admins,
+    update: () => false,
+    delete: () => false,
+    read: ({ req }) => {
+      if (admins({ req })) {
         return true
       }
-      // Allow admins
-      return !!req.user
-    },
-    update: admins,
-    delete: admins,
-    read: ({ req }) => {
       // Allow users to read only their own credit history
       if (req.user && req.context?.userId) {
         return {
@@ -25,8 +24,7 @@ const CreditHistory: CollectionConfig = {
           },
         }
       }
-      // Admins can read all
-      return !!req.user
+      return false
     },
   },
   admin: {

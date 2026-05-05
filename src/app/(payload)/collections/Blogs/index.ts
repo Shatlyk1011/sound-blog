@@ -1,6 +1,6 @@
 import { S3Client, DeleteObjectCommand } from '@aws-sdk/client-s3'
-import type { CollectionConfig } from 'payload'
-import { admins } from '../../utils/admins'
+import type { CollectionConfig } from 'payload';
+import { adminsAndUserById, adminsAndUserCreate } from './hooks'
 
 const Blogs: CollectionConfig = {
   slug: 'blogs',
@@ -77,10 +77,10 @@ const Blogs: CollectionConfig = {
   },
 
   access: {
-    read: () => true,
-    create: () => true,
-    update: () => true,
-    delete: admins,
+    read: adminsAndUserById,
+    create: adminsAndUserCreate,
+    update: adminsAndUserById,
+    delete: adminsAndUserById,
   },
 
   fields: [

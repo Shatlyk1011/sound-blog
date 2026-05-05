@@ -1,16 +1,22 @@
-import type { CollectionConfig } from 'payload'
-import { admins } from '../../utils/admins'
-import { checkRole } from '../../utils/checkRole'
-import { ensureFirstUserIsAdmin } from './hooks/ensureFirstUserIsAdmin'
+import type { CollectionConfig } from 'payload';
+import { admins } from '../../utils/admins';
+import { checkRole } from '../../utils/checkRole';
+import { ensureFirstUserIsAdmin } from './hooks/ensureFirstUserIsAdmin';
+
+
+
+
+
+
 
 const AdminUsers: CollectionConfig = {
   slug: 'adminUsers',
   access: {
     admin: () => true,
-    create: admins,
-    delete: admins,
+    create: () => false,
+    delete: () => false,
     read: ({ req }) => {
-      if (checkRole(['admin', 'moderator'], req.user)) {
+      if (checkRole(['admin'], req.user)) {
         return true
       }
       if (req.user?.isBlocked) {

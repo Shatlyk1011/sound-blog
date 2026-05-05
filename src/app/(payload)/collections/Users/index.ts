@@ -1,5 +1,9 @@
-import type { CollectionConfig } from 'payload'
-import { admins } from '../../utils/admins'
+import type { CollectionConfig } from 'payload';
+import { admins } from '../../utils/admins';
+
+
+
+
 
 const Users: CollectionConfig = {
   slug: 'users',
@@ -13,8 +17,8 @@ const Users: CollectionConfig = {
 
   access: {
     // Restrict all operations to admins only from the admin panel
-    read: () => true,
-    create: () => true,
+    read: admins,
+    create: admins,
     update: admins,
     delete: admins,
   },

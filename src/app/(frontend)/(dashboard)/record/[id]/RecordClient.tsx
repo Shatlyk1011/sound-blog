@@ -16,6 +16,7 @@ import BlogLoading from './ui/BlogLoading'
 import BlogMetadata from './ui/BlogMetadata'
 import TabSwitcher from './ui/TabSwitch'
 import TextReader from './ui/TextReader'
+import { useUser } from '@/hooks/use-user'
 
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false })
 
@@ -37,8 +38,9 @@ export function RecordClient({ recordId }: RecordClientProps) {
   const [blogContent, setBlogContent] = useState<string>('')
 
   const { resolvedTheme } = useTheme()
+  const { user } = useUser()
 
-  const { data: blogsData, isLoading, error } = useBlogQuery(recordId)
+  const { data: blogsData, isLoading, error } = useBlogQuery(recordId, user?.id)
 
   const blog: Blog = blogsData?.docs?.[0]
 

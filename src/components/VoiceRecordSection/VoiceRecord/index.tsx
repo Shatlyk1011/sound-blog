@@ -53,6 +53,7 @@ export default function VoiceRecord() {
     e.preventDefault()
     if (!audioUrl) {
       toast.info('No audio recorded yet')
+      resetRecording()
       return
     }
 
