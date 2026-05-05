@@ -1,4 +1,4 @@
-import { User } from '@/payload-types'
+import { User } from '@/payload-types';
 import config from '@payload-config'
 import { getPayload } from 'payload'
 
@@ -33,14 +33,14 @@ export async function createInitialCredits(userId: string): Promise<void> {
     collection: 'credit-history',
     data: {
       userId,
-      creditAmount: 100,
+      creditAmount: 1000,
       source: 'signup_bonus',
       expirationDate: expirationDate.toISOString(),
       status: 'active',
     },
   })
 
-  console.log(`✓ Created initial 100 credits for new user: ${userId}`)
+  console.log(`✓ Created initial 1000 credits for new user: ${userId}`)
 }
 
 // Get client record by userId

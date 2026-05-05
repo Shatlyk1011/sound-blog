@@ -1,6 +1,6 @@
-import { NextResponse } from 'next/server'
-import { getClientByUserId, createClientRecord, createInitialCredits } from '@/lib/credit-helpers'
-import { createClient } from '@/lib/supabase-server'
+import { NextResponse } from 'next/server';
+import { getClientByUserId, createClientRecord, createInitialCredits } from '@/lib/credit-helpers';
+import { createClient } from '@/lib/supabase-server';
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url)
@@ -21,12 +21,14 @@ export async function GET(request: Request) {
         if (!existingClient) {
           const provider = user.app_metadata?.provider as string | undefined
 
-          await createClientRecord(
-            user.id,
-            user.email ?? undefined,
-            (provider || 'n/a') as 'email' | 'google' | 'github' | 'n/a' | null | undefined
-          )
-          await createInitialCredits(user.id)
+          await Promise.all([
+            createClientRecord(
+              user.id,
+              user.email ?? undefined,
+              (provider || 'n/a') as 'email' | 'google' | 'github' | 'n/a' | null | undefined
+            ),
+            createInitialCredits(user.id),
+          ])
         }
       }
 
