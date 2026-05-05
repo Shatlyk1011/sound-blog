@@ -83,7 +83,12 @@ export default function VoiceRecord() {
         throw new Error(result.error || 'Failed to upload audio')
       }
 
-      toast.success('Voice recording saved successfully!')
+      toast.success('Your recording started processing', {
+        richColors: true,
+        duration: 8000,
+        closeButton: true,
+        icon: false,
+      })
       queryClient.invalidateQueries({ queryKey: ['voice-records'] })
       resetRecording()
     } catch (error: unknown) {
