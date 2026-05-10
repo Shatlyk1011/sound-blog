@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { getUserInitials } from '@/composables/utils'
 import { LogoutSquare01Icon, Menu05Icon, UserIcon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { useScroll, useMotionValueEvent } from 'motion/react'
@@ -11,6 +10,7 @@ import { cn } from '@/lib/utils'
 import { useUser } from '@/hooks/use-user'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
+import { getUserInitials } from '@/components/ui/composables/utils'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,6 +20,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import ThemeToggle from '@/components/ui/theme-toggle'
+import { LogoIcon } from '../Logo'
 
 const { pricing, profile } = {
   pricing: '/pricing',
@@ -59,8 +60,9 @@ const Header = ({ isDashboardPage }: Props) => {
           user && 'bg-sidebar border-none backdrop-blur-none'
         )}
       >
-        <Link href='/' className={cn('z-50 w-24 max-sm:mr-4 max-sm:max-w-max max-sm:min-w-8')}>
-          logo
+        <Link href='/' className={cn('z-50 flex w-24 items-center max-sm:mr-4 max-sm:max-w-max max-sm:min-w-8')}>
+          <LogoIcon className='max-h-20 min-h-20 max-w-20 min-w-20' />
+          <span className='-tracking-two font-mono text-sm font-semibold text-nowrap'>Sound Blog</span>
         </Link>
         <nav
           className={cn(

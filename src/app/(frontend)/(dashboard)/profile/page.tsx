@@ -1,6 +1,5 @@
 'use client'
 
-import { getUserInitials } from '@/composables/utils'
 import { CreditHistory } from '@/payload-types'
 import { useUserCreditsQuery } from '@/services/user-credits'
 import { Calendar03Icon, CreditCardIcon, Crown03Icon } from '@hugeicons/core-free-icons'
@@ -10,6 +9,7 @@ import { cn } from '@/lib/utils'
 import { useUser } from '@/hooks/use-user'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
+import { getUserInitials } from '@/components/ui/composables/utils'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 

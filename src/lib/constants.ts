@@ -49,6 +49,16 @@ export type LengthValue = (typeof LENGTHS)[number]['value']
 
 export const ENHANCEMENTS = [
   {
+    title: 'Headings',
+    value: 'headings',
+    tooltip: 'Organize content with clear section headings.',
+  },
+  {
+    title: 'Summary (TLDR)',
+    value: 'summary',
+    tooltip: 'Provide summary of key points',
+  },
+  {
     title: 'Intro hook',
     value: 'intro',
     tooltip: 'Start with a hook - engaging opening to grab attention ',
@@ -63,20 +73,11 @@ export const ENHANCEMENTS = [
     value: 'examples',
     tooltip: 'Include examples to clarify ideas (if possible)',
   },
-  {
-    title: 'Summary (TLDR)',
-    value: 'summary',
-    tooltip: 'Provide summary of key points',
-  },
+
   {
     title: 'Bullet points',
     value: 'bullets',
     tooltip: 'Break content into easy-to-scan bullet lists.',
-  },
-  {
-    title: 'Headings',
-    value: 'headings',
-    tooltip: 'Organize content with clear section headings.',
   },
 ] as const
 
