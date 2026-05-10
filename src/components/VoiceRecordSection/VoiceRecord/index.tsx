@@ -241,7 +241,7 @@ export default function VoiceRecord() {
                 variant='outline'
                 onClick={resetRecording}
                 size='lg'
-                className='flex-1 items-center gap-1.5'
+                className='h-12 flex-1 items-center gap-1.5'
                 aria-label='Reset recording'
               >
                 <HugeiconsIcon icon={Refresh03Icon} className='size-4' />
@@ -252,7 +252,7 @@ export default function VoiceRecord() {
                 type='submit'
                 disabled={isUploading}
                 size='lg'
-                className='min-w-30 flex-1 items-center gap-1.5'
+                className='h-12 min-w-30 flex-1 items-center gap-1.5'
                 aria-label='Use recording'
               >
                 {isUploading ? (

@@ -102,7 +102,7 @@ const RecordFilter = ({ selectedFilters, setSelectedFilters }: Props) => {
                       type='button'
                       onClick={() => setTone(value)}
                       className={cn(
-                        'bg-chart-2/80 border-chart-2/30 tracking-two hover:bg-chart-2 flex-1 text-sm',
+                        'bg-chart-2 border-chart-2/30 tracking-two hover:bg-chart-2 flex-1 text-sm text-white',
                         tone !== value && 'bg-secondary/80 hover:bg-secondary text-muted-foreground'
                       )}
                     >
@@ -124,7 +124,7 @@ const RecordFilter = ({ selectedFilters, setSelectedFilters }: Props) => {
                       type='button'
                       onClick={() => setBlogeLength(value)}
                       className={cn(
-                        'bg-chart-2/80 border-chart-2/30 tracking-two hover:bg-chart-2 flex-1 text-sm',
+                        'bg-chart-2 border-chart-2/30 tracking-two hover:bg-chart-2 flex-1 text-sm text-white',
                         blogLength !== value && 'bg-secondary/80 hover:bg-secondary text-muted-foreground'
                       )}
                     >

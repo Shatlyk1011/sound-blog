@@ -98,7 +98,7 @@ export default function ProfilePage() {
         <div className='mb-5 flex items-center justify-between gap-4'>
           <h2 className='text-xl font-medium'>
             <span className=''>Your Current Plan:</span>{' '}
-            <span className='text-primary font-bold tracking-[-0.02em]'>
+            <span className='text-primary -tracking-two font-bold'>
               {userData?.currentPlan === 'free' ? 'Free Plan' : 'Pro Plan'}
             </span>
           </h2>
