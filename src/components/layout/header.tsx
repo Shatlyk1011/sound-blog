@@ -62,16 +62,14 @@ const Header = ({ isDashboardPage }: Props) => {
       >
         <Link
           href='/'
-          className={cn(
-            'text-foreground/80 z-50 mr-8 flex w-max items-center max-sm:mr-4 max-sm:max-w-max max-sm:min-w-8'
-          )}
+          className={cn('text-foreground/80 z-50 flex w-max items-center max-sm:mr-4 max-sm:max-w-max max-sm:min-w-8')}
         >
           <LogoIcon className='max-h-20 min-h-20 max-w-20 min-w-20' />
           <span className='-tracking-two font-mono text-sm font-semibold text-nowrap'>Sound Blog</span>
         </Link>
         <nav
           className={cn(
-            'text-muted-foreground z-49 flex flex-1 justify-start transition-all max-md:absolute max-md:inset-0 max-md:ml-0 max-md:h-svh max-md:w-screen max-md:translate-x-full',
+            'text-muted-foreground z-49 ml-8 flex flex-1 justify-start transition-all max-md:absolute max-md:inset-0 max-md:ml-0 max-md:h-svh max-md:w-screen max-md:translate-x-full',
             menu ? 'max-md:translate-x-0' : 'max-md:translate-x-full',
             (isDashboardPage || user) && 'hidden'
           )}
@@ -102,7 +100,7 @@ const Header = ({ isDashboardPage }: Props) => {
           </ul>
         </nav>
 
-        <div className='flex w-24 min-w-20 items-center justify-end gap-2.5 max-sm:gap-1'>
+        <div className='flex w-max items-center justify-end gap-2.5 max-sm:gap-1'>
           <ThemeToggle />
 
           {isLoading ? (

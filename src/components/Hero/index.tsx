@@ -87,16 +87,15 @@ export default function Hero() {
               variants={itemVariants}
               className='bg-secondary/70 border-foreground/10 mb-6 inline-flex items-center space-x-2 rounded-full border px-3 py-1'
             >
-              <span className='flex h-2 w-2 animate-pulse rounded-full bg-violet-500' />
+              <span className='bg-primary flex h-2 w-2 animate-pulse rounded-full' />
               <span className='text-secondary-foreground text-xs font-medium'>SoundBlog is now in beta</span>
             </motion.div>
 
             <motion.h1
               variants={itemVariants}
-              className='font-heading mb-6 text-6xl leading-[1.1] font-extrabold tracking-tight'
+              className='font-heading mb-6 text-6xl leading-[1.1] font-extrabold tracking-tight text-balance'
             >
-              Turn Your Voice Into <br className='hidden md:block' />
-              <span className=''>Polished Blog Posts</span>
+              Turn Your Voice Into Polished Blog Posts
             </motion.h1>
 
             <motion.p
@@ -134,15 +133,15 @@ export default function Hero() {
               className='flex items-center space-x-4 text-sm font-medium text-gray-500'
             >
               <div className='flex items-center'>
-                <HugeiconsIcon icon={CheckmarkCircle01Icon} className='mr-1.5 h-4 w-4 text-violet-500' />
+                <HugeiconsIcon icon={CheckmarkCircle01Icon} className='text-primary mr-1.5 h-4 w-4' />
                 No credit card required
               </div>
               <div className='hidden items-center sm:flex'>
-                <HugeiconsIcon icon={CheckmarkCircle01Icon} className='mr-1.5 h-4 w-4 text-violet-500' />
+                <HugeiconsIcon icon={CheckmarkCircle01Icon} className='text-primary mr-1.5 h-4 w-4' />
                 Free to start
               </div>
               <div className='flex items-center'>
-                <HugeiconsIcon icon={CheckmarkCircle01Icon} className='mr-1.5 h-4 w-4 text-violet-500' />
+                <HugeiconsIcon icon={CheckmarkCircle01Icon} className='text-primary mr-1.5 h-4 w-4' />
                 1,000 free tokens
               </div>
             </motion.div>
@@ -193,7 +192,7 @@ export function WaveformVisual() {
       className='relative mx-auto w-full max-w-md'
     >
       {/* Background Glow */}
-      <div className='from-chart-1 to-chart-3 absolute -inset-1 hidden rounded-2xl bg-linear-to-r opacity-20 blur-xl dark:block' />
+      <div className='from-chart-2 to-chart-3 absolute -inset-1 hidden rounded-2xl bg-linear-to-b opacity-20 blur-xl dark:block' />
 
       {/* Main Card */}
       <div className='bg-card border-border relative overflow-hidden rounded-3xl border px-7 py-6'>
@@ -217,7 +216,7 @@ export function WaveformVisual() {
             {bars.map((bar, i) => (
               <motion.div
                 key={i}
-                className='w-1.5 rounded-full bg-linear-to-t from-violet-500 to-blue-400'
+                className='from-chart-2 to-chart-5 w-1.5 rounded-full bg-linear-to-t'
                 animate={{
                   height: [8, bar.height, 8],
                 }}
@@ -230,7 +229,7 @@ export function WaveformVisual() {
               />
             ))}
           </div>
-          <div className='ml-auto flex items-center space-x-2 rounded-full bg-emerald-600/10 px-2 py-1 text-xs text-emerald-600 dark:bg-emerald-400/10 dark:text-emerald-400'>
+          <div className='bg-primary/10 text-primary ml-auto flex items-center space-x-2 rounded-full px-2 py-1 text-xs'>
             <div className='h-2 w-2 animate-pulse rounded-full bg-current' />
             <span>Recording</span>
           </div>
@@ -255,7 +254,7 @@ export function WaveformVisual() {
 
         {/* Bottom Section: Polished Output Preview */}
         <div className='border-border relative mb-1 rounded-2xl border bg-white/3 p-4'>
-          <div className='bg-chart-2 text-primary-foreground absolute -top-3 left-4 flex items-center space-x-1 rounded-full px-2 py-0.5 text-[10px] font-bold shadow-lg'>
+          <div className='bg-muted-foreground text-primary-foreground absolute -top-3 left-4 flex items-center space-x-1 rounded-full px-2 py-0.5 text-[10px] font-bold shadow-lg'>
             <HugeiconsIcon icon={SparklesIcon} className='h-3 w-3' />
             <span>AI Polished</span>
           </div>
