@@ -135,7 +135,7 @@ const UserInfo = ({ name, currentPlan, credits }: UserProps) => {
       </div>
 
       {/* Upgrade Button */}
-      <Button size='sm' asChild className='bg-chart-2 text-foreground h-10 w-full'>
+      <Button size='sm' asChild className='bg-chart-2 h-10 w-full text-white'>
         <Link href='/pricing' prefetch={false}>
           <HugeiconsIcon icon={Crown03Icon} className='size-4' strokeWidth={2} />
           Upgrade

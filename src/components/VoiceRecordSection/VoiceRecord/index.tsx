@@ -115,6 +115,31 @@ export default function VoiceRecord() {
           <p className='text-primary text-xl font-semibold'>Drop audio file here</p>
         </div>
       )}
+
+      {isUploading && (
+        <div className='bg-background/85 absolute -inset-4 z-50 flex flex-col items-center justify-center gap-4 overflow-hidden rounded-xl backdrop-blur-sm'>
+          {/* Animated upload icon */}
+          <div className='relative flex items-center justify-center'>
+            {/* Spinning ring */}
+            <div className='border-primary/30 border-primary absolute size-16 animate-spin rounded-full border-2 border-t-transparent' />
+            <HugeiconsIcon icon={Upload01Icon} className='text-primary size-7 animate-pulse' />
+          </div>
+          <div className='flex flex-col items-center gap-1'>
+            <p className='text-foreground text-sm font-medium'>Uploading your recording…</p>
+            <p className='text-muted-foreground text-xs'>This may take a moment</p>
+          </div>
+          {/* Animated progress dots */}
+          <div className='flex gap-1.5'>
+            {[0, 1, 2].map((i) => (
+              <div
+                key={i}
+                className='bg-primary size-1.5 animate-bounce rounded-full'
+                style={{ animationDelay: `${i * 150}ms` }}
+              />
+            ))}
+          </div>
+        </div>
+      )}
       <form
         onSubmit={handleSubmit}
         className='relative mx-auto flex w-full max-w-xl min-w-66 flex-col items-center gap-2.5 border-none'
