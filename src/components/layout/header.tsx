@@ -60,7 +60,12 @@ const Header = ({ isDashboardPage }: Props) => {
           user && 'bg-sidebar border-none backdrop-blur-none'
         )}
       >
-        <Link href='/' className={cn('z-50 flex w-24 items-center max-sm:mr-4 max-sm:max-w-max max-sm:min-w-8')}>
+        <Link
+          href='/'
+          className={cn(
+            'text-foreground/80 z-50 mr-8 flex w-max items-center max-sm:mr-4 max-sm:max-w-max max-sm:min-w-8'
+          )}
+        >
           <LogoIcon className='max-h-20 min-h-20 max-w-20 min-w-20' />
           <span className='-tracking-two font-mono text-sm font-semibold text-nowrap'>Sound Blog</span>
         </Link>
