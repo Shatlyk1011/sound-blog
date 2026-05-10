@@ -16,7 +16,7 @@ export default function DashboardLayout({
   return (
     <div className='flex min-h-svh'>
       <DashboardSidebar>
-        <div className='ml-60 flex-1'>{children}</div>
+        <main className='ml-60 flex-1'>{children}</main>
       </DashboardSidebar>
     </div>
   )
