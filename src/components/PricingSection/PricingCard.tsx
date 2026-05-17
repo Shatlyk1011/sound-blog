@@ -26,6 +26,7 @@ export interface PricingTier {
 interface PricingCardProps {
   item: PricingTier
   isAnnual: boolean
+  isAuth: boolean
   classes?: string
 }
 
@@ -33,7 +34,7 @@ const getPricingLabel = (s: string) => {
   return s.toLowerCase() === 'custom' ? s : `$${s}`
 }
 
-export function PricingCard({ item, isAnnual, classes }: PricingCardProps) {
+export function PricingCard({ item, isAnnual, isAuth, classes }: PricingCardProps) {
   const [checkoutOpen, setCheckoutOpen] = useState(false)
 
   // Determine which Stripe planId to use based on billing cycle
@@ -73,13 +74,13 @@ export function PricingCard({ item, isAnnual, classes }: PricingCardProps) {
                     billed annually <br />
                   </span>
                 )}
-                {item.priceDetail}
+                {!isAnnual && item.priceDetail}
               </span>
             )}
           </div>
         </div>
 
-        {item.name !== 'Free' ? (
+        {item.name !== 'Free' && isAuth ? (
           <Button
             id={`subscribe-${item.name.toLowerCase()}-${isAnnual ? 'yearly' : 'monthly'}`}
             onClick={handleSubscribe}
@@ -97,7 +98,7 @@ export function PricingCard({ item, isAnnual, classes }: PricingCardProps) {
             )}
             asChild
           >
-            <Link href='/sign-in'>{item.ctaText}</Link>
+            <Link href={isAuth ? '/dashboard' : '/sign-in'}>Get Started</Link>
           </Button>
         )}
 

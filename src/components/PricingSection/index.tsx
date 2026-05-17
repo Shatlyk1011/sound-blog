@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
+import { useUser } from '@/hooks/use-user'
 import { Switch } from '@/components/ui/switch'
 import { PricingCard, PricingTier } from './PricingCard'
 
@@ -9,14 +10,12 @@ const pricingPlans: PricingTier[] = [
     name: 'Free',
     price: '0',
     priceYearly: '0',
-    description: 'Free tier',
+    description: 'Perfect to get started',
     features: ['1000 credits (~17min)', 'Private generations', 'Customer Support'],
     ctaText: 'Try for free',
     ctaVariant: 'blue',
-    featuresIntro: 'Everything in Free, plus:',
-    priceDetail: 'per seat/mo',
-    monthlyPlanId: 'hobby_monthly',
-    yearlyPlanId: 'hobby_yearly',
+    featuresIntro: 'Features include:',
+    priceDetail: '/ month',
   },
   {
     name: 'Hobby',
@@ -27,7 +26,7 @@ const pricingPlans: PricingTier[] = [
     ctaText: 'Upgrade to Hobby',
     ctaVariant: 'blue',
     featuresIntro: 'Everything in Free, plus:',
-    priceDetail: 'per seat/mo',
+    priceDetail: '/ month',
     monthlyPlanId: 'hobby_monthly',
     yearlyPlanId: 'hobby_yearly',
   },
@@ -35,12 +34,12 @@ const pricingPlans: PricingTier[] = [
     name: 'Pro',
     price: '30',
     priceYearly: '300',
-    description: 'Ideal for individuals ',
-    features: ['35000 monthly credits (~580min)', 'Private generations', 'Customer Support'],
+    description: 'Ideal for professionals',
+    features: ['35000 monthly credits (~580min)', 'Private generations', 'Customer Support', 'BJ (one time)'],
     ctaText: 'Upgrade to Pro',
     ctaVariant: 'blue',
     featuresIntro: 'Everything in Hobby, plus:',
-    priceDetail: 'per seat/mo',
+    priceDetail: '/ month',
     monthlyPlanId: 'pro_monthly',
     yearlyPlanId: 'pro_yearly',
   },
@@ -49,12 +48,16 @@ const pricingPlans: PricingTier[] = [
 const PricingSection = () => {
   const [isAnnual, setAnnual] = useState(true)
 
+  const { user } = useUser()
+
+  const isAuth = !!user
+
   return (
     <>
       <section className='mb-8 text-center'>
         <h1 className='mb-2 text-4xl font-bold tracking-tight max-sm:text-3xl'>Simple, Transparent Pricing</h1>
         <p className='text-muted-foreground mx-auto max-w-2xl text-lg max-sm:text-base'>
-          Deliver new products faster with Emerald UI
+          Choose the right plan for your audio generation needs
         </p>
       </section>
       <div className='mb-8 flex items-center justify-center gap-1.5 text-sm font-normal'>
@@ -70,7 +73,7 @@ const PricingSection = () => {
 
       <section className='mx-auto grid h-full max-w-max grid-cols-3 justify-center gap-3 px-10 max-lg:px-0 max-md:grid-cols-2 max-sm:grid-cols-1'>
         {pricingPlans.map((plan) => (
-          <PricingCard key={plan.name} item={plan} isAnnual={isAnnual} />
+          <PricingCard key={plan.name} item={plan} isAnnual={isAnnual} isAuth={isAuth} />
         ))}
       </section>
     </>
