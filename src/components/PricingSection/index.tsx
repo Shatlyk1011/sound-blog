@@ -70,7 +70,7 @@ const PricingSection = () => {
 
       <section className='mx-auto grid h-full max-w-max grid-cols-3 justify-center gap-3 px-10 max-lg:px-0 max-md:grid-cols-2 max-sm:grid-cols-1'>
         {pricingPlans.map((plan) => (
-          <PricingCard key={plan.name} item={plan} isAnnual={isAnnual} isAuth={true} />
+          <PricingCard key={plan.name} item={plan} isAnnual={isAnnual} />
         ))}
       </section>
     </>

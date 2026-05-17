@@ -11,6 +11,7 @@ import { createClient } from '@/lib/supabase-client'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { LogoIcon } from '../Logo'
 import { AuthProviders } from './SignUpPage'
 
 interface Props {
@@ -113,8 +114,12 @@ export default function SignInPage({ handleSwitch, isModal, redirectTo }: Props)
           !isModal && 'border shadow-md'
         )}
       >
-        <Link href='/' className='block text-center text-xl font-bold max-md:text-2xl'>
-          Logo
+        <Link
+          href='/'
+          className='mb-2 flex items-center justify-center text-center font-bold opacity-80 max-md:text-2xl'
+        >
+          <LogoIcon className='max-h-18 min-h-18 max-w-18 min-w-18' />
+          <span>Sound Blog</span>
         </Link>
 
         <div className='space-y-2 text-center'>
