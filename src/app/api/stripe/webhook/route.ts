@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
 
   try {
     switch (event.type) {
-      case 'checkout.session.completed': {
+      case 'invoice.paid': {
         const session = event.data.object
         const userId = session.metadata?.userId
         const planId = session.metadata?.planId
