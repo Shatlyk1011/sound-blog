@@ -124,6 +124,16 @@ const CreditHistory: CollectionConfig = {
         description: 'Date when these credits expire',
       },
     },
+    {
+      name: 'invoiceUrl',
+      label: 'Invoice Url',
+      type: 'text',
+      required: true,
+      admin: {
+        position: 'sidebar',
+        description: 'Stripe invoice url',
+      },
+    },
   ],
   timestamps: true,
 }
