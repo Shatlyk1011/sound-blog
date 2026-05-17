@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-// import { siteConfig } from '@/lib/site-config'
 import PricingSection from '@/components/PricingSection'
 
 export const metadata: Metadata = {
