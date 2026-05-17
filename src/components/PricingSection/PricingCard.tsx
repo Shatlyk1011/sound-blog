@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { CheckmarkCircle01Icon, LegalHammerIcon } from '@hugeicons/core-free-icons'
+import { CheckmarkCircle01Icon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import Link from 'next/link'
 import type { PlanId } from '@/lib/stripe'
@@ -12,25 +12,20 @@ import { CheckoutModal } from './CheckoutModal'
 export interface PricingTier {
   name: 'Hobby' | 'Pro' | 'Free'
   description: string
-  /** Monthly price (display string, e.g. "10") */
   price: string
-  /** Yearly price (display string, e.g. "100") */
   priceYearly: string
   priceDetail?: string
   ctaText: string
   ctaVariant: 'blue' | 'black'
   featuresIntro?: string
   features: string[]
-  /** Stripe planId for the monthly billing cycle */
   monthlyPlanId?: PlanId
-  /** Stripe planId for the annual billing cycle */
   yearlyPlanId?: PlanId
 }
 
 interface PricingCardProps {
   item: PricingTier
   isAnnual: boolean
-  isAuth: boolean
   classes?: string
 }
 
@@ -38,7 +33,7 @@ const getPricingLabel = (s: string) => {
   return s.toLowerCase() === 'custom' ? s : `$${s}`
 }
 
-export function PricingCard({ item, isAnnual, isAuth, classes }: PricingCardProps) {
+export function PricingCard({ item, isAnnual, classes }: PricingCardProps) {
   const [checkoutOpen, setCheckoutOpen] = useState(false)
 
   // Determine which Stripe planId to use based on billing cycle

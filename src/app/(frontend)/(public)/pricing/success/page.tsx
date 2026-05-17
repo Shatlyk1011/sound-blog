@@ -24,27 +24,25 @@ export default function PricingSuccessPage() {
       </div>
 
       <div className='space-y-2'>
-        <h1 className='text-3xl font-bold tracking-tight max-sm:text-2xl'>You&apos;re all set! 🎉</h1>
+        <h1 className='text-3xl font-bold tracking-tight max-sm:text-2xl'>You&apos;re all set! </h1>
         <p className='text-muted-foreground mx-auto max-w-md text-base'>
-          Your subscription is now active. A receipt has been sent to your email. Start creating amazing voice blogs
-          right away.
+          Thank you for your purchase. Your subscription is now active. Your invoice will be available on your profile
+          page.
         </p>
       </div>
 
       <div className='flex flex-wrap items-center justify-center gap-3 pt-2'>
         <Link
-          id='success-go-to-dashboard'
           href='/dashboard'
           className='bg-foreground text-background inline-flex h-10 items-center justify-center rounded-lg px-5 text-sm font-semibold transition-opacity hover:opacity-90'
         >
           Go to Dashboard
         </Link>
         <Link
-          id='success-go-to-pricing'
-          href='/pricing'
+          href='/profile'
           className='border-border hover:bg-muted inline-flex h-10 items-center justify-center rounded-lg border px-5 text-sm font-semibold transition-colors'
         >
-          Back to Pricing
+          Go to Profile
         </Link>
       </div>
     </main>
