@@ -42,7 +42,7 @@ export default function VoiceRecordsGrid() {
   return (
     <section className='mx-auto w-full max-w-7xl px-12 py-10 max-md:px-4'>
       <div className='mb-6 flex flex-col items-start justify-between gap-1'>
-        <h2 className='text-4xl font-bold tracking-tight'>Your Recordings</h2>
+        <h2 className='text-3xl font-bold tracking-tight'>Your Recordings</h2>
         <p className='text-muted-foreground text-base'>Explore your voice records</p>
       </div>
 

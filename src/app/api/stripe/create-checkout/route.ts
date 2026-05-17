@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
       line_items: [{ price: priceId, quantity: 1 }],
       customer_email: user?.email,
       metadata: {
-        userId: user?.id ?? '',
+        userId: user?.id ?? 'no id',
         planId,
       },
       return_url: `${appUrl}/pricing/success?session_id={CHECKOUT_SESSION_ID}`,
