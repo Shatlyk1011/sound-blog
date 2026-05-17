@@ -46,7 +46,7 @@ const pricingPlans: PricingTier[] = [
 ]
 
 const PricingSection = () => {
-  const [isAnnual, setAnnual] = useState(true)
+  const [isAnnual, setAnnual] = useState(false)
 
   const { user } = useUser()
 

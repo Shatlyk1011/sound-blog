@@ -1,5 +1,7 @@
+import configPromise from '@payload-config'
 import { headers } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
+import { getPayload } from 'payload'
 import { stripe } from '@/lib/stripe'
 
 /**
@@ -41,8 +43,75 @@ export async function POST(req: NextRequest) {
         const session = event.data.object
         const userId = session.metadata?.userId
         const planId = session.metadata?.planId
+        console.log('session', session)
 
         console.log(`[stripe/webhook] checkout.session.completed | userId=${userId} planId=${planId}`)
+
+        if (userId && planId) {
+          let creditAmount = 0
+          let monthsToAdd = 1
+
+          if (planId === 'hobby_monthly') {
+            creditAmount = 10000
+            monthsToAdd = 1
+          } else if (planId === 'hobby_yearly') {
+            creditAmount = 120000
+            monthsToAdd = 12
+          } else if (planId === 'pro_monthly') {
+            creditAmount = 35000
+            monthsToAdd = 1
+          } else if (planId === 'pro_yearly') {
+            creditAmount = 420000
+            monthsToAdd = 12
+          }
+
+          if (creditAmount > 0) {
+            try {
+              const payload = await getPayload({ config: configPromise })
+              const expirationDate = new Date()
+              expirationDate.setMonth(expirationDate.getMonth() + monthsToAdd)
+
+              // 1. Look up the user by their Supabase ID
+              const userRes = await payload.find({
+                collection: 'users',
+                where: {
+                  userId: {
+                    equals: userId,
+                  },
+                },
+              })
+
+              const userDoc = userRes.docs[0]
+
+              if (userDoc) {
+                // 2. Update their plan to 'paid'
+                await payload.update({
+                  collection: 'users',
+                  id: userDoc.id,
+                  data: {
+                    plan: 'paid',
+                  },
+                })
+              }
+
+              // 3. Create the credit history using the internal Payload user ID (client) and Supabase ID
+              await payload.create({
+                collection: 'credit-history',
+                data: {
+                  client: userDoc ? userDoc.id : undefined,
+                  userId,
+                  creditAmount,
+                  source: 'purchased',
+                  status: 'active',
+                  expirationDate: expirationDate.toISOString(),
+                },
+              })
+              console.log(`[stripe/webhook] added ${creditAmount} credits for userId=${userId}`)
+            } catch (err) {
+              console.error('[stripe/webhook] failed to add credits:', err)
+            }
+          }
+        }
 
         // TODO: Update your database here.
         // Example: update the user's subscription tier in Supabase
