@@ -40,7 +40,7 @@ const RecordFilter = ({ selectedFilters, setSelectedFilters }: Props) => {
   return (
     <>
       <div className='mb-4 flex w-full flex-col items-start gap-3 text-sm'>
-        <h4 className='text-foreground/80 tracking-one flex items-center gap-1.5 font-medium uppercase'>
+        <h4 className='text-foreground/80 tracking-one flex items-center gap-1.5 text-xs font-medium uppercase'>
           Selected Filters
           <Tooltip>
             <TooltipTrigger asChild>
