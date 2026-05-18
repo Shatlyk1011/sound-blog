@@ -1,9 +1,9 @@
 'use client'
 
-import { ReactNode } from 'react'
+import { ReactNode, useState } from 'react'
 import { UserDataResponse } from '@/app/api/user-data/route'
 import { useUserCreditsQuery } from '@/services/user-credits'
-import { Home01Icon, UserCircleIcon, MessageMultiple01Icon, Crown03Icon, Coins01Icon } from '@hugeicons/core-free-icons'
+import { Home01Icon, UserCircleIcon, MessageMultiple01Icon, Crown03Icon, Eye, EyeOff } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -101,6 +101,9 @@ interface UserProps {
 }
 
 const UserInfo = ({ name, currentPlan, credits }: UserProps) => {
+  const [showCredits, setShowCredits] = useState(true)
+
+  const isPaid = currentPlan === 'paid'
   return (
     <div className='space-y-4 px-2'>
       {/* User Avatar */}
@@ -109,8 +112,8 @@ const UserInfo = ({ name, currentPlan, credits }: UserProps) => {
       </div>
 
       {/* Plan Info */}
-      <div className='space-y-3 text-sm capitalize'>
-        <div className='border-border flex items-center justify-between border-b py-1'>
+      <div className='space-y-4 text-sm capitalize'>
+        <div className='border-border flex items-center gap-2 border-b py-1.5'>
           <span className='text-sidebar-foreground/60'>Current Plan:</span>
           {currentPlan ? (
             <span className='text-sidebar-primary font-semibold'>{currentPlan}</span>
@@ -119,12 +122,21 @@ const UserInfo = ({ name, currentPlan, credits }: UserProps) => {
           )}
         </div>
 
-        <div className='border-border flex items-center justify-between border-b py-1'>
+        <div className='border-border flex items-center gap-2 border-b py-1.5'>
           <span className='text-sidebar-foreground/60'>Credits:</span>
           {credits ? (
-            <div className='text-sidebar-primary flex items-center gap-1'>
-              <span className='font-semibold'>{credits}</span>
-              <span className='text-xs'>(~{Math.round(credits / 60)} min)</span>
+            <div className='text-sidebar-primary relative flex items-center gap-1'>
+              <span className={cn('font-semibold')}>{showCredits ? credits : '******'}</span>
+              <span className='text-xs'>{showCredits ? `(~${Math.round(credits / 60)} min)` : ''}</span>
+              <Button
+                size='icon-xs'
+                variant={'ghost'}
+                className='absolute -top-2.5 -right-6'
+                type='button'
+                onClick={() => setShowCredits(!showCredits)}
+              >
+                <HugeiconsIcon icon={showCredits ? Eye : EyeOff} className='size-3' />
+              </Button>
             </div>
           ) : (
             <Skeleton className='h-5 w-20' />
@@ -135,12 +147,14 @@ const UserInfo = ({ name, currentPlan, credits }: UserProps) => {
       </div>
 
       {/* Upgrade Button */}
-      <Button size='sm' asChild className='bg-chart-2 h-10 w-full text-white'>
-        <Link href='/pricing' prefetch={false}>
-          <HugeiconsIcon icon={Crown03Icon} className='size-4' strokeWidth={2} />
-          Upgrade
-        </Link>
-      </Button>
+      {!isPaid && (
+        <Button size='sm' asChild className='bg-chart-2 h-10 w-full text-white'>
+          <Link href='/pricing' prefetch={false}>
+            <HugeiconsIcon icon={Crown03Icon} className='size-4' strokeWidth={2} />
+            Upgrade
+          </Link>
+        </Button>
+      )}
     </div>
   )
 }

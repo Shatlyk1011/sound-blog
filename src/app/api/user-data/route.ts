@@ -13,6 +13,7 @@ export interface UserDataResponse {
     createdAt: string
     expirationDate: string
     status: CreditHistory['status']
+    invoiceUrl?: string
   }[]
 }
 
@@ -49,6 +50,7 @@ export async function GET(req: Request) {
         createdAt: h.createdAt,
         expirationDate: h.expirationDate,
         status: h.status,
+        invoiceUrl: h.invoiceUrl || undefined,
       })),
     })
   } catch (error) {

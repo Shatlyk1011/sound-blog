@@ -23,37 +23,24 @@ export const formatDate = (dateString: string) => {
 
 export const dynamic = 'force-dynamic'
 
-// Mock invoice history (keeping this as it's not part of credit history)
-const mockInvoices = [
-  {
-    id: 1,
-    date: '2026-01-15',
-    amount: 0,
-    status: 'Paid',
-    description: 'Free Plan - January 2026',
-  },
-  {
-    id: 2,
-    date: '2025-12-15',
-    amount: 0,
-    status: 'Paid',
-    description: 'Free Plan - December 2025',
-  },
-  {
-    id: 3,
-    date: '2025-11-15',
-    amount: 0,
-    status: 'Paid',
-    description: 'Free Plan - November 2025',
-  },
-]
 export default function ProfilePage() {
   const { user: SBUser, isLoading: isSBLoading } = useUser()
 
   const { data: userData, isLoading, isError } = useUserCreditsQuery(SBUser?.id)
 
   const getCreditTypeLabel = (type: CreditHistory['source']) => {
-    return type === 'signup_bonus' ? 'Signup Bonus' : 'Purchased Credits'
+    switch (type) {
+      case 'signup_bonus':
+        return 'Signup Bonus'
+      case 'purchased':
+        return 'Purchased Credits'
+      case 'monthly_free':
+        return 'Monthly Free'
+      case 'gift':
+        return 'Gift'
+      default:
+        return 'Credits'
+    }
   }
 
   return (
@@ -96,25 +83,27 @@ export default function ProfilePage() {
         </div>
 
         <div className='mb-5 flex items-center justify-between gap-4'>
-          <h2 className='text-xl font-medium'>
+          <h2 className='-tracking-two text-xl font-medium'>
             <span className=''>Your Current Plan:</span>{' '}
             <span className='text-primary -tracking-two font-bold'>
               {userData?.currentPlan === 'free' ? 'Free Plan' : 'Pro Plan'}
             </span>
           </h2>
-          <Button asChild>
-            <Link href='/pricing' prefetch={false}>
-              <HugeiconsIcon icon={Crown03Icon} />
-              Upgrade
-            </Link>
-          </Button>
+          {userData?.currentPlan === 'free' && (
+            <Button asChild>
+              <Link href='/pricing' prefetch={false}>
+                <HugeiconsIcon icon={Crown03Icon} />
+                Upgrade
+              </Link>
+            </Button>
+          )}
         </div>
 
         <div className='bg-input/30 rounded-3xl p-6'>
           <div className='mb-2 flex items-center justify-between'>
             <h3 className='text-lg font-semibold'>{userData?.currentPlan === 'free' ? 'Free Plan' : 'Pro Plan'}</h3>
             <span className='text-muted-foreground text-sm'>
-              {(userData?.totalCredits || 0) - (userData?.creditsSpent || 0)} credits remaining
+              ~{Math.round((userData?.totalCredits || 0) / 60)} minutes remaining
             </span>
           </div>
           <p className='text-muted-foreground text-sm'>For exploring the platform.</p>
@@ -148,11 +137,11 @@ export default function ProfilePage() {
           <Table className='w-full overflow-y-auto text-nowrap'>
             <TableHeader className='bg-input/30 text-left text-sm font-medium'>
               <TableRow>
-                <TableHead className='w-[40%] px-6 py-3'>Source</TableHead>
-                <TableHead className='px-6 py-3'>Added Date</TableHead>
-                <TableHead className='px-6 py-3'>Expiration Date</TableHead>
-                <TableHead className='w-[10%] px-6 py-3 text-right'>Credits</TableHead>
-                <TableHead className='px-6 py-3'>Status</TableHead>
+                <TableHead className='w-[35%] px-6 py-3'>Source</TableHead>
+                <TableHead className='w-[20%] px-6 py-3'>Dates</TableHead>
+                <TableHead className='w-[15%] px-6 py-3 text-right'>Credits</TableHead>
+                <TableHead className='w-[15%] px-6 py-3'>Status</TableHead>
+                <TableHead className='w-[15%] px-6 py-3 text-right'>Action</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody className='divide-y'>
@@ -182,15 +171,15 @@ export default function ProfilePage() {
                     <TableRow key={h.id} className='hover:bg-muted/30 transition-colors'>
                       <TableCell className='px-6 py-4 text-sm font-medium'>{getCreditTypeLabel(h.source)}</TableCell>
                       <TableCell className='px-6 py-4 text-sm'>
-                        <div className='flex items-center gap-2'>
-                          <HugeiconsIcon icon={Calendar03Icon} />
-                          {formatDate(h.createdAt)}
-                        </div>
-                      </TableCell>
-                      <TableCell className='px-6 py-4 text-sm'>
-                        <div className='flex items-center gap-2'>
-                          <HugeiconsIcon icon={Calendar03Icon} />
-                          {formatDate(h.expirationDate || '20.10.20')}
+                        <div className='flex flex-col gap-1'>
+                          <div className='text-muted-foreground flex items-center gap-2'>
+                            <span className='w-12'>Added:</span>
+                            <span className='text-foreground'>{formatDate(h.createdAt)}</span>
+                          </div>
+                          <div className='text-muted-foreground flex items-center gap-2'>
+                            <span className='w-12'>Expires:</span>
+                            <span className='text-foreground'>{formatDate(h.expirationDate || '20.10.20')}</span>
+                          </div>
                         </div>
                       </TableCell>
                       <TableCell
@@ -209,67 +198,24 @@ export default function ProfilePage() {
                       >
                         {h.status}
                       </TableCell>
+                      <TableCell className='px-6 py-4 text-right'>
+                        {h.invoiceUrl ? (
+                          <Button variant='ghost' size='sm' className='text-secondary-foreground' asChild>
+                            <Link href={h.invoiceUrl} target='_blank'>
+                              <HugeiconsIcon icon={CreditCardIcon} />
+                              <span className='ml-2'>Invoice</span>
+                            </Link>
+                          </Button>
+                        ) : (
+                          <span className='text-muted-foreground text-xs'>N/A</span>
+                        )}
+                      </TableCell>
                     </TableRow>
                   )
                 })
               )}
             </TableBody>
           </Table>
-        </div>
-      </div>
-
-      {/* Invoice History */}
-      <div className='bg-card mb-6 rounded-4xl border p-8 shadow-sm'>
-        <h2 className='mb-6 text-xl font-semibold'>Invoice History</h2>
-
-        <div className='overflow-hidden rounded-3xl border'>
-          <Table className='w-full'>
-            <TableHeader className='bg-input/30'>
-              <TableRow>
-                <TableHead className='px-6 py-3 text-left text-sm font-medium'>Date</TableHead>
-                <TableHead className='px-6 py-3 text-left text-sm font-medium'>Description</TableHead>
-                <TableHead className='px-6 py-3 text-left text-sm font-medium'>Status</TableHead>
-                <TableHead className='px-6 py-3 text-right text-sm font-medium'>Amount</TableHead>
-                <TableHead className='px-6 py-3 text-right text-sm font-medium'>Action</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody className='divide-y'>
-              {mockInvoices?.map((invoice) => (
-                <TableRow key={invoice.id} className='hover:bg-muted/30 transition-colors'>
-                  <TableCell className='px-6 py-4 text-sm'>
-                    <div className='flex items-center gap-2'>
-                      <HugeiconsIcon icon={Calendar03Icon} className='text-muted-foreground size-4' />
-                      {formatDate(invoice.date)}
-                    </div>
-                  </TableCell>
-                  <TableCell className='px-6 py-4 text-sm'>{invoice.description}</TableCell>
-                  <TableCell className='px-6 py-4 text-sm'>
-                    <span className='inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900/30 dark:text-green-400'>
-                      {invoice.status}
-                    </span>
-                  </TableCell>
-                  <TableCell className='px-6 py-4 text-right text-sm font-semibold'>
-                    ${invoice.amount.toFixed(2)}
-                  </TableCell>
-                  <TableCell className='px-6 py-4 text-right'>
-                    <Button variant='ghost' size='sm' className='text-secondary-foreground'>
-                      <HugeiconsIcon icon={CreditCardIcon} />
-                      Download
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-          {!mockInvoices.length && (
-            <div className='py-2 text-center'>
-              <Button variant='link' size='sm' asChild className='text-blue-500 hover:text-blue-600'>
-                <Link href='/pricing' prefetch={false}>
-                  Upgrade your plan to receive invoices.
-                </Link>
-              </Button>
-            </div>
-          )}
         </div>
       </div>
     </main>

@@ -24,7 +24,7 @@ const CreditHistory: CollectionConfig = {
     },
   },
   admin: {
-    defaultColumns: ['userId', 'createdAt', 'creditAmount', 'type'],
+    defaultColumns: ['userId', 'createdAt', 'creditAmount', 'source', 'status'],
     useAsTitle: 'userId',
   },
 

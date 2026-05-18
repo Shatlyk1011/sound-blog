@@ -37,6 +37,7 @@ export async function createInitialCredits(userId: string): Promise<void> {
       source: 'signup_bonus',
       expirationDate: expirationDate.toISOString(),
       status: 'active',
+      invoiceUrl: '',
     },
   })
 

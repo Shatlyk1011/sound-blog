@@ -228,6 +228,10 @@ export interface CreditHistory {
    * Date when these credits expire
    */
   expirationDate: string;
+  /**
+   * Stripe invoice url
+   */
+  invoiceUrl: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -508,6 +512,7 @@ export interface CreditHistorySelect<T extends boolean = true> {
   source?: T;
   status?: T;
   expirationDate?: T;
+  invoiceUrl?: T;
   updatedAt?: T;
   createdAt?: T;
 }
