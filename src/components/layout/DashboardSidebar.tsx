@@ -10,7 +10,6 @@ import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { useUser } from '@/hooks/use-user'
 import { Button } from '@/components/ui/button'
-import { Separator } from '../ui/separator'
 import { Skeleton } from '../ui/skeleton'
 import Header from './header'
 
@@ -30,18 +29,19 @@ export function DashboardSidebar({ children }: Props) {
 
   const { data: userData } = useUserCreditsQuery(SBUser?.id)
 
-  const remainingCredits = userData ? userData.totalCredits - (userData?.creditsSpent || 0) : undefined
+  const remainingCredits = userData ? Math.max(userData.totalCredits - (userData?.creditsSpent || 0), 0) : undefined
 
   return (
     <>
       <Header isDashboardPage />
-      <aside className='border-sidebar-border bg-sidebar fixed top-14 left-0 z-40 flex h-[calc(100vh-56px)] w-60 flex-col'>
-        {/* Nav */}
-        <nav className='flex-1 overflow-y-auto px-3 py-4'>
-          <span className='text-muted-foreground/70 mb-2 inline-block px-2 text-xs font-semibold tracking-widest uppercase'>
-            Menu
-          </span>
-          <ul className='space-y-0.5'>
+      <aside className='border-sidebar-border/80 bg-sidebar/95 fixed top-14 left-0 z-40 flex h-[calc(100svh-3.5rem)] w-60 flex-col shadow-[12px_0_30px_rgba(0,0,0,0.04)] backdrop-blur-xl'>
+        <nav className='flex-1 px-3 py-4'>
+          <div className='px-1'>
+            <span className='text-muted-foreground/70 mb-2 inline-block px-2 text-[0.68rem] font-semibold tracking-[0.18em] uppercase'>
+              Menu
+            </span>
+          </div>
+          <ul className='mb-6 space-y-1'>
             {NAV_ITEMS.map(({ href, label, icon }) => {
               const isActive = pathname === href
               return (
@@ -49,42 +49,52 @@ export function DashboardSidebar({ children }: Props) {
                   <Link
                     href={href}
                     className={cn(
-                      'group flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+                      'group relative flex items-center gap-3 overflow-hidden rounded-xl border px-3 py-2.5 text-sm font-medium transition-all duration-200',
                       isActive
-                        ? 'bg-sidebar-accent text-sidebar-primary'
-                        : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/60 hover:text-sidebar-foreground'
+                        ? 'border-sidebar-border bg-sidebar-accent text-sidebar-primary shadow-sm'
+                        : 'text-sidebar-foreground/68 hover:border-sidebar-border/70 hover:bg-sidebar-accent/45 hover:text-sidebar-foreground border-transparent'
                     )}
                   >
-                    <HugeiconsIcon
-                      icon={icon}
+                    <span
                       className={cn(
-                        'size-4 shrink-0 transition-colors',
-                        isActive ? 'text-sidebar-primary' : 'text-muted-foreground group-hover:text-sidebar-foreground'
+                        'grid size-7 shrink-0 place-items-center rounded-lg transition-colors',
+                        isActive ? 'bg-sidebar text-sidebar-primary' : 'bg-sidebar-accent/45 text-muted-foreground'
+                      )}
+                    >
+                      <HugeiconsIcon icon={icon} className='size-4' />
+                    </span>
+                    <span className='truncate'>{label}</span>
+                    <span
+                      className={cn(
+                        'ml-auto size-1.5 rounded-full transition-opacity',
+                        isActive ? 'bg-sidebar-primary opacity-100' : 'bg-sidebar-primary opacity-0'
                       )}
                     />
-                    {label}
                   </Link>
                 </li>
               )
             })}
           </ul>
-
-          <Separator className='my-3' />
-
-          <UserInfo
-            name={SBUser?.user_metadata?.full_name || 'No name'}
-            currentPlan={userData?.currentPlan}
-            credits={remainingCredits}
-          />
+          <div className='px-1'>
+            <span className='text-muted-foreground/70 mb-2 inline-block px-2 text-[0.68rem] font-semibold tracking-[0.18em] uppercase'>
+              Workspace
+            </span>
+            <UserInfo
+              name={SBUser?.user_metadata?.full_name || 'No name'}
+              currentPlan={userData?.currentPlan}
+              credits={remainingCredits}
+            />
+          </div>
         </nav>
 
-        {/* Feedback button at bottom */}
-        <div className='border-sidebar-border border-t p-3'>
+        <div className='border-sidebar-border/80 bg-sidebar/80 border-t p-3'>
           <Button
             variant='ghost'
-            className='text-sidebar-foreground/70 hover:bg-sidebar-accent/60 hover:text-sidebar-foreground w-full justify-start gap-2.5 text-sm font-medium'
+            className='text-sidebar-foreground/70 hover:bg-sidebar-accent/65 hover:text-sidebar-foreground hover:border-sidebar-border/70 h-11 w-full justify-start gap-2.5 rounded-xl border border-transparent text-sm font-medium'
           >
-            <HugeiconsIcon icon={MessageMultiple01Icon} className='text-muted-foreground size-4 shrink-0' />
+            <span className='bg-sidebar-accent/70 grid size-7 place-items-center rounded-lg'>
+              <HugeiconsIcon icon={MessageMultiple01Icon} className='text-muted-foreground size-4 shrink-0' />
+            </span>
             Feedback
           </Button>
         </div>
@@ -103,55 +113,69 @@ interface UserProps {
 const UserInfo = ({ name, currentPlan, credits }: UserProps) => {
   const [showCredits, setShowCredits] = useState(true)
 
-  const isPaid = currentPlan === 'paid'
+  const isPaid = currentPlan && currentPlan === 'paid'
   return (
-    <div className='space-y-4 px-2'>
-      {/* User Avatar */}
-      <div className='flex items-center gap-3'>
-        <p className='text-sidebar-foreground text-base font-medium'>{name}&apos;s workspace</p>
+    <div className='border-sidebar-border/80 bg-sidebar-accent/35 space-y-3 rounded-2xl border px-2 py-3 shadow-sm'>
+      <div className='flex min-w-0 items-center gap-3'>
+        <div className='min-w-0'>
+          <p className='text-sidebar-foreground text-sm font-semibold'>{name}&apos;s workspace</p>
+        </div>
       </div>
 
-      {/* Plan Info */}
-      <div className='space-y-4 text-sm capitalize'>
-        <div className='border-border flex items-center gap-2 border-b py-1.5'>
-          <span className='text-sidebar-foreground/60'>Current Plan:</span>
+      <div className='grid gap-2 text-xs'>
+        <div className='bg-sidebar/75 border-sidebar-border/70 flex items-center justify-between gap-2 rounded-xl border px-3 py-2'>
+          <span className='text-sidebar-foreground/60'>Plan</span>
           {currentPlan ? (
-            <span className='text-sidebar-primary font-semibold'>{currentPlan}</span>
+            <span className='text-sidebar-primary bg-sidebar-accent rounded-full px-2 py-0.5 font-semibold capitalize'>
+              {currentPlan}
+            </span>
           ) : (
-            <Skeleton className='h-5 w-16' />
+            <Skeleton className='h-5 w-16 rounded-full' />
           )}
         </div>
 
-        <div className='border-border flex items-center gap-2 border-b py-1.5'>
-          <span className='text-sidebar-foreground/60'>Credits:</span>
-          {credits ? (
-            <div className='text-sidebar-primary relative flex items-center gap-1'>
-              <span className={cn('font-semibold')}>{showCredits ? credits : '******'}</span>
-              <span className='text-xs'>{showCredits ? `(~${Math.round(credits / 60)} min)` : ''}</span>
+        <div className='bg-sidebar/75 border-sidebar-border/70 rounded-xl border px-3 py-2'>
+          <div className='mb-1 flex items-center justify-between gap-2'>
+            <span className='text-sidebar-foreground/60'>Credits</span>
+            {credits !== undefined ? (
               <Button
                 size='icon-xs'
-                variant={'ghost'}
-                className='absolute -top-2.5 -right-6'
+                variant='ghost'
+                className='text-muted-foreground hover:text-sidebar-foreground -mr-1 size-6'
                 type='button'
                 onClick={() => setShowCredits(!showCredits)}
+                aria-label={showCredits ? 'Hide credits' : 'Show credits'}
               >
-                <HugeiconsIcon icon={showCredits ? Eye : EyeOff} className='size-3' />
+                <HugeiconsIcon icon={showCredits ? Eye : EyeOff} className='size-3.5' />
               </Button>
+            ) : (
+              <Skeleton className='h-5 w-5 rounded-full' />
+            )}
+          </div>
+          {credits !== undefined ? (
+            <div className='text-sidebar-primary flex items-baseline gap-1'>
+              <span className='text-lg leading-none font-semibold'>{showCredits ? credits : '******'}</span>
+              {showCredits && (
+                <span className='text-muted-foreground text-[0.68rem]'>(~{Math.round(credits / 60)} min)</span>
+              )}
             </div>
           ) : (
-            <Skeleton className='h-5 w-20' />
+            <Skeleton className='h-6 w-24' />
           )}
         </div>
-
-        <p className='text-sidebar-foreground/80 text-xs italic'>Note: 1 credit = 1 second</p>
       </div>
 
-      {/* Upgrade Button */}
+      <p className='text-sidebar-foreground/55 px-1 text-[0.68rem]'>1 credit equals 1 second of audio.</p>
+
       {!isPaid && (
-        <Button size='sm' asChild className='bg-chart-2 h-10 w-full text-white'>
+        <Button
+          size='sm'
+          asChild
+          className='bg-chart-2 hover:bg-chart-2/90 h-10 w-full rounded-xl text-white shadow-sm'
+        >
           <Link href='/pricing' prefetch={false}>
             <HugeiconsIcon icon={Crown03Icon} className='size-4' strokeWidth={2} />
-            Upgrade
+            Upgrade plan
           </Link>
         </Button>
       )}
