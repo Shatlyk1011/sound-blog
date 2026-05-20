@@ -68,6 +68,11 @@ export default function VoiceRecord() {
       return
     }
 
+    if (!Number.isFinite(totalDuration) || totalDuration <= 0) {
+      toast.info('Audio is still loading. Please try again in a moment')
+      return
+    }
+
     const abortController = new AbortController()
     uploadAbortControllerRef.current = abortController
     setIsUploading(true)
@@ -332,7 +337,7 @@ export default function VoiceRecord() {
 
               <Button
                 type='submit'
-                disabled={isUploading}
+                disabled={isUploading || totalDuration <= 0}
                 size='lg'
                 className='bg-chart-2 hover:bg-chart-2/90 h-13 min-w-30 flex-1 items-center gap-1.5 rounded-2xl text-white shadow-[0_14px_35px_rgba(45,98,239,0.25)] max-sm:w-full'
                 aria-label='Use recording'

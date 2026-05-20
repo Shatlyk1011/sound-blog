@@ -15,12 +15,40 @@ export const formatTime = (seconds: number): string => {
   return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`
 }
 
+const getAudioDurationFromUrl = (url: string) =>
+  new Promise<number>((resolve, reject) => {
+    const audio = document.createElement('audio')
+
+    const cleanup = () => {
+      audio.removeAttribute('src')
+      audio.load()
+    }
+
+    audio.preload = 'metadata'
+    audio.onloadedmetadata = () => {
+      const duration = audio.duration
+      cleanup()
+
+      if (Number.isFinite(duration) && duration > 0) {
+        resolve(duration)
+      } else {
+        reject(new Error('Could not read audio duration'))
+      }
+    }
+    audio.onerror = () => {
+      cleanup()
+      reject(new Error('Could not read audio duration'))
+    }
+    audio.src = url
+  })
+
 export function useAudioRecorder(isDark: boolean) {
   /* ── Recording state ─────────────────────────────── */
   const [status, setStatus] = useState<RecordStatus>('idle')
   const [recordingTime, setRecordingTime] = useState(0)
   const [audioUrl, setAudioUrl] = useState<string | null>(null)
   const [duration, setDuration] = useState<number | undefined>()
+  const latestAudioUrlRef = useRef<string | null>(null)
 
   // MediaRecorder refs
   const mediaRecorderRef = useRef<MediaRecorder | null>(null)
@@ -58,14 +86,26 @@ export function useAudioRecorder(isDark: boolean) {
 
   /* ── Dropzone ─────────────────────────────── */
   const onDrop = useCallback(
-    (acceptedFiles: File[]) => {
+    async (acceptedFiles: File[]) => {
       if (acceptedFiles.length > 0) {
         const file = acceptedFiles[0]
         const url = URL.createObjectURL(file)
+        latestAudioUrlRef.current = url
         setAudioUrl(url)
+        setDuration(undefined)
+        setRecordingTime(0)
         setStatus('recorded')
-        setDuration(wavesurfer?.getDuration())
         wavesurfer?.load(url)
+
+        try {
+          const fileDuration = await getAudioDurationFromUrl(url)
+          if (latestAudioUrlRef.current === url) {
+            console.log('xxx', fileDuration)
+            setDuration(fileDuration)
+          }
+        } catch (err) {
+          console.error('Audio duration error:', err)
+        }
       }
     },
     [wavesurfer]
@@ -90,6 +130,16 @@ export function useAudioRecorder(isDark: boolean) {
     }
   }, [audioUrl])
 
+  useEffect(() => {
+    if (!wavesurfer) return
+
+    return wavesurfer.on('ready', (loadedDuration) => {
+      if (Number.isFinite(loadedDuration) && loadedDuration > 0) {
+        setDuration(loadedDuration)
+      }
+    })
+  }, [wavesurfer])
+
   /* ── Recording actions ───────────────────────────── */
   const startRecording = async () => {
     try {
@@ -105,7 +155,9 @@ export function useAudioRecorder(isDark: boolean) {
       mediaRecorder.onstop = () => {
         const blob = new Blob(audioChunksRef.current, { type: 'audio/webm' })
         const url = URL.createObjectURL(blob)
+        latestAudioUrlRef.current = url
         setAudioUrl(url)
+        setDuration(undefined)
         setStatus('recorded')
         stream.getTracks().forEach((t) => t.stop())
       }
@@ -134,6 +186,7 @@ export function useAudioRecorder(isDark: boolean) {
 
   const resetRecording = () => {
     if (audioUrl) URL.revokeObjectURL(audioUrl)
+    latestAudioUrlRef.current = null
     setStatus('idle')
     setAudioUrl(null)
     setRecordingTime(0)
