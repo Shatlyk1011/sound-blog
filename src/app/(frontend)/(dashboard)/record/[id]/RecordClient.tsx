@@ -1,16 +1,19 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Blog, Transcript, VoiceRecord } from '@/payload-types'
 import { useBlogQuery, useUpdateBlogMutation } from '@/services/blogs'
-import { AnimatePresence } from 'motion/react'
-import { motion } from 'motion/react'
+import { ArrowLeft01Icon, BookOpenTextIcon, FileAudioIcon, SparklesIcon } from '@hugeicons/core-free-icons'
+import { HugeiconsIcon } from '@hugeicons/react'
+import { AnimatePresence, motion } from 'motion/react'
 import { useTheme } from 'next-themes'
 import dynamic from 'next/dynamic'
+import Link from 'next/link'
 import ReactMarkdown from 'react-markdown'
 import { toast } from 'sonner'
 import { copyToClipboard } from '@/lib/utils'
 import { useUser } from '@/hooks/use-user'
+import { Button } from '@/components/ui/button'
 import MiniAudioPlayer from '@/components/VoiceRecordsGrid/AudioPlayer'
 import { ActionBar } from './ui/ActionBar'
 import BlogLoading from './ui/BlogLoading'
@@ -89,101 +92,155 @@ export function RecordClient({ recordId }: RecordClientProps) {
   }
 
   return (
-    <section className='gap-6'>
+    <section className='space-y-6'>
       <BlogLoading hidden={!isLoading} />
 
-      {error && <div className='text-destructive'>Error loading blog: {(error as Error).message}</div>}
+      {error && (
+        <div className='border-destructive/20 bg-destructive/5 text-destructive rounded-3xl border p-6'>
+          <p className='text-sm font-medium'>Error loading blog: {(error as Error).message}</p>
+        </div>
+      )}
 
       {blog && (
         <>
-          <h1 className='mb-2 text-5xl leading-[140%] font-bold tracking-tight'>{blog.title}</h1>
+          <div className='border-border/70 bg-card/80 relative overflow-hidden rounded-[2rem] border p-6 shadow-[0_24px_80px_rgba(0,0,0,0.06)] backdrop-blur max-sm:p-4'>
+            <div className='relative'>
+              <Button asChild variant='ghost' size='sm' className='mb-5 -ml-2 rounded-full'>
+                <Link href='/dashboard'>
+                  <HugeiconsIcon icon={ArrowLeft01Icon} className='size-4' />
+                  Back to recordings
+                </Link>
+              </Button>
 
-          <BlogMetadata
-            createdAt={blog.createdAt}
-            filters={blog.filters}
-            fileUrl={(blog.recordId as VoiceRecord).fileUrl}
-          />
-          <div className='w-full'>
-            <ActionBar
-              handleCopy={() => handleCopy(blog.content!)}
-              isEditing={isEditing}
-              isSaving={isPending}
-              onEditClick={onEditClick}
-              onSaveClick={handleSave}
-              onCancelClick={onCancelClick}
-              textReaderSlot={
-                !isEditing && (
-                  <TextReader
-                    text={blog.content ?? ''}
-                    lang={blog.language}
-                    blogId={blog.id}
-                    recordId={recordId}
-                    existingTtsUrl={blog.ttsVoiceUrl}
-                  />
-                )
-              }
-            />
+              <div className='mb-4 flex flex-wrap items-center gap-2'>
+                {isEditing && (
+                  <span className='bg-chart-1/15 text-foreground rounded-full px-3 py-1 text-xs font-semibold'>
+                    Editing draft
+                  </span>
+                )}
+              </div>
+
+              <h1 className='max-w-3xl text-5xl leading-[115%] font-bold tracking-tight max-lg:text-4xl max-sm:text-3xl'>
+                {blog.title}
+              </h1>
+
+              <BlogMetadata createdAt={blog.createdAt} filters={blog.filters} />
+            </div>
           </div>
-          <TabSwitcher activeTab={activeTab} onChange={setActiveTab} disabled={isEditing} />
 
-          <article className='w-full rounded-3xl py-8'>
-            <AnimatePresence mode='wait'>
-              {activeTab === 'generated' ? (
-                <motion.div
-                  key='generated'
-                  initial='initial'
-                  animate='animate'
-                  exit='exit'
-                  variants={animationVariants}
-                  transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1.0] }}
-                >
-                  {isEditing ? (
-                    <div data-color-mode={resolvedTheme}>
-                      <MDEditor
-                        value={blogContent}
-                        onChange={(val) => setBlogContent(val || '')}
-                        preview='edit'
-                        commands={[]}
-                        height={500}
-                        className='w-full'
+          <div className='border-border/70 bg-card/80 overflow-hidden rounded-4xl border shadow-sm'>
+            <div className='border-border/70 sticky top-0 z-20 flex justify-between rounded-t-4xl border-b px-5 pt-4 backdrop-blur-xl max-sm:px-3'>
+              <TabSwitcher activeTab={activeTab} onChange={setActiveTab} disabled={isEditing} />
+              <ActionBar
+                handleCopy={() => handleCopy(blog.content!)}
+                isEditing={isEditing}
+                isSaving={isPending}
+                onEditClick={onEditClick}
+                onSaveClick={handleSave}
+                onCancelClick={onCancelClick}
+                textReaderSlot={
+                  !isEditing && (
+                    <TextReader
+                      text={blog.content ?? ''}
+                      lang={blog.language}
+                      blogId={blog.id}
+                      recordId={recordId}
+                      existingTtsUrl={blog.ttsVoiceUrl}
+                    />
+                  )
+                }
+              />
+            </div>
+
+            <article className='w-full px-8 py-8 max-sm:px-4'>
+              <AnimatePresence mode='wait'>
+                {activeTab === 'generated' ? (
+                  <motion.div
+                    key='generated'
+                    initial='initial'
+                    animate='animate'
+                    exit='exit'
+                    className='mx-auto max-w-3xl'
+                    variants={animationVariants}
+                    transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1.0] }}
+                  >
+                    {isEditing ? (
+                      <div data-color-mode={resolvedTheme} className='overflow-hidden rounded-3xl border'>
+                        <MDEditor
+                          value={blogContent}
+                          onChange={(val) => setBlogContent(val || '')}
+                          preview='edit'
+                          commands={[]}
+                          height={620}
+                          className='w-full'
+                        />
+                      </div>
+                    ) : (
+                      <div className='prose prose-sm sm:prose-base dark:prose- font-serif'>
+                        <ReactMarkdown>{blog.content}</ReactMarkdown>
+                      </div>
+                    )}
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key='raw'
+                    initial='initial'
+                    animate='animate'
+                    exit='exit'
+                    variants={animationVariants}
+                    transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1.0] }}
+                    className='mx-auto max-w-4xl'
+                  >
+                    <div className='border-border/70 bg-muted/25 mb-8 rounded-3xl border p-5'>
+                      <div className='mb-4 flex items-center gap-3'>
+                        <span className='bg-chart-2/10 text-chart-2 grid size-10 place-items-center rounded-2xl'>
+                          <HugeiconsIcon icon={FileAudioIcon} className='size-5' />
+                        </span>
+                        <div>
+                          <h2 className='text-base font-semibold'>Original voice</h2>
+                          <p className='text-muted-foreground text-sm'>Listen to the source audio for this draft.</p>
+                        </div>
+                      </div>
+                      <MiniAudioPlayer
+                        classes='border border-border/70 bg-background/80 w-full my-0'
+                        fileUrl={(blog.recordId as VoiceRecord).fileUrl}
                       />
                     </div>
-                  ) : (
-                    <div className='prose prose-sm sm:prose-base dark:prose- max-w-none font-serif'>
-                      <ReactMarkdown>{blog.content}</ReactMarkdown>
+
+                    <div className='border-border/70 bg-background rounded-3xl border p-6'>
+                      <div className='mb-4 flex items-center gap-3'>
+                        <span className='bg-muted text-muted-foreground grid size-9 place-items-center rounded-xl'>
+                          <HugeiconsIcon icon={BookOpenTextIcon} className='size-4' />
+                        </span>
+                        <h2 className='text-base font-semibold'>Raw transcript</h2>
+                      </div>
+                      <p className='text-foreground/85 font-mono text-sm leading-7 whitespace-pre-wrap'>
+                        {(blog.transcriptId as Transcript).rawText}
+                      </p>
                     </div>
-                  )}
-                </motion.div>
-              ) : (
-                <motion.div
-                  key='raw'
-                  initial='initial'
-                  animate='animate'
-                  exit='exit'
-                  variants={animationVariants}
-                  transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1.0] }}
-                >
-                  <div className='relative mb-10 flex w-full items-center gap-6'>
-                    <MiniAudioPlayer
-                      classes='border border-border w-64  my-0'
-                      fileUrl={(blog.recordId as VoiceRecord).fileUrl}
-                    />
-                    <span className='text-sm font-medium'>Original Voice</span>
-                  </div>
-                  <p className='font-mono'>{(blog.transcriptId as Transcript).rawText}</p>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </article>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </article>
+          </div>
         </>
       )}
 
       {!isLoading && !blog && !error && (
-        <div className='bg-card w-full max-w-3xl rounded-xl border p-8 text-center shadow-sm'>
-          <p className='text-muted-foreground'>
-            No blog, no error found for this record yet. The workflow might still be processing. Please wait a few
-            minutes and try reload.
+        <div className='border-border/70 bg-card mx-auto w-full max-w-3xl rounded-[2rem] border p-10 text-center shadow-sm'>
+          <div className='bg-muted mx-auto mb-4 grid size-14 place-items-center rounded-2xl'>
+            <HugeiconsIcon icon={BookOpenTextIcon} className='text-muted-foreground size-6' />
+          </div>
+          <h2 className='text-xl font-semibold'>Article is not ready yet</h2>
+          <p className='text-muted-foreground mx-auto mt-2 max-w-xl text-sm leading-6'>
+            The workflow may still be processing this recording. Give it a few minutes, then refresh this page.
           </p>
+          <Button asChild className='mt-6 rounded-full'>
+            <Link href='/dashboard'>
+              <HugeiconsIcon icon={ArrowLeft01Icon} className='size-4' />
+              Back to dashboard
+            </Link>
+          </Button>
         </div>
       )}
     </section>

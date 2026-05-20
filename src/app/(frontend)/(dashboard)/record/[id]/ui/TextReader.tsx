@@ -50,13 +50,14 @@ export default function TextReader({ text, lang, className, blogId, recordId, ex
               size='sm'
               onClick={toggle}
               aria-label={STATUS_LABEL[status]}
-              className='h-9 w-9 gap-2 rounded-full'
+              className='h-9 rounded-full px-3'
             >
               {isLoading ? (
                 <HugeiconsIcon icon={Loading03Icon} size={16} className='animate-spin' />
               ) : (
                 <HugeiconsIcon icon={SpeechIcon} size={16} />
               )}
+              <span className='max-sm:hidden'>{isLoading ? 'Generating' : 'Listen'}</span>
             </Button>
           </TooltipTrigger>
           <TooltipContent side='top'>
@@ -73,7 +74,7 @@ export default function TextReader({ text, lang, className, blogId, recordId, ex
       )}
 
       {/* Audio player — shown once audio is generated */}
-      {audioUrl && <AudioPlayer classes='px-2 py-2 m-0' fileUrl={audioUrl} autoPlay />}
+      {audioUrl && <AudioPlayer classes='px-3 py-2 m-0 min-w-64 max-sm:min-w-0' fileUrl={audioUrl} autoPlay />}
     </div>
   )
 }
