@@ -105,7 +105,7 @@ export function useTTS(
       setError(message)
       setStatus('error')
     }
-  }, [text, lang, blogId, recordId, existingTtsUrl, queryClient])
+  }, [text, blogId, recordId, existingTtsUrl, queryClient])
 
   const play = useCallback(() => {
     if (status === 'idle' || status === 'error') {

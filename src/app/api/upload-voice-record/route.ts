@@ -149,7 +149,10 @@ export async function POST(req: NextRequest) {
 
     const fileUrl = `${publicUrl}/${uniqueFileName}`
 
-    const audioTitle = file.name.replace(/\.[^/.]+$/, '').replace(/[^\w-]+/g, '_')
+    const audioTitle = file.name
+      .replace(/\.[^/.]+$/, '')
+      .replace(/[^\w-]+/g, '_')
+      .slice(0, 80)
     const customRecordId = `${audioTitle || 'recording'}-${randomUUID()}`
 
     // 6. Create VoiceRecord in Payload CMS
