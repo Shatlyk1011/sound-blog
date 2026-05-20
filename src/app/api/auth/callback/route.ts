@@ -7,6 +7,8 @@ export async function GET(request: Request) {
   const code = searchParams.get('code')
   // if "next" is in param, use it as the redirect URL
   const next = searchParams.get('next') ?? '/'
+  const safeNext = next.startsWith('/') && !next.startsWith('//') ? next : '/'
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || origin
 
   if (code) {
     const supabase = await createClient()
@@ -32,20 +34,10 @@ export async function GET(request: Request) {
         }
       }
 
-      const forwardedHost = request.headers.get('x-forwarded-host') // original origin before load balancer
-      const isLocalEnv = process.env.NODE_ENV === 'development'
-
-      if (isLocalEnv) {
-        // we can be sure that there is no load balancer in between, so no need to watch for X-Forwarded-Host
-        return NextResponse.redirect(`${origin}${next}`)
-      } else if (forwardedHost) {
-        return NextResponse.redirect(`https://${forwardedHost}${next}`)
-      } else {
-        return NextResponse.redirect(`${origin}${next}`)
-      }
+      return NextResponse.redirect(new URL(safeNext, appUrl))
     }
   }
 
   // return the user to an error page with some instructions
-  return NextResponse.redirect(`${origin}/auth/auth-code-error`)
+  return NextResponse.redirect(new URL('/auth/auth-code-error', appUrl))
 }

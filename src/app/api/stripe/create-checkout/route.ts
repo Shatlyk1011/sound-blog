@@ -11,11 +11,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'planId is required' }, { status: 400 })
     }
 
-    // Get authenticated user (optional — checkout works without it too)
     const supabase = await createClient()
     const {
       data: { user },
+      error: authError,
     } = await supabase.auth.getUser()
+
+    if (authError || !user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
 
     const priceId = getPriceId(planId)
     const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'
@@ -25,9 +29,9 @@ export async function POST(req: NextRequest) {
       ui_mode: 'embedded_page' as const,
       payment_method_types: ['card'],
       line_items: [{ price: priceId, quantity: 1 }],
-      customer_email: user?.email,
+      customer_email: user.email,
       metadata: {
-        userId: user?.id ?? 'no id',
+        userId: user.id,
         planId,
       },
       return_url: `${appUrl}/pricing/success?session_id={CHECKOUT_SESSION_ID}`,

@@ -12,6 +12,14 @@ import VoiceRecords from './app/(payload)/collections/VoiceRecords'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+const requiredEnv = (key: string) => {
+  const value = process.env[key]
+  if (!value) {
+    throw new Error(`Missing required environment variable: ${key}`)
+  }
+  return value
+}
+
 export default buildConfig({
   typescript: {
     outputFile: path.resolve(dirname, '../src/payload-types.ts'),
@@ -26,11 +34,8 @@ export default buildConfig({
 
   collections: [VoiceRecords, Transcripts, Blogs, Users, CreditHistory, AdminUsers],
 
-  // Your Payload secret - should be a complex and secure string, unguessable
-  secret: process.env.PAYLOAD_SECRET || '',
-  // Whichever Database Adapter you're using should go here
-  // Mongoose is shown as an example, but you can also use Postgres
+  secret: requiredEnv('PAYLOAD_SECRET'),
   db: mongooseAdapter({
-    url: process.env.DATABASE_URI || '',
+    url: requiredEnv('DATABASE_URI'),
   }),
 })

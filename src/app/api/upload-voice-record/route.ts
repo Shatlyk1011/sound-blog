@@ -1,8 +1,29 @@
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
 import configPromise from '@payload-config'
 import { NextRequest, NextResponse } from 'next/server'
+import { randomUUID } from 'node:crypto'
 import { getPayload } from 'payload'
 import { createClient } from '@/lib/supabase-server'
+
+const MAX_AUDIO_FILE_SIZE_BYTES = 25 * 1024 * 1024
+const MAX_AUDIO_DURATION_SECONDS = 60 * 60
+const ALLOWED_AUDIO_TYPES = new Set([
+  'audio/aac',
+  'audio/flac',
+  'audio/m4a',
+  'audio/mp4',
+  'audio/mpeg',
+  'audio/ogg',
+  'audio/wav',
+  'audio/webm',
+  'audio/x-m4a',
+  'audio/x-wav',
+])
+
+const extensionFromFileName = (fileName: string) => {
+  const extension = fileName.toLowerCase().match(/\.([a-z0-9]+)$/)?.[1]
+  return extension ? `.${extension}` : '.webm'
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -28,6 +49,18 @@ export async function POST(req: NextRequest) {
 
     if (!file) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 })
+    }
+
+    if (!ALLOWED_AUDIO_TYPES.has(file.type)) {
+      return NextResponse.json({ error: 'Unsupported audio file type' }, { status: 415 })
+    }
+
+    if (file.size <= 0 || file.size > MAX_AUDIO_FILE_SIZE_BYTES) {
+      return NextResponse.json({ error: 'Audio file is too large' }, { status: 413 })
+    }
+
+    if (!Number.isFinite(duration) || duration <= 0 || duration > MAX_AUDIO_DURATION_SECONDS) {
+      return NextResponse.json({ error: 'Invalid audio duration' }, { status: 400 })
     }
 
     // 3. Find corresponding Payload user
@@ -84,16 +117,18 @@ export async function POST(req: NextRequest) {
     // 5. Upload to Cloudflare R2
     const accessKeyId = process.env.R2_ACCESS_KEY_ID
     const secretAccessKey = process.env.R2_SECRET_ACCESS_KEY
+    const endpoint = process.env.R2_ENDPOINT_URL
     const publicUrl = process.env.R2_PUBLIC_URL
+    const voiceBucket = process.env.R2_VOICE_RECORD_BUCKET
 
-    if (!accessKeyId || !secretAccessKey || !publicUrl) {
+    if (!accessKeyId || !secretAccessKey || !endpoint || !publicUrl || !voiceBucket) {
       console.error('Missing R2 environment variables')
       return NextResponse.json({ error: 'Server configuration error' }, { status: 500 })
     }
 
     const s3 = new S3Client({
       region: 'auto',
-      endpoint: process.env.R2_ENDPOINT_URL,
+      endpoint,
       credentials: {
         accessKeyId,
         secretAccessKey,
@@ -101,21 +136,21 @@ export async function POST(req: NextRequest) {
     })
 
     const buffer = Buffer.from(await file.arrayBuffer())
-    const uniqueFileName = `${Date.now()}-${file.name.replace(/\s+/g, '_')}`
+    const uniqueFileName = `voice-records/${randomUUID()}${extensionFromFileName(file.name)}`
 
     await s3.send(
       new PutObjectCommand({
-        Bucket: process.env.R2_VOICE_RECORD_BUCKET, // Cloudflare R2 bucket name
+        Bucket: voiceBucket,
         Key: uniqueFileName,
         Body: buffer,
-        ContentType: file.type || 'audio/webm',
+        ContentType: file.type,
       })
     )
 
     const fileUrl = `${publicUrl}/${uniqueFileName}`
 
-    const audioTitle = file.name.replace(/\.[^/.]+$/, '').replace(/\s+/g, '_')
-    const customRecordId = `${audioTitle}-${Math.floor(1000 + Math.random() * 9000)}`
+    const audioTitle = file.name.replace(/\.[^/.]+$/, '').replace(/[^\w-]+/g, '_')
+    const customRecordId = `${audioTitle || 'recording'}-${randomUUID()}`
 
     // 6. Create VoiceRecord in Payload CMS
     const newRecord = await payload.create({
@@ -144,7 +179,7 @@ export async function POST(req: NextRequest) {
             recordId: customRecordId,
             key: uniqueFileName,
             fileName: file.name,
-            contentType: file.type || 'audio/webm',
+            contentType: file.type,
             size: file.size,
             filters: filtersStr,
           }),

@@ -1,10 +1,20 @@
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
 import configPromise from '@payload-config'
 import { NextRequest, NextResponse } from 'next/server'
+import { randomUUID } from 'node:crypto'
 import { getPayload } from 'payload'
 import { TTS_VOICE_HEADER_URL } from '@/lib/constants'
+import { createClient } from '@/lib/supabase-server'
 
 const WORKER_URL = process.env.WORKER_URL
+const MAX_TTS_TEXT_LENGTH = 20_000
+
+const getRelationshipId = (value: unknown) => {
+  if (typeof value === 'object' && value && 'id' in value) {
+    return String((value as { id: string | number }).id)
+  }
+  return String(value ?? '')
+}
 
 /**
  * Strips markdown/MDX syntax from text to produce clean plain text for TTS.
@@ -45,13 +55,58 @@ function stripMarkdown(md: string): string {
 
 export async function POST(req: NextRequest) {
   try {
-    const { text, lang, blogId } = await req.json()
+    const { blogId } = await req.json()
 
-    if (!text || typeof text !== 'string') {
-      return NextResponse.json({ error: 'Missing or invalid text field' }, { status: 400 })
+    if (!blogId || typeof blogId !== 'string') {
+      return NextResponse.json({ error: 'Missing or invalid blogId field' }, { status: 400 })
     }
 
-    const cleanText = stripMarkdown(text)
+    const supabase = await createClient()
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser()
+
+    if (authError || !user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const payload = await getPayload({ config: configPromise })
+
+    const { docs: users } = await payload.find({
+      collection: 'users',
+      where: {
+        userId: {
+          equals: user.id,
+        },
+      },
+      overrideAccess: true,
+    })
+
+    if (users.length === 0) {
+      return NextResponse.json({ error: 'User not found' }, { status: 404 })
+    }
+
+    const blog = await payload.findByID({
+      collection: 'blogs',
+      id: blogId,
+      depth: 0,
+      overrideAccess: true,
+    })
+
+    if (!blog || getRelationshipId(blog.userId) !== users[0].id) {
+      return NextResponse.json({ error: 'Not found or unauthorized' }, { status: 404 })
+    }
+
+    if (!blog.content || typeof blog.content !== 'string') {
+      return NextResponse.json({ error: 'Blog has no readable content' }, { status: 400 })
+    }
+
+    const cleanText = stripMarkdown(blog.content)
+
+    if (cleanText.length > MAX_TTS_TEXT_LENGTH) {
+      return NextResponse.json({ error: 'Text is too long for audio generation' }, { status: 413 })
+    }
 
     if (!WORKER_URL) {
       return NextResponse.json({ error: 'Worker URL not configured' }, { status: 500 })
@@ -60,7 +115,7 @@ export async function POST(req: NextRequest) {
     const workerRes = await fetch(`${WORKER_URL}/text-to-sound`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text: cleanText, lang }),
+      body: JSON.stringify({ text: cleanText, lang: blog.language }),
     })
 
     if (!workerRes.ok) {
@@ -70,7 +125,8 @@ export async function POST(req: NextRequest) {
     }
 
     // Worker returns { audio: "<base64 encoded MP3>" }
-    const audio = await workerRes.json()
+    const workerBody = await workerRes.json()
+    const audio = typeof workerBody === 'string' ? workerBody : workerBody?.audio
     if (!audio) {
       return NextResponse.json({ error: 'No audio returned from worker' }, { status: 502 })
     }
@@ -93,7 +149,7 @@ export async function POST(req: NextRequest) {
           credentials: { accessKeyId, secretAccessKey },
         })
 
-        const fileName = `tts/${blogId}-${Date.now()}.mp3`
+        const fileName = `tts/${blogId}-${randomUUID()}.mp3`
 
         await s3.send(
           new PutObjectCommand({
@@ -111,11 +167,11 @@ export async function POST(req: NextRequest) {
         // Persist URL to the blog document if blogId was provided
         if (blogId && typeof blogId === 'string') {
           try {
-            const payload = await getPayload({ config: configPromise })
             await payload.update({
               collection: 'blogs',
               id: blogId,
               data: { ttsVoiceUrl },
+              overrideAccess: true,
             })
           } catch (payloadErr) {
             console.error('Failed to save ttsVoiceUrl to blog doc:', payloadErr)

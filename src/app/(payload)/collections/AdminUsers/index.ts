@@ -6,7 +6,7 @@ import { ensureFirstUserIsAdmin } from './hooks/ensureFirstUserIsAdmin'
 const AdminUsers: CollectionConfig = {
   slug: 'adminUsers',
   access: {
-    admin: () => true,
+    admin: ({ req }) => checkRole(['admin'], req.user),
     create: () => false,
     delete: () => false,
     read: ({ req }) => {
@@ -30,8 +30,8 @@ const AdminUsers: CollectionConfig = {
 
   auth: {
     depth: 0,
-    maxLoginAttempts: 20,
-    tokenExpiration: 604800,
+    maxLoginAttempts: 5,
+    tokenExpiration: 86400,
     useAPIKey: true,
   },
 

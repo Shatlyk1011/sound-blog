@@ -79,7 +79,7 @@ export function useTTS(
       const res = await fetch('/api/tts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text, lang, blogId }),
+        body: JSON.stringify({ blogId }),
       })
 
       if (!res.ok) {
