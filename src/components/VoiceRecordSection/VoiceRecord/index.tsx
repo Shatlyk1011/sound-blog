@@ -1,6 +1,6 @@
 'use client'
 
-import { SubmitEventHandler, useState } from 'react'
+import { SubmitEventHandler, useRef, useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import {
   Mic01Icon,
@@ -21,13 +21,14 @@ import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import RecordFilter from './RecordFilter'
 
-const idleWaveBars = Array.from({ length: 72 }, (_, i) => 6)
+const idleWaveBars = Array.from({ length: 72 }, () => 6)
 
 export default function VoiceRecord() {
   const { resolvedTheme } = useTheme()
 
   const [isUploading, setIsUploading] = useState(false)
   const [selectedFilters, setSelectedFilters] = useState<FilterValue[]>([])
+  const uploadAbortControllerRef = useRef<AbortController | null>(null)
 
   const isDark = resolvedTheme === 'dark'
 
@@ -59,16 +60,20 @@ export default function VoiceRecord() {
 
   const handleSubmit: SubmitEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
+    if (isUploading) return
+
     if (!audioUrl) {
       toast.info('No audio recorded yet')
       resetRecording()
       return
     }
 
+    const abortController = new AbortController()
+    uploadAbortControllerRef.current = abortController
     setIsUploading(true)
 
     try {
-      const response = await fetch(audioUrl)
+      const response = await fetch(audioUrl, { signal: abortController.signal })
       const blob = await response.blob()
 
       const file = new File([blob], `voice-record-${Date.now()}.webm`, {
@@ -83,6 +88,7 @@ export default function VoiceRecord() {
       const uploadRes = await fetch('/api/upload-voice-record', {
         method: 'POST',
         body: formData,
+        signal: abortController.signal,
       })
 
       const result = await uploadRes.json()
@@ -100,12 +106,22 @@ export default function VoiceRecord() {
       queryClient.invalidateQueries({ queryKey: ['voice-records'] })
       resetRecording()
     } catch (error: unknown) {
+      if (error instanceof Error && error.name === 'AbortError') {
+        toast.info('Upload canceled')
+        return
+      }
+
       console.error('Upload failed:', error)
       const message = error instanceof Error ? error.message : 'Error uploading file'
       toast.error(message)
     } finally {
+      uploadAbortControllerRef.current = null
       setIsUploading(false)
     }
+  }
+
+  const handleCancelUpload = () => {
+    uploadAbortControllerRef.current?.abort()
   }
 
   return (
@@ -130,14 +146,9 @@ export default function VoiceRecord() {
       {isUploading && (
         <div className='bg-background/90 absolute inset-0 z-50 flex flex-col items-center justify-center gap-4 overflow-hidden rounded-[1.75rem] backdrop-blur-md'>
           <div className='relative flex items-center justify-center'>
-            <div className='border-chart-2/20 border-chart-2 absolute size-18 animate-spin rounded-full border-2 border-t-transparent' />
             <div className='bg-chart-2/10 text-chart-2 grid size-14 place-items-center rounded-2xl'>
               <HugeiconsIcon icon={Upload01Icon} className='size-7 animate-pulse' />
             </div>
-          </div>
-          <div className='flex flex-col items-center gap-1'>
-            <p className='text-foreground text-sm font-medium'>Uploading your recording…</p>
-            <p className='text-muted-foreground text-xs'>This may take a moment</p>
           </div>
           <div className='flex gap-1.5'>
             {[0, 1, 2].map((i) => (
@@ -148,6 +159,13 @@ export default function VoiceRecord() {
               />
             ))}
           </div>
+          <div className='flex flex-col items-center gap-1'>
+            <p className='text-foreground text-sm font-medium'>Uploading your recording…</p>
+            <p className='text-muted-foreground text-xs'>This may take a moment</p>
+          </div>
+          <Button type='button' variant='outline' size='sm' className='rounded-xl' onClick={handleCancelUpload}>
+            Cancel upload
+          </Button>
         </div>
       )}
       <form
