@@ -34,7 +34,7 @@ export function DashboardSidebar({ children }: Props) {
   return (
     <>
       <Header isDashboardPage />
-      <aside className='border-sidebar-border/80 bg-sidebar/95 fixed top-14 left-0 z-40 flex h-[calc(100svh-3.5rem)] w-60 flex-col shadow-[12px_0_30px_rgba(0,0,0,0.04)] backdrop-blur-xl'>
+      <aside className='border-sidebar-border/80 bg-sidebar/95 fixed top-14 left-0 z-40 flex h-[calc(100svh-3.5rem)] w-72 flex-col shadow-[12px_0_30px_rgba(0,0,0,0.04)] backdrop-blur-xl'>
         <nav className='flex-1 px-3 py-4'>
           <div className='px-1'>
             <span className='text-muted-foreground/70 mb-2 inline-block px-2 text-[0.68rem] font-semibold tracking-[0.18em] uppercase'>

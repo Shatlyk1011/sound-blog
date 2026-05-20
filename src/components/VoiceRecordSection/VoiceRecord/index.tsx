@@ -21,6 +21,8 @@ import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import RecordFilter from './RecordFilter'
 
+const idleWaveBars = Array.from({ length: 72 }, (_, i) => 6)
+
 export default function VoiceRecord() {
   const { resolvedTheme } = useTheme()
 
@@ -48,6 +50,12 @@ export default function VoiceRecord() {
   } = useAudioRecorder(isDark)
 
   const queryClient = useQueryClient()
+
+  const statusLabel = {
+    idle: 'Ready to record',
+    recording: 'Recording live',
+    recorded: 'Ready to generate',
+  }[status]
 
   const handleSubmit: SubmitEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
@@ -104,36 +112,38 @@ export default function VoiceRecord() {
     <div
       {...getRootProps()}
       className={cn(
-        'relative w-full transition-colors',
-        isDragActive ? 'bg-primary/5 border-primary border-2 border-dashed' : 'border-2 border-transparent'
+        'border-border/70 bg-background/80 relative w-full overflow-hidden rounded-[1.75rem] border p-4 text-left shadow-inner transition-all duration-300 max-sm:p-3',
+        isDragActive && 'border-chart-2 bg-chart-2/5 scale-[1.01] border-dashed shadow-[0_0_0_6px_rgba(45,98,239,0.08)]'
       )}
     >
       <input {...getInputProps()} tabIndex={-1} />
       {isDragActive && (
-        <div className='bg-background/80 absolute inset-0 z-50 flex flex-col items-center justify-center rounded-xl backdrop-blur-sm'>
-          <HugeiconsIcon icon={Upload01Icon} className='text-primary mb-4 size-12 animate-bounce' />
-          <p className='text-primary text-xl font-semibold'>Drop audio file here</p>
+        <div className='bg-background/90 absolute inset-0 z-50 flex flex-col items-center justify-center rounded-[1.75rem] backdrop-blur-md'>
+          <div className='bg-chart-2/10 text-chart-2 mb-4 grid size-20 place-items-center rounded-3xl'>
+            <HugeiconsIcon icon={Upload01Icon} className='size-10 animate-bounce' />
+          </div>
+          <p className='text-foreground text-xl font-semibold'>Drop your audio here</p>
+          <p className='text-muted-foreground mt-1 text-sm'>We will prepare it for blog generation.</p>
         </div>
       )}
 
       {isUploading && (
-        <div className='bg-background/85 absolute -inset-4 z-50 flex flex-col items-center justify-center gap-4 overflow-hidden rounded-xl backdrop-blur-sm'>
-          {/* Animated upload icon */}
+        <div className='bg-background/90 absolute inset-0 z-50 flex flex-col items-center justify-center gap-4 overflow-hidden rounded-[1.75rem] backdrop-blur-md'>
           <div className='relative flex items-center justify-center'>
-            {/* Spinning ring */}
-            <div className='border-primary/30 border-primary absolute size-16 animate-spin rounded-full border-2 border-t-transparent' />
-            <HugeiconsIcon icon={Upload01Icon} className='text-primary size-7 animate-pulse' />
+            <div className='border-chart-2/20 border-chart-2 absolute size-18 animate-spin rounded-full border-2 border-t-transparent' />
+            <div className='bg-chart-2/10 text-chart-2 grid size-14 place-items-center rounded-2xl'>
+              <HugeiconsIcon icon={Upload01Icon} className='size-7 animate-pulse' />
+            </div>
           </div>
           <div className='flex flex-col items-center gap-1'>
             <p className='text-foreground text-sm font-medium'>Uploading your recording…</p>
             <p className='text-muted-foreground text-xs'>This may take a moment</p>
           </div>
-          {/* Animated progress dots */}
           <div className='flex gap-1.5'>
             {[0, 1, 2].map((i) => (
               <div
                 key={i}
-                className='bg-primary size-1.5 animate-bounce rounded-full'
+                className='bg-chart-2 size-1.5 animate-bounce rounded-full'
                 style={{ animationDelay: `${i * 150}ms` }}
               />
             ))}
@@ -142,15 +152,31 @@ export default function VoiceRecord() {
       )}
       <form
         onSubmit={handleSubmit}
-        className='relative mx-auto flex w-full max-w-xl min-w-66 flex-col items-center gap-2.5 border-none'
+        className='relative mx-auto flex w-full max-w-2xl min-w-66 flex-col items-center gap-4 border-none'
       >
-        {/* ── TOP CONTROLS & TIMER ───────────────────────────── */}
+        <div className='flex w-full items-center justify-between gap-3 rounded-2xl px-1'>
+          <div className='flex items-center gap-2'>
+            <span
+              className={cn(
+                'size-2 rounded-full',
+                status === 'recording' ? 'bg-destructive animate-pulse' : 'bg-chart-2'
+              )}
+            />
+            <span className='text-muted-foreground text-xs font-medium tracking-[0.16em] uppercase'>{statusLabel}</span>
+          </div>
+          <span className='bg-muted/70 text-foreground rounded-full px-3 py-1 font-mono text-xs'>
+            {status === 'recorded'
+              ? `${formatTime(wsCurrentTime)} / ${formatTime(totalDuration)}`
+              : formatTime(recordingTime)}
+          </span>
+        </div>
+
         {status === 'idle' && (
           <>
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
-                  className='group flex h-24 w-24 items-center justify-center'
+                  className='group border-border/70 bg-card hover:bg-card hover:border-chart-2/40 relative flex size-30 items-center justify-center rounded-full shadow-[0_18px_45px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 hover:shadow-[0_22px_55px_rgba(0,0,0,0.12)]'
                   type='button'
                   variant='outline'
                   onClick={startRecording}
@@ -158,13 +184,12 @@ export default function VoiceRecord() {
                 >
                   <HugeiconsIcon
                     icon={Mic01Icon}
-                    className='text-foreground/90 size-8 transition duration-300 group-hover:-translate-y-0.5 group-hover:scale-108'
+                    className='text-foreground/90 size-9 transition duration-300 group-hover:-translate-y-0.5 group-hover:scale-108'
                   />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>Click to start recording</TooltipContent>
             </Tooltip>
-            <span className='text-foreground/70 font-mono text-sm'>00:00</span>
           </>
         )}
 
@@ -173,21 +198,21 @@ export default function VoiceRecord() {
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
-                  className='group flex h-24 w-24 items-center justify-center transition-colors'
+                  className='group border-destructive/25 bg-destructive/10 hover:bg-destructive/15 relative flex size-30 items-center justify-center rounded-full shadow-[0_18px_45px_rgba(229,75,79,0.16)]'
                   type='button'
                   variant='outline'
                   onClick={stopRecording}
                   aria-label='Stop recording'
                 >
+                  <span className='bg-destructive/15 absolute inset-0 animate-ping rounded-full' />
                   <div
-                    className='bg-foreground/85 size-8 animate-spin rounded-md transition duration-300 group-hover:scale-108'
+                    className='bg-destructive relative size-8 animate-spin rounded-md transition duration-300 group-hover:scale-108'
                     style={{ animationDuration: '3s' }}
                   />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>Stop recording</TooltipContent>
             </Tooltip>
-            <span className='text-foreground/70 font-mono text-sm'>{formatTime(recordingTime)}</span>
           </>
         )}
 
@@ -196,51 +221,58 @@ export default function VoiceRecord() {
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
-                  className='group flex h-24 w-24 items-center justify-center transition-colors'
+                  className='group border-border/70 bg-card hover:bg-card hover:border-chart-2/40 flex size-30 items-center justify-center rounded-full shadow-[0_18px_45px_rgba(0,0,0,0.08)] hover:-translate-y-0.5'
                   type='button'
                   variant='outline'
                   onClick={() => wavesurfer?.playPause()}
                   aria-label={isPlaying ? 'Pause' : 'Play'}
                 >
                   {isPlaying ? (
-                    <HugeiconsIcon icon={PauseIcon} className='text-foreground/90 size-8 transition duration-300' />
+                    <HugeiconsIcon icon={PauseIcon} className='text-foreground/90 size-9 transition duration-300' />
                   ) : (
                     <HugeiconsIcon
                       icon={PlayCircle02Icon}
-                      className='text-foreground/90 size-8 transition duration-300'
+                      className='text-foreground/90 size-9 transition duration-300'
                     />
                   )}
                 </Button>
               </TooltipTrigger>
               <TooltipContent>{isPlaying ? 'Pause' : 'Play'}</TooltipContent>
             </Tooltip>
-            <span className='text-foreground/70 font-mono text-sm'>
-              {formatTime(wsCurrentTime)} / {formatTime(totalDuration)}
-            </span>
           </>
         )}
 
-        {/* ── COMMON WAVEFORM AREA (Stable DOM Node) ──────────────────────── */}
-        <div className='my-2 flex w-full flex-col items-center justify-center'>
+        <div className='border-border/70 bg-muted/25 flex w-full flex-col items-center justify-center overflow-hidden rounded-3xl border px-4 py-3'>
           <div ref={containerRef} className={cn('h-24 w-full', status === 'idle' && 'hidden')} />
           {status === 'idle' && (
-            <div className='flex h-24 w-full items-center justify-between overflow-hidden'>
-              {[...Array(128)].map((_, i) => (
-                <div key={i} className='bg-muted-foreground/70 h-0.5 w-0.5' />
+            <div className='flex h-24 w-full items-center justify-between gap-1 overflow-hidden'>
+              {idleWaveBars.map((height, i) => (
+                <div key={i} className='bg-muted-foreground/35 w-1 rounded-full' style={{ height: `${height}px` }} />
               ))}
             </div>
           )}
+        </div>
+
+        <div className='border-border/70 bg-card/60 flex w-full items-center justify-center gap-2 rounded-2xl border border-dashed px-4 py-3 text-center'>
+          <HugeiconsIcon icon={Upload01Icon} className='text-muted-foreground size-4 shrink-0' />
+          <p className='text-muted-foreground text-sm'>
+            Drag and drop an audio file here, or use the microphone controls.
+          </p>
         </div>
 
         {status === 'recorded' && (
           <RecordFilter selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters} />
         )}
 
-        {/* ── BOTTOM ACTIONS ───────────────────────────── */}
         {status === 'idle' && (
-          <div className='flex h-20 w-full flex-col justify-end gap-2'>
-            <p className='text-foreground/70 text-sm'>Click to speak</p>
-            <Button type='button' onClick={startRecording} size='lg' aria-label='Start recording'>
+          <div className='flex w-full flex-col justify-end gap-2'>
+            <Button
+              type='button'
+              onClick={startRecording}
+              size='lg'
+              className='bg-chart-2 hover:bg-chart-2/90 h-13 w-full rounded-2xl text-white shadow-[0_14px_35px_rgba(45,98,239,0.15)]'
+              aria-label='Start recording'
+            >
               <HugeiconsIcon icon={Mic01Icon} className='size-4' />
               Start Recording
             </Button>
@@ -248,9 +280,14 @@ export default function VoiceRecord() {
         )}
 
         {status === 'recording' && (
-          <div className='flex h-20 w-full flex-col justify-end gap-2'>
-            <p className='text-foreground/70 text-xs'>Listening…</p>
-            <Button type='button' size='lg' variant='destructive' onClick={stopRecording} className='w-full'>
+          <div className='flex w-full flex-col justify-end gap-2'>
+            <Button
+              type='button'
+              size='lg'
+              variant='destructive'
+              onClick={stopRecording}
+              className='h-13 w-full rounded-2xl shadow-[0_14px_35px_rgba(229,75,79,0.14)]'
+            >
               <HugeiconsIcon icon={StopCircleIcon} className='size-4' />
               Stop Recording
             </Button>
@@ -258,15 +295,14 @@ export default function VoiceRecord() {
         )}
 
         {status === 'recorded' && (
-          <div className='flex h-20 w-full flex-col justify-end gap-2'>
-            <p className='text-foreground/70 h-4 text-xs'>Recording ready</p>
-            <div className='flex w-full items-center justify-center gap-2'>
+          <div className='flex w-full flex-col justify-end gap-2'>
+            <div className='flex w-full items-center justify-center gap-2 max-sm:flex-col'>
               <Button
                 type='button'
                 variant='outline'
                 onClick={resetRecording}
                 size='lg'
-                className='h-12 flex-1 items-center gap-1.5'
+                className='h-13 flex-1 items-center gap-1.5 rounded-2xl max-sm:w-full'
                 aria-label='Reset recording'
               >
                 <HugeiconsIcon icon={Refresh03Icon} className='size-4' />
@@ -277,7 +313,7 @@ export default function VoiceRecord() {
                 type='submit'
                 disabled={isUploading}
                 size='lg'
-                className='h-12 min-w-30 flex-1 items-center gap-1.5'
+                className='bg-chart-2 hover:bg-chart-2/90 h-13 min-w-30 flex-1 items-center gap-1.5 rounded-2xl text-white shadow-[0_14px_35px_rgba(45,98,239,0.25)] max-sm:w-full'
                 aria-label='Use recording'
               >
                 {isUploading ? (
