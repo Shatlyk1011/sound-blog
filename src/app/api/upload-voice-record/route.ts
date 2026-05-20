@@ -59,10 +59,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Audio file is too large' }, { status: 413 })
     }
 
-    if (!Number.isFinite(duration) || duration <= 0 || duration > MAX_AUDIO_DURATION_SECONDS) {
-      return NextResponse.json({ error: 'Invalid audio duration' }, { status: 400 })
-    }
-
     // 3. Find corresponding Payload user
     const payload = await getPayload({ config: configPromise })
 
