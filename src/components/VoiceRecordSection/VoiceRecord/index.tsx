@@ -253,7 +253,10 @@ export default function VoiceRecord() {
           )}
         </div>
 
-        <div className='border-border/70 bg-card/60 flex w-full items-center justify-center gap-2 rounded-2xl border border-dashed px-4 py-3 text-center'>
+        <div
+          hidden={status === 'recorded'}
+          className='border-border/70 bg-card/60 flex w-full items-center justify-center gap-2 rounded-2xl border border-dashed px-4 py-3 text-center'
+        >
           <HugeiconsIcon icon={Upload01Icon} className='text-muted-foreground size-4 shrink-0' />
           <p className='text-muted-foreground text-sm'>
             Drag and drop an audio file here, or use the microphone controls.

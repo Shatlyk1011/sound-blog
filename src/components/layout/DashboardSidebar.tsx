@@ -14,7 +14,7 @@ import { Skeleton } from '../ui/skeleton'
 import Header from './header'
 
 const NAV_ITEMS = [
-  { href: '/dashboard', label: 'Home', icon: Home01Icon },
+  { href: '/dashboard', label: 'Dashboard', icon: Home01Icon },
   { href: '/profile', label: 'Profile', icon: UserCircleIcon },
 ]
 
@@ -115,7 +115,7 @@ const UserInfo = ({ name, currentPlan, credits }: UserProps) => {
 
   const isPaid = currentPlan && currentPlan === 'paid'
   return (
-    <div className='border-sidebar-border/80 bg-sidebar-accent/35 space-y-3 rounded-2xl border px-2 py-3 shadow-sm'>
+    <div className='border-sidebar-border/80 bg-sidebar-accent/35 space-y-3 rounded-2xl border p-3 shadow-sm'>
       <div className='flex min-w-0 items-center gap-3'>
         <div className='min-w-0'>
           <p className='text-sidebar-foreground text-sm font-semibold'>{name}&apos;s workspace</p>

@@ -16,7 +16,7 @@ export default function DashboardLayout({
   return (
     <div className='bg-sidebar flex h-svh overflow-hidden pt-14'>
       <DashboardSidebar>
-        <main className='ml-60 h-[calc(100svh-3.5rem)] flex-1 overflow-hidden'>
+        <main className='ml-72 h-[calc(100svh-3.5rem)] flex-1 overflow-hidden'>
           <div className='border-sidebar-border bg-background h-full overflow-hidden rounded-l-2xl border'>
             <div className='h-full overflow-y-auto overscroll-contain'>{children}</div>
           </div>
