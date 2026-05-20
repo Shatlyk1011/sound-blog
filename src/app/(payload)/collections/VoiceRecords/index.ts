@@ -1,5 +1,5 @@
-import { S3Client, DeleteObjectCommand } from '@aws-sdk/client-s3'
 import type { CollectionConfig } from 'payload'
+import { deleteR2ObjectFromUrl } from '@/lib/r2'
 import { admins } from '../../utils/admins'
 import { adminsOrWorker } from '../Blogs/hooks'
 
@@ -22,37 +22,13 @@ const VoiceRecords: CollectionConfig = {
             id,
           })
 
-          if (record && record.fileUrl) {
-            const fileUrl = record.fileUrl as string
-            const key = fileUrl.split('/').pop()
-
-            if (key) {
-              const accessKeyId = process.env.R2_ACCESS_KEY_ID
-              const secretAccessKey = process.env.R2_SECRET_ACCESS_KEY
-
-              if (accessKeyId && secretAccessKey) {
-                const s3 = new S3Client({
-                  region: 'auto',
-                  endpoint: process.env.R2_ENDPOINT_URL,
-                  credentials: {
-                    accessKeyId,
-                    secretAccessKey,
-                  },
-                })
-
-                await s3.send(
-                  new DeleteObjectCommand({
-                    Bucket: process.env.R2_VOICE_RECORD_BUCKET,
-                    Key: key,
-                  })
-                )
-              } else {
-                console.error('Missing R2 credentials for deletion')
-              }
-            }
-          }
+          await deleteR2ObjectFromUrl({
+            bucket: process.env.R2_VOICE_RECORD_BUCKET,
+            logPrefix: 'VoiceRecords',
+            url: record?.fileUrl as string | undefined,
+          })
         } catch (err) {
-          console.error('Error deleting file from R2:', err)
+          console.error('[VoiceRecords] Error deleting file from R2:', err)
         }
       },
     ],

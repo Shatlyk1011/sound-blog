@@ -1,5 +1,5 @@
-import { S3Client, DeleteObjectCommand } from '@aws-sdk/client-s3'
 import type { CollectionConfig } from 'payload'
+import { deleteR2ObjectFromUrl } from '@/lib/r2'
 import { adminsAndUserById, adminsAndUserCreate } from './hooks'
 
 const Blogs: CollectionConfig = {
@@ -13,6 +13,25 @@ const Blogs: CollectionConfig = {
   },
 
   hooks: {
+    beforeDelete: [
+      async ({ req, id }) => {
+        try {
+          const blog = await req.payload.findByID({
+            collection: 'blogs',
+            id,
+            depth: 0,
+          })
+
+          await deleteR2ObjectFromUrl({
+            bucket: process.env.R2_VOICE_RECORD_BUCKET,
+            logPrefix: 'Blogs',
+            url: blog?.ttsVoiceUrl as string | undefined,
+          })
+        } catch (err) {
+          console.error('[Blogs] beforeDelete hook error:', err)
+        }
+      },
+    ],
     beforeChange: [
       async ({ data, operation, req }) => {
         if (operation !== 'update') return data
@@ -34,37 +53,11 @@ const Blogs: CollectionConfig = {
           const existingUrl = existing?.ttsVoiceUrl as string | undefined
 
           if (existingUrl) {
-            const publicBase = process.env.R2_PUBLIC_URL
-            const accessKeyId = process.env.R2_ACCESS_KEY_ID
-            const secretAccessKey = process.env.R2_SECRET_ACCESS_KEY
-
-            if (publicBase && accessKeyId && secretAccessKey) {
-              // Derive the R2 object key by stripping the public base URL
-              const key = existingUrl.startsWith(publicBase)
-                ? existingUrl.slice(publicBase.length).replace(/^\//, '')
-                : existingUrl.split('/').slice(-2).join('/')
-
-              try {
-                const s3 = new S3Client({
-                  region: 'auto',
-                  endpoint: process.env.R2_ENDPOINT_URL,
-                  credentials: { accessKeyId, secretAccessKey },
-                })
-
-                await s3.send(
-                  new DeleteObjectCommand({
-                    Bucket: process.env.R2_VOICE_RECORD_BUCKET,
-                    Key: key,
-                  })
-                )
-
-                console.log(`[Blogs] Deleted stale TTS object from R2: ${key}`)
-              } catch (s3Err) {
-                console.error('[Blogs] Failed to delete TTS object from R2:', s3Err)
-              }
-            } else {
-              console.warn('[Blogs] R2 credentials not configured; skipping TTS deletion')
-            }
+            await deleteR2ObjectFromUrl({
+              bucket: process.env.R2_VOICE_RECORD_BUCKET,
+              logPrefix: 'Blogs',
+              url: existingUrl,
+            })
           }
         } catch (err) {
           console.error('[Blogs] beforeChange hook error:', err)
