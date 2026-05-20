@@ -108,7 +108,6 @@ export function ActionBar({
           <DropdownMenuTrigger asChild>
             <Button variant='ghost' className='rounded-full'>
               <HugeiconsIcon icon={Share08Icon} />
-              Share
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align='end' className='w-56'>

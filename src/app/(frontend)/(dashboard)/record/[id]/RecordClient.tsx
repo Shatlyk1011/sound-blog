@@ -120,7 +120,7 @@ export function RecordClient({ recordId }: RecordClientProps) {
                 )}
               </div>
 
-              <h1 className='max-w-3xl text-5xl leading-[115%] font-bold tracking-tight max-lg:text-4xl max-sm:text-3xl'>
+              <h1 className='max-w-4xl text-5xl leading-[115%] font-bold tracking-tight max-lg:text-4xl max-sm:text-3xl'>
                 {blog.title}
               </h1>
 
@@ -161,7 +161,7 @@ export function RecordClient({ recordId }: RecordClientProps) {
                     initial='initial'
                     animate='animate'
                     exit='exit'
-                    className='mx-auto max-w-3xl'
+                    className='mx-auto max-w-4xl'
                     variants={animationVariants}
                     transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1.0] }}
                   >
@@ -228,7 +228,7 @@ export function RecordClient({ recordId }: RecordClientProps) {
       )}
 
       {!isLoading && !blog && !error && (
-        <div className='border-border/70 bg-card mx-auto w-full max-w-3xl rounded-[2rem] border p-10 text-center shadow-sm'>
+        <div className='border-border/70 bg-card mx-auto w-full max-w-4xl rounded-[2rem] border p-10 text-center shadow-sm'>
           <div className='bg-muted mx-auto mb-4 grid size-14 place-items-center rounded-2xl'>
             <HugeiconsIcon icon={BookOpenTextIcon} className='text-muted-foreground size-6' />
           </div>

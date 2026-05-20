@@ -1,5 +1,14 @@
 import type { Access } from 'payload'
 import { checkRole } from '../../utils/checkRole'
+import { isWorkerRequest } from '../../utils/worker'
+
+export const adminsOrWorker: Access = ({ req }) => {
+  if (checkRole(['admin'], req.user) || isWorkerRequest(req)) {
+    return true
+  }
+
+  return false
+}
 
 export const adminsAndUserById: Access = ({ req }) => {
   if (checkRole(['admin'], req.user)) {
@@ -13,7 +22,13 @@ export const adminsAndUserById: Access = ({ req }) => {
   }
 }
 
-export const adminsAndUserCreate: Access = ({ req: { user }, data }) => {
+export const adminsAndUserCreate: Access = ({ req, data }) => {
+  const { user } = req
+
+  if (isWorkerRequest(req)) {
+    return true
+  }
+
   if (user) {
     if (checkRole(['admin'], user)) {
       return true
