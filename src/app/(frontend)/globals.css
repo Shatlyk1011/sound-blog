@@ -221,6 +221,26 @@
   }
 }
 
+.sound-blog-md-editor {
+  --md-editor-font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
+}
+
+.sound-blog-md-editor .w-md-editor-text,
+.sound-blog-md-editor .w-md-editor-text-input,
+.sound-blog-md-editor .w-md-editor-text-pre,
+.sound-blog-md-editor .w-md-editor-text-pre > code {
+  font-family: var(--md-editor-font-family) !important;
+  font-size: 15px !important;
+  line-height: 24px !important;
+  letter-spacing: 0 !important;
+  font-variant-ligatures: none !important;
+  tab-size: 2 !important;
+}
+
+.sound-blog-md-editor .w-md-editor-text-input {
+  caret-color: var(--foreground);
+}
+
 /* Enhanced Prose Styling */
 .prose {
   font-feature-settings:

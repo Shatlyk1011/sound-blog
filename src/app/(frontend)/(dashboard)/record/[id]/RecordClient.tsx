@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { Blog, Transcript, VoiceRecord } from '@/payload-types'
 import { useBlogQuery, useUpdateBlogMutation } from '@/services/blogs'
-import { ArrowLeft01Icon, BookOpenTextIcon, FileAudioIcon, SparklesIcon } from '@hugeicons/core-free-icons'
+import { ArrowLeft01Icon, BookOpenTextIcon, FileAudioIcon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { AnimatePresence, motion } from 'motion/react'
 import { useTheme } from 'next-themes'
@@ -21,7 +21,7 @@ import BlogMetadata from './ui/BlogMetadata'
 import TabSwitcher from './ui/TabSwitch'
 import TextReader from './ui/TextReader'
 
-const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false })
+const MDEditor = dynamic(() => import('@uiw/react-md-editor/nohighlight'), { ssr: false })
 
 interface RecordClientProps {
   recordId: string
@@ -172,7 +172,7 @@ export function RecordClient({ recordId }: RecordClientProps) {
                           preview='edit'
                           commands={[]}
                           height={620}
-                          className='w-full'
+                          className='sound-blog-md-editor w-full'
                         />
                       </div>
                     ) : (
