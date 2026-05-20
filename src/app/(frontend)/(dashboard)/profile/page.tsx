@@ -2,7 +2,7 @@
 
 import { CreditHistory } from '@/payload-types'
 import { useUserCreditsQuery } from '@/services/user-credits'
-import { Calendar03Icon, CreditCardIcon, Crown03Icon } from '@hugeicons/core-free-icons'
+import { CreditCardIcon, Crown03Icon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
@@ -24,7 +24,7 @@ export const formatDate = (dateString: string) => {
 export const dynamic = 'force-dynamic'
 
 export default function ProfilePage() {
-  const { user: SBUser, isLoading: isSBLoading } = useUser()
+  const { user: SBUser } = useUser()
 
   const { data: userData, isLoading, isError } = useUserCreditsQuery(SBUser?.id)
 
@@ -44,7 +44,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <main className='mx-auto mb-16 w-full max-w-6xl px-8 pt-24 max-lg:px-6 max-sm:px-4'>
+    <div className='mx-auto w-full max-w-6xl px-8 pt-24 pb-16 max-lg:px-6 max-sm:px-4'>
       {/* Header */}
       <div className='mb-8'>
         <h1 className='mb-2 text-4xl font-bold'>Profile</h1>
@@ -218,6 +218,6 @@ export default function ProfilePage() {
           </Table>
         </div>
       </div>
-    </main>
+    </div>
   )
 }

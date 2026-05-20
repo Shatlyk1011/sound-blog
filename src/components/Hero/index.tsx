@@ -192,7 +192,7 @@ export function WaveformVisual() {
       className='relative mx-auto w-full max-w-md'
     >
       {/* Background Glow */}
-      <div className='from-chart-2 to-chart-3 absolute -inset-1 hidden rounded-2xl bg-linear-to-b opacity-20 blur-xl dark:block' />
+      <div className='to-muted from-chart-1/50 absolute -inset-1 hidden rounded-2xl bg-linear-to-br opacity-20 blur-xl dark:block' />
 
       {/* Main Card */}
       <div className='bg-card border-border relative overflow-hidden rounded-3xl border px-7 py-6'>
