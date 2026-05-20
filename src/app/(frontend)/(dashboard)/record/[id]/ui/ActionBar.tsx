@@ -1,8 +1,28 @@
+'use client'
+
 import { ReactNode } from 'react'
-import { CopyIcon, Loading03Icon, PencilEdit02Icon } from '@hugeicons/core-free-icons'
+import {
+  CopyIcon,
+  CopyLinkIcon,
+  Facebook01Icon,
+  Linkedin01Icon,
+  Loading03Icon,
+  PencilEdit02Icon,
+  Share08Icon,
+  TwitterIcon,
+} from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
+import { toast } from 'sonner'
+import { copyToClipboard } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 
 interface Props {
   handleCopy: () => void
@@ -11,8 +31,17 @@ interface Props {
   onEditClick: () => void
   onSaveClick: () => void
   onCancelClick: () => void
+  postTitle: string
   textReaderSlot?: ReactNode
 }
+
+type SharePlatform = 'twitter' | 'linkedin' | 'facebook'
+
+const SHARE_ITEMS = [
+  { platform: 'twitter', label: 'Share on X', icon: TwitterIcon },
+  { platform: 'linkedin', label: 'Share on LinkedIn', icon: Linkedin01Icon },
+  { platform: 'facebook', label: 'Share on Facebook', icon: Facebook01Icon },
+] as const
 
 export function ActionBar({
   handleCopy,
@@ -21,8 +50,32 @@ export function ActionBar({
   onEditClick,
   onSaveClick,
   onCancelClick,
+  postTitle,
   textReaderSlot,
 }: Props) {
+  const getShareUrl = (platform: SharePlatform) => {
+    const currentUrl = window.location.href
+    const encodedUrl = encodeURIComponent(currentUrl)
+    const encodedTitle = encodeURIComponent(postTitle)
+
+    const shareUrls: Record<SharePlatform, string> = {
+      twitter: `https://x.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`,
+      linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}&title=${encodedTitle}`,
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&quote=${encodedTitle}`,
+    }
+
+    return shareUrls[platform]
+  }
+
+  const handleShare = (platform: SharePlatform) => {
+    window.open(getShareUrl(platform), '_blank', 'noopener,noreferrer,width=600,height=400')
+  }
+
+  const handleCopyLink = async () => {
+    await copyToClipboard(window.location.href)
+    toast.success('Article link copied', { position: 'top-center' })
+  }
+
   return (
     <div className='mb-3 flex min-h-12 flex-wrap items-center gap-2'>
       <div className='flex flex-wrap items-center gap-2'>
@@ -51,16 +104,33 @@ export function ActionBar({
       </div>
 
       <div className='ml-auto flex justify-end'>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button variant='ghost' size='icon' className='rounded-full' onClick={handleCopy}>
-              <HugeiconsIcon icon={CopyIcon} />
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant='ghost' className='rounded-full'>
+              <HugeiconsIcon icon={Share08Icon} />
+              Share
             </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Copy article markdown</p>
-          </TooltipContent>
-        </Tooltip>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align='end' className='w-56'>
+            <DropdownMenuLabel>Export article</DropdownMenuLabel>
+            <DropdownMenuItem onClick={handleCopy}>
+              <HugeiconsIcon icon={CopyIcon} />
+              Copy MDX
+            </DropdownMenuItem>
+            {/* <DropdownMenuItem onClick={handleCopyLink}>
+              <HugeiconsIcon icon={CopyLinkIcon} />
+              Copy link
+            </DropdownMenuItem> */}
+            <DropdownMenuSeparator />
+            <DropdownMenuLabel>Share on social</DropdownMenuLabel>
+            {SHARE_ITEMS.map(({ platform, label, icon }) => (
+              <DropdownMenuItem key={platform} onClick={() => handleShare(platform)}>
+                <HugeiconsIcon icon={icon} />
+                {label}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   )

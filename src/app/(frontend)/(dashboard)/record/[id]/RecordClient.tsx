@@ -138,6 +138,7 @@ export function RecordClient({ recordId }: RecordClientProps) {
                 onEditClick={onEditClick}
                 onSaveClick={handleSave}
                 onCancelClick={onCancelClick}
+                postTitle={blog.title}
                 textReaderSlot={
                   !isEditing && (
                     <TextReader
