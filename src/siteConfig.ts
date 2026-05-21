@@ -8,8 +8,7 @@ export const siteConfig = {
   githubRepo: 'https://github.com/shatlyk1011/sound-blog',
   siteUrl: 'https://sound-blog.com',
   previewDeploymentUrl: 'https://sound-blog.vercel.app',
-  // TODO: Replace with the final 1200x630 social sharing image when ready.
-  ogImage: 'https://sound-blog.com/preview.jpg',
+  ogImage: 'https://sound-blog.com/og-image.jpg',
   linkedin: 'https://linkedin.com/in/shatlyk1011',
   // TODO: Add a real support email when available.
   supportEmail: '',
