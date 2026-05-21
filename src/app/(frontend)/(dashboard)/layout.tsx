@@ -4,10 +4,13 @@ import { DashboardSidebar } from '@/components/layout/DashboardSidebar'
 export const metadata: Metadata = {
   title: {
     template: '%s | Sound Blog',
-    default: 'Sound Blog',
+    default: 'Dashboard',
+  },
+  robots: {
+    index: false,
+    follow: false,
   },
 }
-
 export default function DashboardLayout({
   children,
 }: Readonly<{

@@ -1,8 +1,46 @@
 export const siteConfig = {
   name: 'Sound Blog',
-  description: `Generate your blogs using your voice`,
+  description:
+    'Sound Blog helps creators, founders, writers, marketers, students, and teams in the USA and Europe turn voice recordings into polished, publish-ready blog posts with AI transcription, rewriting, editing, and text-to-speech playback.',
+  shortDescription: 'Turn voice notes into polished blog posts with AI.',
+  productName: 'Sound Blog',
+  tagline: 'Speak your ideas. Publish polished blog posts.',
   githubRepo: 'https://github.com/shatlyk1011/sound-blog',
-  siteUrl: 'https://sound-blog.vercel.app',
-  ogImage: 'https://sound-blog.vercel.app/opengraph-image.png',
+  siteUrl: 'https://sound-blog.com',
+  previewDeploymentUrl: 'https://sound-blog.vercel.app',
+  // TODO: Replace with the final 1200x630 social sharing image when ready.
+  ogImage: 'https://sound-blog.com/preview.jpg',
   linkedin: 'https://linkedin.com/in/shatlyk1011',
+  // TODO: Add a real support email when available.
+  supportEmail: '',
+  // TODO: Add Google Search Console verification token when available.
+  googleSiteVerification: '',
+  targetRegions: ['United States', 'Europe'],
+  targetLanguage: 'en',
+  author: {
+    name: 'Shatlyk Abdullayev',
+    url: 'https://shatlykabdullayev.com',
+  },
+  keywords: [
+    'AI blog generator',
+    'voice to blog',
+    'voice notes to blog posts',
+    'AI voice to blog generator',
+    'audio to blog post',
+    'audio transcription app',
+    'AI writing assistant',
+    'speech to text blog generator',
+    'content creation tool',
+    'blog writing software',
+    'transcribe audio to article',
+    'text to speech blog reader',
+    'AI content creation for creators',
+    'AI writing tool for founders',
+    'voice note transcription for writers',
+  ],
+  links: {
+    pricing: '/pricing',
+    signIn: '/sign-in',
+    signUp: '/sign-up',
+  },
 }

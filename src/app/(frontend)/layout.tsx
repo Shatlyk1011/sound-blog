@@ -1,7 +1,7 @@
 // For adding custom fonts with other frameworks, see:
 // https://tailwindcss.com/docs/font-family
 import { siteConfig } from '@/siteConfig'
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { ThemeProvider } from 'next-themes'
 import { Poppins, Lora } from 'next/font/google'
 import { Toaster } from 'sonner'
@@ -25,15 +25,55 @@ const lora = Lora({
   display: 'swap',
 })
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#000000' },
+  ],
+}
+
 export const metadata: Metadata = {
-  title: siteConfig.name,
-  description: siteConfig.description,
   metadataBase: new URL(siteConfig.siteUrl),
-  robots: 'index follow',
-  authors: [{ name: 'Shatlyk Abdullayev', url: 'https://shatlykabdullayev.com' }],
-  creator: 'Shatlyk Abdullayev',
+  applicationName: siteConfig.name,
+  title: {
+    default: `${siteConfig.tagline} | ${siteConfig.name}`,
+    template: `%s | ${siteConfig.name}`,
+  },
+  description: siteConfig.description,
+  keywords: siteConfig.keywords,
+  authors: [siteConfig.author],
+  creator: siteConfig.author.name,
+  publisher: siteConfig.name,
+  generator: 'Next.js',
+  category: 'technology',
+  classification: 'AI writing software, voice transcription, content creation',
+  referrer: 'origin-when-cross-origin',
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+      'max-video-preview': -1,
+    },
+  },
+  alternates: {
+    canonical: '/',
+    languages: {
+      'en-US': '/',
+    },
+    types: {
+      'text/plain': [{ url: '/llms.txt', title: 'LLMs.txt' }],
+    },
+  },
   openGraph: {
-    title: siteConfig.name,
+    type: 'website',
+    locale: 'en_US',
+    title: `${siteConfig.tagline} | ${siteConfig.name}`,
     description: siteConfig.description,
     url: siteConfig.siteUrl,
     siteName: siteConfig.name,
@@ -42,26 +82,42 @@ export const metadata: Metadata = {
         url: siteConfig.ogImage,
         width: 1200,
         height: 630,
-        alt: siteConfig.name,
+        alt: `${siteConfig.name} - AI voice to blog generator`,
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: siteConfig.name,
+    title: `${siteConfig.tagline} | ${siteConfig.name}`,
     description: siteConfig.description,
-  },
-
-  alternates: {
-    types: {
-      'application/rss+xml': [{ url: `${siteConfig.siteUrl}/rss.xml`, title: 'RSS Feed - English' }],
-    },
+    images: [siteConfig.ogImage],
+    creator: '@shatlyk1011',
   },
   icons: {
-    icon: [{ url: '/icon.png' }],
-    apple: [{ url: '/android-chrome-192x192.png', sizes: '192x192' }],
+    icon: [{ url: '/favicon.ico' }, { url: '/icon.png', type: 'image/png' }],
+    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180' }],
   },
   manifest: '/site.webmanifest',
+  appleWebApp: {
+    capable: true,
+    title: siteConfig.name,
+    statusBarStyle: 'default',
+  },
+  verification: {
+    google: siteConfig.googleSiteVerification || undefined,
+  },
+  other: {
+    'geo.region': 'US;EU',
+    'geo.placename': 'United States and Europe',
+    audience: 'creators, founders, writers, marketers, students, teams',
+    'target-region': siteConfig.targetRegions.join(', '),
+    'target-language': siteConfig.targetLanguage,
+  },
+  formatDetection: {
+    telephone: false,
+    address: false,
+    email: false,
+  },
 }
 
 export default function RootLayout({

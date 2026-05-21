@@ -1,9 +1,19 @@
+import { siteConfig } from '@/siteConfig'
 import type { Metadata } from 'next'
 import PricingSection from '@/components/PricingSection'
 
 export const metadata: Metadata = {
   title: 'Pricing',
-  description: ' siteConfig.description',
+  description: 'Choose a Sound Blog plan for turning voice recordings into AI-generated blog posts.',
+  alternates: {
+    canonical: '/pricing',
+  },
+  openGraph: {
+    title: `Pricing | ${siteConfig.name}`,
+    description: 'Compare Sound Blog Free, Hobby, and Pro plans for AI voice-to-blog generation.',
+    url: '/pricing',
+    images: [{ url: siteConfig.ogImage, width: 1200, height: 630, alt: `${siteConfig.name} pricing` }],
+  },
 }
 
 export default function PricingPage() {

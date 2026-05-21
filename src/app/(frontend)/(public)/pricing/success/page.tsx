@@ -2,10 +2,13 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Subscription Confirmed | Sound Blog',
+  title: 'Subscription Confirmed',
   description: 'Your subscription has been confirmed. Welcome to Sound Blog!',
+  robots: {
+    index: false,
+    follow: false,
+  },
 }
-
 export default function PricingSuccessPage() {
   return (
     <main className='mx-auto mb-16 flex min-h-[60vh] w-full max-w-7xl flex-col items-center justify-center gap-6 px-8 pt-30 text-center max-sm:px-4 max-sm:pt-16'>

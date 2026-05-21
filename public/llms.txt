@@ -1,0 +1,44 @@
+# Sound Blog
+
+> Sound Blog turns voice recordings into polished, publish-ready blog posts with AI transcription, rewriting, editing, and text-to-speech playback.
+
+Sound Blog is a web application for creators, founders, writers, marketers, students, and teams in the USA and Europe who prefer speaking their ideas before publishing them as written content.
+
+## Core Capabilities
+
+- Record audio in the browser or upload an audio file.
+- Validate user access and available credits before processing.
+- Transcribe voice recordings into text.
+- Generate structured blog posts from transcripts.
+- Let users choose tone, target length, structure, and content enhancements.
+- Edit generated Markdown blog drafts.
+- Generate text-to-speech playback for completed blog posts.
+
+## Public Pages
+
+- [Home](https://sound-blog.com/): Product overview and demo.
+- [Pricing](https://sound-blog.com/pricing): Free, Hobby, and Pro plans.
+
+## Product Positioning
+
+Sound Blog is best described as an AI voice-to-blog generator, AI writing assistant, audio transcription workflow, and content creation tool for turning spoken thoughts into publishable articles.
+
+## Ownership
+
+Created by Shatlyk Abdullayev.
+
+- Website: https://sound-blog.com
+- GitHub: https://github.com/shatlyk1011/sound-blog
+- Creator: https://shatlykabdullayev.com
+
+## Contact Placeholder
+
+Support email is not public yet. Add it to `siteConfig.supportEmail` when available.
+
+## Search Console Placeholder
+
+Google Search Console verification is prepared in `siteConfig.googleSiteVerification`.
+
+## Social Image Placeholder
+
+The final social preview image should be a 1200x630 image and can be configured in `siteConfig.ogImage`.
