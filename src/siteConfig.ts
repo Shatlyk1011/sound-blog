@@ -4,4 +4,5 @@ export const siteConfig = {
   githubRepo: 'https://github.com/shatlyk1011/sound-blog',
   siteUrl: 'https://sound-blog.vercel.app',
   ogImage: 'https://sound-blog.vercel.app/opengraph-image.png',
+  linkedin: 'https://linkedin.com/in/shatlyk1011',
 }

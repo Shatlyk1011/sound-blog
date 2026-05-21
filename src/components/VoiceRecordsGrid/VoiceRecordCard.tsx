@@ -110,7 +110,7 @@ const VoiceRecordCard: FC<Props> = ({ record }) => {
           </div>
           <Link href={`/record/${record.id}`}>
             <h3 className='hover:text-primary mb-1 line-clamp-2 text-lg font-semibold transition-colors'>
-              {record.fileName}
+              {record.title || record.fileName}
             </h3>
           </Link>
         </div>

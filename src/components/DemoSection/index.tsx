@@ -16,38 +16,60 @@ const DEMO_RECORD: VoiceRecord = {
 
 const DemoSection = () => {
   return (
-    <section className='text-card-foreground mx-auto w-full max-w-7xl rounded-4xl px-4 pt-16 sm:px-10' id='demo'>
-      <div className='mb-16 flex flex-col items-center'>
-        <h2 className='mb-4 font-sans text-4xl font-extrabold tracking-tight sm:text-5xl'>Demo Sound Blog</h2>
-        <p className='text-muted-foreground max-w-2xl text-center text-lg'>
-          Here is how your voice recordings will appear.
+    <section
+      className='text-card-foreground relative mx-auto w-full max-w-7xl overflow-hidden rounded-[2rem] px-4 pt-16 sm:px-10'
+      id='demo'
+    >
+      <div className='mb-12 flex flex-col items-center text-center'>
+        <span className='border-border bg-background/80 text-muted-foreground mb-4 inline-flex rounded-full border px-4 py-1.5 text-xs font-semibold tracking-[0.18em] uppercase shadow-sm backdrop-blur'>
+          Listen, polish, publish
+        </span>
+        <h2 className='mb-4 max-w-3xl font-serif text-4xl leading-tight font-extrabold tracking-tight sm:text-6xl'>
+          Demo Sound Blog
+        </h2>
+        <p className='text-muted-foreground max-w-2xl text-lg leading-8'>
+          A quick look at how your raw voice note becomes an organized, playable, ready-to-edit blog draft.
         </p>
       </div>
 
-      <div className='flex flex-col items-center justify-center gap-12 lg:flex-row lg:gap-24'>
-        <div className='relative w-full max-w-md max-lg:order-2'>
-          <div className='bg-primary/10 absolute -inset-4 -z-10 rounded-[2.5rem] blur-xl'></div>
-          <div className='bg-background border-border relative z-10 rounded-3xl border p-2 shadow-xl'>
+      <div className='border-border/70 bg-card/80 relative grid items-center gap-10 overflow-hidden rounded-[2rem] border p-4 sm:p-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16'>
+        <div className='relative w-full max-w-md justify-self-center max-lg:order-2'>
+          <div className='border-border bg-background/95 relative z-10 rounded-3xl border p-2'>
             <VoiceRecordCard record={DEMO_RECORD} />
           </div>
         </div>
 
-        <div className='relative flex max-w-sm flex-col items-center lg:items-start'>
-          {/* Arrow pointing Left (for Desktop) */}
+        <div className='relative flex flex-col items-center lg:items-start'>
           <div className='text-primary absolute top-1/2 -left-20 -translate-y-1/2 max-lg:hidden'>
             <HugeiconsIcon size={64} icon={ArrowLeft02Icon} />
           </div>
 
-          <div className='space-y-5 text-center lg:text-left'>
-            <span className='bg-primary/10 text-primary inline-flex items-center justify-center rounded-full px-3 py-1 text-sm font-medium'>
+          <div className='space-y-6 text-center lg:text-left'>
+            <span className='bg-primary text-primary-foreground inline-flex items-center justify-center rounded-full px-4 py-1.5 text-sm font-semibold shadow-md'>
               Interactive Demo
             </span>
-            <h3 className='text-3xl font-bold tracking-tight'>Your Voice Record</h3>
-            <p className='text-muted-foreground text-lg leading-relaxed'>
-              Every recording you make will be displayed with its <strong>title</strong>, <strong>status</strong>, a
-              built-in <strong>Audio Player</strong>.
+            <div className='space-y-3'>
+              <h3 className='text-3xl font-bold tracking-tight sm:text-4xl'>
+                Your voice record gets a beautiful home.
+              </h3>
+              <p className='text-muted-foreground text-lg leading-relaxed'>
+                Every recording is displayed with its <strong>title</strong>, <strong>status</strong>, and built-in{' '}
+                <strong>audio player</strong>, so your ideas stay easy to review.
+              </p>
+            </div>
+            <div className='grid gap-3 sm:grid-cols-3'>
+              {['Record', 'Generate', 'Refine'].map((step, index) => (
+                <div key={step} className='border-border bg-background/80 rounded-2xl border p-4 shadow-sm'>
+                  <p className='text-muted-foreground text-xs font-semibold tracking-[0.16em] uppercase'>
+                    0{index + 1}
+                  </p>
+                  <p className='mt-1 font-bold'>{step}</p>
+                </div>
+              ))}
+            </div>
+            <p className='text-muted-foreground/80 text-base leading-relaxed'>
+              Click the demo card to see the details view.
             </p>
-            <p className='text-muted-foreground/80 text-base leading-relaxed'>Click it to see details </p>
           </div>
         </div>
       </div>
