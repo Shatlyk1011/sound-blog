@@ -1,4 +1,2 @@
 - update hero section
-- add config filters in blog page?
-
-enhance
+- add video generation with slides

@@ -13,8 +13,7 @@ export const siteConfig = {
   linkedin: 'https://linkedin.com/in/shatlyk1011',
   // TODO: Add a real support email when available.
   supportEmail: '',
-  // TODO: Add Google Search Console verification token when available.
-  googleSiteVerification: '',
+  googleSiteVerification: 'JLeutbOC5NpUadhrkG4NUWg9gF3BSIokRQqQceimdGk',
   targetRegions: ['United States', 'Europe'],
   targetLanguage: 'en',
   author: {
