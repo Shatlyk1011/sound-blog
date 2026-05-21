@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
     if (!ALLOWED_AUDIO_TYPES.has(file.type)) {
       return NextResponse.json({ error: 'Unsupported audio file type' }, { status: 415 })
     }
-
+    console.log('file.size', file.size, file.size > MAX_AUDIO_FILE_SIZE_BYTES)
     if (file.size > MAX_AUDIO_FILE_SIZE_BYTES) {
       return NextResponse.json({ error: 'Audio file is too large' }, { status: 413 })
     }
