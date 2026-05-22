@@ -1,31 +1,36 @@
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
+import { HeadObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import configPromise from '@payload-config'
 import { NextRequest, NextResponse } from 'next/server'
 import { randomUUID } from 'node:crypto'
 import { getPayload } from 'payload'
+import { deleteR2ObjectFromUrl } from '@/lib/r2'
 import { createClient } from '@/lib/supabase-server'
+import {
+  ALLOWED_AUDIO_TYPES,
+  buildR2PublicUrl,
+  getR2VoiceConfig,
+  MAX_AUDIO_DURATION_SECONDS,
+  MAX_AUDIO_FILE_SIZE_BYTES,
+  sanitizeAudioTitle,
+  trimSlashes,
+} from './_shared'
 
-const MAX_AUDIO_FILE_SIZE_BYTES = 25 * 1024 * 1024
-const MAX_AUDIO_DURATION_SECONDS = 60 * 60
-const ALLOWED_AUDIO_TYPES = new Set([
-  'audio/aac',
-  'audio/flac',
-  'audio/m4a',
-  'audio/mp4',
-  'audio/mpeg',
-  'audio/ogg',
-  'audio/wav',
-  'audio/webm',
-  'audio/x-m4a',
-  'audio/x-wav',
-])
-
-const extensionFromFileName = (fileName: string) => {
-  const extension = fileName.toLowerCase().match(/\.([a-z0-9]+)$/)?.[1]
-  return extension ? `.${extension}` : '.webm'
+type ProcessVoiceRecordBody = {
+  contentType?: unknown
+  duration?: unknown
+  fileName?: unknown
+  fileUrl?: unknown
+  filters?: unknown
+  key?: unknown
+  size?: unknown
 }
 
+const toNumber = (value: unknown) =>
+  typeof value === 'number' ? value : typeof value === 'string' ? parseFloat(value) : NaN
+
 export async function POST(req: NextRequest) {
+  let uploadedFileUrl: string | null = null
+
   try {
     // 1. Authenticate with Supabase
     const supabase = await createClient()
@@ -38,29 +43,71 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    // 2. Parse form data
-    const formData = await req.formData()
-    const file = formData.get('file') as File | null
+    // 2. Parse R2 upload metadata. The file has already been uploaded directly from the browser to R2.
+    const body = (await req.json()) as ProcessVoiceRecordBody
+    const fileUrl = typeof body.fileUrl === 'string' ? body.fileUrl : ''
+    const key = typeof body.key === 'string' ? trimSlashes(body.key) : ''
+    const fileName = typeof body.fileName === 'string' ? body.fileName : ''
+    const contentType = typeof body.contentType === 'string' ? body.contentType : ''
+    const size = toNumber(body.size)
+    const duration = Math.ceil(toNumber(body.duration))
+    const filters = typeof body.filters === 'string' ? body.filters : JSON.stringify(body.filters ?? [])
 
-    const durationStr = formData.get('duration') as string | null
-    const duration = durationStr ? Math.ceil(parseFloat(durationStr)) : 0
-
-    const filtersStr = formData.get('filters')
-
-    if (!file) {
-      return NextResponse.json({ error: 'No file provided' }, { status: 400 })
+    if (!fileUrl || !key || !fileName || !contentType || !Number.isFinite(size) || size <= 0) {
+      return NextResponse.json({ error: 'Missing uploaded audio metadata' }, { status: 400 })
     }
 
-    if (!ALLOWED_AUDIO_TYPES.has(file.type)) {
+    uploadedFileUrl = fileUrl
+
+    if (!key.startsWith(`voice-records/${supabaseUser.id}/`)) {
+      return NextResponse.json({ error: 'Invalid uploaded audio key' }, { status: 400 })
+    }
+
+    if (!ALLOWED_AUDIO_TYPES.has(contentType)) {
       return NextResponse.json({ error: 'Unsupported audio file type' }, { status: 415 })
     }
-    console.log('file.size', file.size, file.size > MAX_AUDIO_FILE_SIZE_BYTES)
-    if (file.size > MAX_AUDIO_FILE_SIZE_BYTES) {
+
+    if (size > MAX_AUDIO_FILE_SIZE_BYTES) {
       return NextResponse.json({ error: 'Audio file is too large' }, { status: 413 })
     }
 
     if (!Number.isFinite(duration) || duration <= 0 || duration > MAX_AUDIO_DURATION_SECONDS) {
       return NextResponse.json({ error: 'Invalid audio duration' }, { status: 400 })
+    }
+
+    const r2Config = getR2VoiceConfig()
+
+    if (!r2Config) {
+      console.error('Missing R2 environment variables')
+      return NextResponse.json({ error: 'Server configuration error' }, { status: 500 })
+    }
+
+    if (fileUrl !== buildR2PublicUrl(r2Config.publicUrl, key)) {
+      return NextResponse.json({ error: 'Uploaded audio URL does not match storage configuration' }, { status: 400 })
+    }
+
+    const s3 = new S3Client({
+      region: 'auto',
+      endpoint: r2Config.endpoint,
+      credentials: {
+        accessKeyId: r2Config.accessKeyId,
+        secretAccessKey: r2Config.secretAccessKey,
+      },
+    })
+
+    const uploadedObject = await s3.send(
+      new HeadObjectCommand({
+        Bucket: r2Config.voiceBucket,
+        Key: key,
+      })
+    )
+
+    if (uploadedObject.ContentType && uploadedObject.ContentType !== contentType) {
+      return NextResponse.json({ error: 'Uploaded audio content type mismatch' }, { status: 400 })
+    }
+
+    if (typeof uploadedObject.ContentLength === 'number' && uploadedObject.ContentLength !== size) {
+      return NextResponse.json({ error: 'Uploaded audio size mismatch' }, { status: 400 })
     }
 
     // 3. Find corresponding Payload user
@@ -76,13 +123,19 @@ export async function POST(req: NextRequest) {
     })
 
     if (users.length === 0) {
+      await deleteR2ObjectFromUrl({
+        bucket: r2Config.voiceBucket,
+        logPrefix: 'VoiceRecordProcess',
+        url: uploadedFileUrl,
+      })
+
       return NextResponse.json({ error: 'User profile not found in database' }, { status: 404 })
     }
+
     const payloadUser = users[0]
     const payloadDocId = payloadUser.id as string
 
     // 4. Validate credits
-    // Sum all active (non-expired) credit grants for this user
     const now = new Date()
     const { docs: creditDocs } = await payload.find({
       collection: 'credit-history',
@@ -104,6 +157,12 @@ export async function POST(req: NextRequest) {
     const availableCredits = totalCredits - creditsSpent
 
     if (duration > availableCredits) {
+      await deleteR2ObjectFromUrl({
+        bucket: r2Config.voiceBucket,
+        logPrefix: 'VoiceRecordProcess',
+        url: uploadedFileUrl,
+      })
+
       return NextResponse.json(
         {
           error: 'Insufficient credits',
@@ -114,61 +173,23 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // 5. Upload to Cloudflare R2
-    const accessKeyId = process.env.R2_ACCESS_KEY_ID
-    const secretAccessKey = process.env.R2_SECRET_ACCESS_KEY
-    const endpoint = process.env.R2_ENDPOINT_URL
-    const publicUrl = process.env.R2_PUBLIC_URL
-    const voiceBucket = process.env.R2_VOICE_RECORD_BUCKET
-
-    if (!accessKeyId || !secretAccessKey || !endpoint || !publicUrl || !voiceBucket) {
-      console.error('Missing R2 environment variables')
-      return NextResponse.json({ error: 'Server configuration error' }, { status: 500 })
-    }
-
-    const s3 = new S3Client({
-      region: 'auto',
-      endpoint,
-      credentials: {
-        accessKeyId,
-        secretAccessKey,
-      },
-    })
-
-    const buffer = Buffer.from(await file.arrayBuffer())
-    const uniqueFileName = `voice-records/${randomUUID()}${extensionFromFileName(file.name)}`
-
-    await s3.send(
-      new PutObjectCommand({
-        Bucket: voiceBucket,
-        Key: uniqueFileName,
-        Body: buffer,
-        ContentType: file.type,
-      })
-    )
-
-    const fileUrl = `${publicUrl}/${uniqueFileName}`
-
-    const audioTitle = file.name
-      .replace(/\.[^/.]+$/, '')
-      .replace(/[^\w-]+/g, '_')
-      .slice(0, 80)
+    const audioTitle = sanitizeAudioTitle(fileName)
     const customRecordId = `${audioTitle || 'recording'}-${randomUUID()}`
 
-    // 6. Create VoiceRecord in Payload CMS
+    // 5. Create VoiceRecord in Payload CMS
     const newRecord = await payload.create({
       collection: 'voice-records',
       data: {
         id: customRecordId,
         fileUrl,
-        fileName: file.name,
-        userId: payloadDocId, // Payload document ID
+        fileName,
+        userId: payloadDocId,
         duration,
         status: 'uploaded',
       },
     })
 
-    // 7 Send request to worker
+    // 6. Send request to worker
     const workerUrl = process.env.WORKER_URL
     if (workerUrl) {
       try {
@@ -180,17 +201,16 @@ export async function POST(req: NextRequest) {
           body: JSON.stringify({
             userId: payloadDocId,
             recordId: customRecordId,
-            key: uniqueFileName,
-            fileName: file.name,
-            contentType: file.type,
-            size: file.size,
-            filters: filtersStr,
+            key,
+            fileName,
+            contentType,
+            size,
+            filters,
           }),
         })
 
         if (!workerResponse.ok) {
           console.error('Failed to notify worker:', await workerResponse.text())
-          // We can choose to fail the request or just log it. We'll proceed with creating the record for now.
         }
       } catch (workerErr) {
         console.error('Error notifying worker:', workerErr)
@@ -199,7 +219,7 @@ export async function POST(req: NextRequest) {
       console.warn('Missing WORKER_URL environment variable')
     }
 
-    // 8. Deduct credits — update creditsSpent on the User document
+    // 7. Deduct credits after the record exists and the worker has been notified
     await payload.update({
       collection: 'users',
       id: payloadDocId,
@@ -217,7 +237,7 @@ export async function POST(req: NextRequest) {
       },
     })
   } catch (err: unknown) {
-    console.error('Error uploading voice record:', err)
+    console.error('Error processing uploaded voice record:', err)
     const message = err instanceof Error ? err.message : 'Internal server error'
     return NextResponse.json({ error: message }, { status: 500 })
   }

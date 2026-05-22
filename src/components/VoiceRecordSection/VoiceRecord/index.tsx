@@ -85,21 +85,56 @@ export default function VoiceRecord() {
         type: blob.type || 'audio/webm',
       })
 
-      const formData = new FormData()
-      formData.append('file', file)
-      formData.append('duration', totalDuration.toString())
-      formData.append('filters', JSON.stringify(selectedFilters))
-
-      const uploadRes = await fetch('/api/upload-voice-record', {
+      const uploadRes = await fetch('/api/upload-voice-record/presign', {
         method: 'POST',
-        body: formData,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          fileName: file.name,
+          contentType: file.type,
+          size: file.size,
+        }),
         signal: abortController.signal,
       })
 
-      const result = await uploadRes.json()
+      const uploadResult = await uploadRes.json()
 
       if (!uploadRes.ok) {
-        throw new Error(result.error || 'Failed to upload audio')
+        throw new Error(uploadResult.error || 'Failed to prepare audio upload')
+      }
+
+      const r2UploadRes = await fetch(uploadResult.file.uploadUrl, {
+        method: 'PUT',
+        body: file,
+        signal: abortController.signal,
+      })
+
+      if (!r2UploadRes.ok) {
+        throw new Error('Failed to upload audio to storage')
+      }
+
+      const processRes = await fetch('/api/upload-voice-record', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          fileUrl: uploadResult.file.url,
+          key: uploadResult.file.key,
+          fileName: uploadResult.file.fileName,
+          contentType: uploadResult.file.contentType,
+          size: uploadResult.file.size,
+          duration: totalDuration,
+          filters: selectedFilters,
+        }),
+        signal: abortController.signal,
+      })
+
+      const result = await processRes.json()
+
+      if (!processRes.ok) {
+        throw new Error(result.error || 'Failed to process audio')
       }
 
       toast.success('Your recording started processing', {
