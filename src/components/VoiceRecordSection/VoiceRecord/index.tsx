@@ -106,6 +106,9 @@ export default function VoiceRecord() {
 
       const r2UploadRes = await fetch(uploadResult.file.uploadUrl, {
         method: 'PUT',
+        headers: {
+          'Content-Type': uploadResult.contentType,
+        },
         body: file,
         signal: abortController.signal,
       })
