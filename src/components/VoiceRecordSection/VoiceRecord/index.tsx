@@ -103,11 +103,11 @@ export default function VoiceRecord() {
       if (!uploadRes.ok) {
         throw new Error(uploadResult.error || 'Failed to prepare audio upload')
       }
-
+      console.log('uploadResult', uploadResult)
       const r2UploadRes = await fetch(uploadResult.file.uploadUrl, {
         method: 'PUT',
         headers: {
-          'Content-Type': uploadResult.contentType,
+          'Content-Type': uploadResult.file.contentType,
         },
         body: file,
         signal: abortController.signal,
