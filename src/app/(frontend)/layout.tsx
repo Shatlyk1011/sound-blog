@@ -1,11 +1,11 @@
-// For adding custom fonts with other frameworks, see:
-// https://tailwindcss.com/docs/font-family
+import { Providers as PostHogProvider } from '@/app/_providers/post-hog'
 import { siteConfig } from '@/siteConfig'
 import type { Metadata, Viewport } from 'next'
 import { ThemeProvider } from 'next-themes'
 import { Poppins, Lora } from 'next/font/google'
 import { Toaster } from 'sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
+import { Analytics } from '../_providers/analytics'
 import TanstackQueryProvider from '../_providers/tanstack-query'
 import { UserProvider } from '../_providers/user-provider'
 import './blog.css'
@@ -131,15 +131,18 @@ export default function RootLayout({
     <html lang='en' suppressHydrationWarning>
       <body className={`${poppins.variable} ${lora.variable} antialiased`}>
         <UserProvider>
-          <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
-            <TooltipProvider>
-              <TanstackQueryProvider>
-                {children}
-                {modal}
-              </TanstackQueryProvider>
-            </TooltipProvider>
-          </ThemeProvider>
+          <PostHogProvider>
+            <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
+              <TooltipProvider>
+                <TanstackQueryProvider>
+                  {children}
+                  {modal}
+                </TanstackQueryProvider>
+              </TooltipProvider>
+            </ThemeProvider>
+          </PostHogProvider>
         </UserProvider>
+        <Analytics />
         <Toaster position='top-center' />
       </body>
     </html>
