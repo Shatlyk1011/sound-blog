@@ -22,6 +22,8 @@ import { Button } from '@/components/ui/button'
 import { Skeleton } from '../ui/skeleton'
 import Header from './header'
 
+const SIDEBAR_COLLAPSED_STORAGE_KEY = 'dashboard-sidebar-collapsed'
+
 const NAV_ITEMS = [
   { href: '/dashboard', label: 'Dashboard', icon: Home01Icon },
   { href: '/profile', label: 'Profile', icon: UserCircleIcon },
@@ -33,7 +35,11 @@ interface Props {
 
 export function DashboardSidebar({ children }: Props) {
   const pathname = usePathname()
-  const [isCollapsed, setIsCollapsed] = useState(false)
+  const [isCollapsed, setIsCollapsed] = useState(() => {
+    if (typeof window === 'undefined') return false
+
+    return window.localStorage.getItem(SIDEBAR_COLLAPSED_STORAGE_KEY) === 'true'
+  })
 
   const { user: SBUser } = useUser()
 
@@ -41,7 +47,13 @@ export function DashboardSidebar({ children }: Props) {
 
   const remainingCredits = userData ? Math.max(userData.totalCredits - (userData?.creditsSpent || 0), 0) : undefined
 
-  const handleToggleSidebar = () => setIsCollapsed((currentValue) => !currentValue)
+  const handleToggleSidebar = () => {
+    setIsCollapsed((currentValue) => {
+      const nextValue = !currentValue
+      window.localStorage.setItem(SIDEBAR_COLLAPSED_STORAGE_KEY, String(nextValue))
+      return nextValue
+    })
+  }
 
   return (
     <>
