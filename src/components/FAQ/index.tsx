@@ -67,7 +67,7 @@ const FAQ = () => {
               className='border-border bg-card rounded-[1.75rem] border p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg'
             >
               <h4 className='text-lg font-bold'>{item.question}</h4>
-              <p className='text-muted-foreground mt-2 leading-7'>{item.answer}</p>
+              <p className='text-muted-foreground mt-2 font-serif leading-7'>{item.answer}</p>
             </article>
           ))}
         </div>

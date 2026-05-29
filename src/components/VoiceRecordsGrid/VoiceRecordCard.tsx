@@ -14,7 +14,7 @@ import {
 } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import Link from 'next/link'
-import { formatDuration, getStatusColor } from '@/lib/utils'
+import { formatDuration, statusColor } from '@/lib/utils'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -37,6 +37,8 @@ const VoiceRecordCard: FC<Props> = ({ record }) => {
   const { user } = useUserContext()
   const { mutate: deleteRecord, isPending } = useDeleteVoiceRecordMutation(user?.id)
   const [showDeleteAlert, setShowDeleteAlert] = useState(false)
+
+  const isProcessing = record.status !== 'completed' && record.status !== 'failed'
 
   return (
     <>
@@ -67,20 +69,51 @@ const VoiceRecordCard: FC<Props> = ({ record }) => {
                 strokeLinejoin='round'
                 aria-hidden='true'
                 data-id='element-30'
+                className={isProcessing ? 'text-chart-2' : ''}
               >
-                <path d='M2 10v3'></path>
-                <path d='M6 6v11'></path>
-                <path d='M10 3v18'></path>
-                <path d='M14 8v7'></path>
-                <path d='M18 5v13'></path>
-                <path d='M22 10v3'></path>
+                <path
+                  d='M2 10v3'
+                  className={isProcessing ? 'animate-pulse' : ''}
+                  style={isProcessing ? { animationDelay: '0ms' } : undefined}
+                ></path>
+                <path
+                  d='M6 6v11'
+                  className={isProcessing ? 'animate-pulse' : ''}
+                  style={isProcessing ? { animationDelay: '150ms' } : undefined}
+                ></path>
+                <path
+                  d='M10 3v18'
+                  className={isProcessing ? 'animate-pulse' : ''}
+                  style={isProcessing ? { animationDelay: '300ms' } : undefined}
+                ></path>
+                <path
+                  d='M14 8v7'
+                  className={isProcessing ? 'animate-pulse' : ''}
+                  style={isProcessing ? { animationDelay: '450ms' } : undefined}
+                ></path>
+                <path
+                  d='M18 5v13'
+                  className={isProcessing ? 'animate-pulse' : ''}
+                  style={isProcessing ? { animationDelay: '600ms' } : undefined}
+                ></path>
+                <path
+                  d='M22 10v3'
+                  className={isProcessing ? 'animate-pulse' : ''}
+                  style={isProcessing ? { animationDelay: '750ms' } : undefined}
+                ></path>
               </svg>
             </div>
 
             <div className='flex items-center gap-1'>
               <span
-                className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold capitalize ${getStatusColor(record.status)}`}
+                className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-semibold capitalize ${statusColor[record.status as VoiceRecord['status']]}`}
               >
+                {isProcessing && (
+                  <span className='relative flex size-1.5'>
+                    <span className='absolute inline-flex h-full w-full animate-ping rounded-full bg-current opacity-75'></span>
+                    <span className='relative inline-flex size-1.5 rounded-full bg-current'></span>
+                  </span>
+                )}
                 {record.status}
               </span>
 

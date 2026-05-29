@@ -11,17 +11,11 @@ export function formatDuration(seconds: number) {
   return `${mins}:${secs.toString().padStart(2, '0')}`
 }
 
-export function getStatusColor(status: string) {
-  switch (status) {
-    case 'completed':
-      return 'text-emerald-600 bg-emerald-200 dark:bg-emerald-500/10'
-    case 'processing':
-      return 'text-blue-500 bg-blue-50 dark:bg-blue-500/10'
-    case 'failed':
-      return 'text-red-500 bg-red-50 dark:bg-red-500/10'
-    default:
-      return 'text-stone-400 bg-stone-50 dark:bg-stone-500/10'
-  }
+export const statusColor = {
+  uploaded: 'text-chart-2 bg-chart-2/10',
+  completed: 'text-emerald-600 bg-emerald-200 dark:bg-emerald-500/10',
+  processing: 'text-chart-2 bg-chart-2/10',
+  failed: 'text-red-500 bg-red-50 dark:bg-red-500/10',
 }
 
 export const copyToClipboard = async (textToCopy: string) => {

@@ -47,7 +47,7 @@ export default function VoiceRecordsGrid() {
       </div>
 
       {isLoading ? (
-        <div className='grid grid-cols-3 gap-6 max-lg:grid-cols-2 max-lg:gap-5 max-sm:grid-cols-1 max-sm:gap-6'>
+        <div className='grid grid-cols-3 gap-5 max-xl:grid-cols-2 max-xl:gap-5 max-md:grid-cols-1 max-sm:gap-6'>
           {Array.from({ length: 3 }).map((_, i) => (
             <VoiceRecordSkeleton key={`skeleton-${i}`} />
           ))}

@@ -62,6 +62,8 @@ export default function VoiceRecord() {
     e.preventDefault()
     if (isUploading) return
 
+    if (isPlaying) wavesurfer?.playPause()
+
     if (!audioUrl) {
       toast.info('No audio recorded yet')
       resetRecording()
