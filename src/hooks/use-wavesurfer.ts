@@ -1,8 +1,10 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
+import { extensionFromFileName } from '@/app/api/upload-voice-record/_shared'
 import { useWavesurfer as useWavesurferLib } from '@wavesurfer/react'
 import { useDropzone } from 'react-dropzone'
+import { toast } from 'sonner'
 import RecordPlugin from 'wavesurfer.js/dist/plugins/record.esm.js'
 
 export type RecordStatus = 'idle' | 'recording' | 'recorded'
@@ -47,6 +49,7 @@ export function useAudioRecorder(isDark: boolean) {
   const [status, setStatus] = useState<RecordStatus>('idle')
   const [recordingTime, setRecordingTime] = useState(0)
   const [audioUrl, setAudioUrl] = useState<string | null>(null)
+  const [audioFile, setAudioFile] = useState<File | null>(null)
   const [duration, setDuration] = useState<number | undefined>()
   const latestAudioUrlRef = useRef<string | null>(null)
 
@@ -86,13 +89,25 @@ export function useAudioRecorder(isDark: boolean) {
 
   /* ── Dropzone ─────────────────────────────── */
   const onDrop = useCallback(
-    async (acceptedFiles: File[]) => {
-      if (acceptedFiles.length > 0) {
-        const file = acceptedFiles[0]
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    async (acceptedFiles: File[], fileRejections: any[]) => {
+      const allFiles = [...acceptedFiles, ...fileRejections.map((r) => r.file)]
+      if (allFiles.length > 0) {
+        const file = allFiles[0] as File
+        const supportedFormats = ['flac', 'm4a', 'mp3', 'mp4', 'mpeg', 'mpga', 'oga', 'ogg', 'wav', 'webm']
+        const fileExtension = file.name.split('.').pop()?.toLowerCase()
+
+        if (!fileExtension || !supportedFormats.includes(fileExtension)) {
+          toast.error(
+            `Invalid file format. Supported formats: ['flac', 'm4a', 'mp3', 'mp4', 'mpeg', 'mpga', 'oga', 'ogg', 'wav', 'webm']`
+          )
+          return
+        }
+
         const url = URL.createObjectURL(file)
         latestAudioUrlRef.current = url
         setAudioUrl(url)
-        setDuration(undefined)
+        setAudioFile(file)
         setRecordingTime(0)
         setStatus('recorded')
         wavesurfer?.load(url)
@@ -100,8 +115,9 @@ export function useAudioRecorder(isDark: boolean) {
         try {
           const fileDuration = await getAudioDurationFromUrl(url)
           if (latestAudioUrlRef.current === url) {
-            console.log('xxx', fileDuration)
             setDuration(fileDuration)
+          } else {
+            setDuration(undefined)
           }
         } catch (err) {
           console.error('Audio duration error:', err)
@@ -113,7 +129,19 @@ export function useAudioRecorder(isDark: boolean) {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: { 'audio/*': [] },
+    accept: {
+      'audio/flac': ['.flac'],
+      'audio/x-flac': ['.flac'],
+      'audio/m4a': ['.m4a'],
+      'audio/x-m4a': ['.m4a'],
+      'audio/mp3': ['.mp3'],
+      'audio/mpeg': ['.mp3', '.mpeg', '.mpga'],
+      'audio/mp4': ['.mp4', '.m4a'],
+      'audio/ogg': ['.ogg', '.oga'],
+      'audio/wav': ['.wav'],
+      'audio/x-wav': ['.wav'],
+      'audio/webm': ['.webm'],
+    },
     maxFiles: 1,
     noClick: true,
     noKeyboard: true,
@@ -143,7 +171,15 @@ export function useAudioRecorder(isDark: boolean) {
   /* ── Recording actions ───────────────────────────── */
   const startRecording = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          autoGainControl: true,
+          channelCount: 1,
+          echoCancellation: true,
+          noiseSuppression: true,
+          sampleRate: 16000,
+        },
+      })
       const mediaRecorder = new MediaRecorder(stream)
       mediaRecorderRef.current = mediaRecorder
       audioChunksRef.current = []
@@ -153,10 +189,14 @@ export function useAudioRecorder(isDark: boolean) {
       }
 
       mediaRecorder.onstop = () => {
-        const blob = new Blob(audioChunksRef.current, { type: 'audio/webm' })
+        const blob = new Blob(audioChunksRef.current, { type: `audio/webm` })
+        const fileObj = new File([blob], `voice-record-${Date.now()}.webm`, {
+          type: 'audio/webm',
+        })
         const url = URL.createObjectURL(blob)
         latestAudioUrlRef.current = url
         setAudioUrl(url)
+        setAudioFile(fileObj)
         setDuration(undefined)
         setStatus('recorded')
         stream.getTracks().forEach((t) => t.stop())
@@ -189,6 +229,7 @@ export function useAudioRecorder(isDark: boolean) {
     latestAudioUrlRef.current = null
     setStatus('idle')
     setAudioUrl(null)
+    setAudioFile(null)
     setRecordingTime(0)
     setDuration(0)
   }
@@ -209,6 +250,7 @@ export function useAudioRecorder(isDark: boolean) {
     status,
     recordingTime,
     audioUrl,
+    audioFile,
     totalDuration,
     formatTime,
     // actions

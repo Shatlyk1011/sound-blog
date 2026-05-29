@@ -56,6 +56,4 @@ export const deleteR2ObjectFromUrl = async ({ bucket, logPrefix, url }: DeleteR2
       Key: key,
     })
   )
-
-  console.log(`[${logPrefix}] Deleted R2 object: ${key}`)
 }

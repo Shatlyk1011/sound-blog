@@ -162,8 +162,6 @@ export async function POST(req: NextRequest) {
 
         ttsVoiceUrl = `${publicUrl}/${fileName}`
 
-        console.log('ttsVoiceUrl', ttsVoiceUrl)
-
         // Persist URL to the blog document if blogId was provided
         if (blogId && typeof blogId === 'string') {
           try {

@@ -30,7 +30,6 @@ export default function VoiceRecordsGrid() {
   const records = recordsResponse?.pages.flatMap((page) => page.docs) || []
 
   useEffect(() => {
-    console.log('records', records)
     if (records.some(({ status }) => status === 'uploaded' || status === 'processing')) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setRefetch(true)

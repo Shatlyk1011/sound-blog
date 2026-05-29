@@ -35,7 +35,7 @@ export default function VoiceRecord() {
   const {
     status,
     recordingTime,
-    audioUrl,
+    audioFile,
     getRootProps,
     getInputProps,
     isDragActive,
@@ -64,7 +64,7 @@ export default function VoiceRecord() {
 
     if (isPlaying) wavesurfer?.playPause()
 
-    if (!audioUrl) {
+    if (!audioFile) {
       toast.info('No audio recorded yet')
       resetRecording()
       return
@@ -80,12 +80,7 @@ export default function VoiceRecord() {
     setIsUploading(true)
 
     try {
-      const response = await fetch(audioUrl, { signal: abortController.signal })
-      const blob = await response.blob()
-
-      const file = new File([blob], `voice-record-${Date.now()}.webm`, {
-        type: blob.type || 'audio/webm',
-      })
+      const file = audioFile
 
       const uploadRes = await fetch('/api/upload-voice-record/presign', {
         method: 'POST',
@@ -105,7 +100,6 @@ export default function VoiceRecord() {
       if (!uploadRes.ok) {
         throw new Error(uploadResult.error || 'Failed to prepare audio upload')
       }
-      console.log('uploadResult', uploadResult)
       const r2UploadRes = await fetch(uploadResult.file.uploadUrl, {
         method: 'PUT',
         headers: {
