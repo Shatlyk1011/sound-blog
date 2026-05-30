@@ -14,6 +14,7 @@ import {
 import { HugeiconsIcon } from '@hugeicons/react'
 import { useTheme } from 'next-themes'
 import { toast } from 'sonner'
+import { normalizeAudioForUpload } from '@/lib/audio/normalize-audio'
 import { FilterValue } from '@/lib/constants'
 import { cn } from '@/lib/utils'
 import { useAudioRecorder } from '@/hooks/use-wavesurfer'
@@ -80,7 +81,8 @@ export default function VoiceRecord() {
     setIsUploading(true)
 
     try {
-      const file = audioFile
+      toast.info('Optimizing audio before upload…')
+      const { file } = await normalizeAudioForUpload(audioFile, abortController.signal)
 
       const uploadRes = await fetch('/api/upload-voice-record/presign', {
         method: 'POST',

@@ -1,3 +1,4 @@
+'use client'
 import VoiceRecord from './VoiceRecord'
 
 const VoiceRecordSection = () => {
