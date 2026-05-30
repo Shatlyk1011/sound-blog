@@ -20,7 +20,8 @@ const FAQ_ITEMS = [
   },
   {
     question: 'Can I control the final writing style?',
-    answer: 'You can choose tone, length, structure, and enhancements so the article feels like your voice.',
+    answer:
+      'You can choose tone, length, structure, and enhancements so the article feels like your voice. Also you can edit your final blog article once it created.',
   },
 ]
 
