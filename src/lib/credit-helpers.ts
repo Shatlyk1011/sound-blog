@@ -2,29 +2,33 @@ import { User } from '@/payload-types'
 import config from '@payload-config'
 import { getPayload } from 'payload'
 
+type CreateUserRequest = {
+  id: string
+  userId: string
+  email?: string
+  authProvider: User['authProvider']
+}
 // Create a new client record (called when user signs up via Supabase)
-export async function createClientRecord(
-  userId: string,
-  email?: string,
-  provider?: User['authProvider']
-): Promise<void> {
+export async function createClientRecord({ id, userId, email, authProvider }: CreateUserRequest): Promise<User> {
   const payload = await getPayload({ config })
 
-  await payload.create({
+  const userRecord = await payload.create({
     collection: 'users',
     data: {
+      id,
       userId,
-      email: email,
-      authProvider: provider,
+      email,
+      authProvider,
     },
     overrideAccess: true,
   })
 
-  console.log(`✓ Created client record for user: ${userId}`)
+  console.log(`✓ Created client record for user: ${id}`)
+  return userRecord
 }
 
 //  * Create initial credits for a new user (called when user signs up via Supabase)
-export async function createInitialCredits(userId: string): Promise<void> {
+export async function createInitialCredits(payloadId: string, userId: string): Promise<void> {
   const payload = await getPayload({ config })
 
   const expirationDate = new Date()
@@ -33,6 +37,7 @@ export async function createInitialCredits(userId: string): Promise<void> {
   await payload.create({
     collection: 'credit-history',
     data: {
+      client: payloadId,
       userId,
       creditAmount: 500,
       source: 'signup_bonus',

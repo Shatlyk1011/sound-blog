@@ -21,6 +21,17 @@ const Users: CollectionConfig = {
 
   fields: [
     {
+      name: 'id',
+      label: 'User ID (custom payload id)',
+      type: 'text',
+      required: true,
+      unique: true,
+      admin: {
+        description: 'Custom application user ID.',
+      },
+    },
+
+    {
       name: 'userId',
       label: 'Supabase ID',
       type: 'text',

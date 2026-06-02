@@ -1,5 +1,7 @@
+import type { User } from '@/payload-types'
 import { NextResponse } from 'next/server'
-import { getClientByUserId, createClientRecord, createInitialCredits } from '@/lib/credit-helpers'
+import { randomUUID } from 'node:crypto'
+import { createClientRecord, createInitialCredits, getClientByUserId } from '@/lib/credit-helpers'
 import { createClient } from '@/lib/supabase-server'
 
 const getAppUrl = (origin: string) => {
@@ -49,17 +51,19 @@ export async function GET(request: Request) {
 
     const existingClient = await getClientByUserId(user.id)
 
+    console.log('existingClient', existingClient)
     if (!existingClient) {
       const provider = user.app_metadata?.provider as string | undefined
 
-      await Promise.all([
-        createClientRecord(
-          user.id,
-          user.email ?? undefined,
-          (provider || 'n/a') as 'email' | 'google' | 'github' | 'n/a' | null | undefined
-        ),
-        createInitialCredits(user.id),
-      ])
+      const appUserId = randomUUID()
+
+      await createClientRecord({
+        id: appUserId,
+        userId: user.id,
+        email: user.email,
+        authProvider: (provider || 'n/a') as User['authProvider'],
+      })
+      await createInitialCredits(appUserId, user.id)
     }
 
     return NextResponse.redirect(new URL(safeNext, appUrl))

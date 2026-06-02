@@ -31,14 +31,12 @@ const CreditHistory: CollectionConfig = {
   hooks: {
     beforeChange: [
       async ({ data, req, operation }) => {
-        if (operation === 'create' && data.userId) {
+        if (operation === 'create' && data.userId && !data.client) {
           try {
             const client = await req.payload.find({
               collection: 'users',
               where: {
-                userId: {
-                  equals: data.userId,
-                },
+                or: [{ id: { equals: data.userId } }, { userId: { equals: data.userId } }],
               },
             })
 
@@ -128,7 +126,7 @@ const CreditHistory: CollectionConfig = {
       name: 'invoiceUrl',
       label: 'Invoice Url',
       type: 'text',
-      required: true,
+      required: false,
       admin: {
         position: 'sidebar',
         description: 'Stripe invoice url',

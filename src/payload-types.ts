@@ -174,6 +174,9 @@ export interface VoiceRecord {
  * via the `definition` "users".
  */
 export interface User {
+  /**
+   * Custom application user ID.
+   */
   id: string;
   /**
    * The unique user ID issued by Supabase.
@@ -231,7 +234,7 @@ export interface CreditHistory {
   /**
    * Stripe invoice url
    */
-  invoiceUrl: string;
+  invoiceUrl?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -491,6 +494,7 @@ export interface BlogsSelect<T extends boolean = true> {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  id?: T;
   userId?: T;
   email?: T;
   creditsSpent?: T;
