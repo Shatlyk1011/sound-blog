@@ -5,6 +5,7 @@ import { ThemeProvider } from 'next-themes'
 import { Poppins, Lora } from 'next/font/google'
 import { Toaster } from 'sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
+import { CookieConsentBanner } from '@/components/CookieConsentBanner'
 import { Analytics } from '../_providers/analytics'
 import TanstackQueryProvider from '../_providers/tanstack-query'
 import { UserProvider } from '../_providers/user-provider'
@@ -142,6 +143,7 @@ export default function RootLayout({
             </ThemeProvider>
           </PostHogProvider>
         </UserProvider>
+        <CookieConsentBanner />
         <Analytics />
         <Toaster position='top-center' />
       </body>
