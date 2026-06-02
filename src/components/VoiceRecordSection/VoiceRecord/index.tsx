@@ -24,6 +24,14 @@ import RecordFilter from './RecordFilter'
 
 const idleWaveBars = Array.from({ length: 72 }, () => 6)
 
+const uploadToastId = 'voice-record-upload'
+
+const uploadToastSteps = {
+  optimize: 'Step 1/3: Optimizing audio before upload…',
+  upload: 'Step 2/3: Uploading audio to storage…',
+  process: 'Step 3/3: Starting blog generation…',
+} as const
+
 export default function VoiceRecord() {
   const { resolvedTheme } = useTheme()
 
@@ -81,80 +89,98 @@ export default function VoiceRecord() {
     setIsUploading(true)
 
     try {
-      toast.info('Optimizing audio before upload…')
-      const { file } = await normalizeAudioForUpload(audioFile, abortController.signal)
+      const uploadPromise = async () => {
+        const { file } = await normalizeAudioForUpload(audioFile, abortController.signal)
 
-      const uploadRes = await fetch('/api/upload-voice-record/presign', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          fileName: file.name,
-          contentType: file.type,
-          size: file.size,
-        }),
-        signal: abortController.signal,
-      })
+        toast.loading(uploadToastSteps.upload, { id: uploadToastId })
 
-      const uploadResult = await uploadRes.json()
+        const uploadRes = await fetch('/api/upload-voice-record/presign', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            fileName: file.name,
+            contentType: file.type,
+            size: file.size,
+          }),
+          signal: abortController.signal,
+        })
 
-      if (!uploadRes.ok) {
-        throw new Error(uploadResult.error || 'Failed to prepare audio upload')
+        const uploadResult = await uploadRes.json()
+
+        if (!uploadRes.ok) {
+          throw new Error(uploadResult.error || 'Failed to prepare audio upload')
+        }
+        const r2UploadRes = await fetch(uploadResult.file.uploadUrl, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': uploadResult.file.contentType,
+          },
+          body: file,
+          signal: abortController.signal,
+        })
+
+        if (!r2UploadRes.ok) {
+          throw new Error('Failed to upload audio to storage')
+        }
+
+        toast.loading(uploadToastSteps.process, { id: uploadToastId })
+
+        const processRes = await fetch('/api/upload-voice-record', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            fileUrl: uploadResult.file.url,
+            key: uploadResult.file.key,
+            fileName: uploadResult.file.fileName,
+            contentType: uploadResult.file.contentType,
+            size: uploadResult.file.size,
+            duration: totalDuration,
+            filters: selectedFilters,
+          }),
+          signal: abortController.signal,
+        })
+
+        const result = await processRes.json()
+
+        if (!processRes.ok) {
+          throw new Error(result.error || 'Failed to process audio')
+        }
       }
-      const r2UploadRes = await fetch(uploadResult.file.uploadUrl, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': uploadResult.file.contentType,
-        },
-        body: file,
-        signal: abortController.signal,
-      })
 
-      if (!r2UploadRes.ok) {
-        throw new Error('Failed to upload audio to storage')
-      }
+      await toast
+        .promise(uploadPromise, {
+          id: uploadToastId,
+          loading: uploadToastSteps.optimize,
+          success: {
+            message: 'Your recording started processing',
+            richColors: true,
+            duration: 8000,
+            closeButton: true,
+            icon: false,
+          },
+          error: (error) => {
+            if (error instanceof Error && error.name === 'AbortError') {
+              return 'Upload canceled'
+            }
 
-      const processRes = await fetch('/api/upload-voice-record', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          fileUrl: uploadResult.file.url,
-          key: uploadResult.file.key,
-          fileName: uploadResult.file.fileName,
-          contentType: uploadResult.file.contentType,
-          size: uploadResult.file.size,
-          duration: totalDuration,
-          filters: selectedFilters,
-        }),
-        signal: abortController.signal,
-      })
+            return error instanceof Error ? error.message : 'Error uploading file'
+          },
+        })
+        .unwrap()
 
-      const result = await processRes.json()
-
-      if (!processRes.ok) {
-        throw new Error(result.error || 'Failed to process audio')
-      }
-
-      toast.success('Your recording started processing', {
-        richColors: true,
-        duration: 8000,
-        closeButton: true,
-        icon: false,
-      })
       queryClient.invalidateQueries({ queryKey: ['voice-records'] })
       resetRecording()
     } catch (error: unknown) {
       if (error instanceof Error && error.name === 'AbortError') {
-        toast.info('Upload canceled')
+        toast.info('Upload canceled', { id: uploadToastId })
         return
       }
 
       console.error('Upload failed:', error)
-      const message = error instanceof Error ? error.message : 'Error uploading file'
-      toast.error(message)
     } finally {
       uploadAbortControllerRef.current = null
       setIsUploading(false)

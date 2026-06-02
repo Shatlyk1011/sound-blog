@@ -141,7 +141,7 @@ export async function POST(req: NextRequest) {
       collection: 'credit-history',
       where: {
         and: [
-          { userId: { equals: payloadDocId } },
+          { userId: { equals: supabaseUser.id } },
           { status: { equals: 'active' } },
           { expirationDate: { greater_than: now.toISOString() } },
         ],
