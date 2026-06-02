@@ -17,6 +17,7 @@ export async function createClientRecord(
       email: email,
       authProvider: provider,
     },
+    overrideAccess: true,
   })
 
   console.log(`✓ Created client record for user: ${userId}`)
@@ -39,6 +40,7 @@ export async function createInitialCredits(userId: string): Promise<void> {
       status: 'active',
       invoiceUrl: '',
     },
+    overrideAccess: true,
   })
 
   console.log(`✓ Created initial 500 credits for new user: ${userId}`)
@@ -55,6 +57,7 @@ export async function getClientByUserId(userId: string) {
       },
     },
     depth: 1,
+    overrideAccess: true,
   })
   return clients.docs[0] || null
 }

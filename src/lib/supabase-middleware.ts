@@ -12,6 +12,16 @@ const AUTH_ONLY_ROUTES = ['/sign-in', '/sign-up']
 const BYPASS_ROUTES = ['/api/auth/callback', '/admin', '/api']
 
 export async function updateSession(request: NextRequest) {
+  const { pathname } = request.nextUrl
+
+  // API, Payload admin, and auth callback routes should not depend on
+  // middleware session refresh before their own route handlers run.
+  if (BYPASS_ROUTES.some((r) => pathname.startsWith(r))) {
+    return NextResponse.next({
+      request,
+    })
+  }
+
   let supabaseResponse = NextResponse.next({
     request,
   })
@@ -39,13 +49,6 @@ export async function updateSession(request: NextRequest) {
   const {
     data: { user },
   } = await supabase.auth.getUser()
-
-  const { pathname } = request.nextUrl
-
-  // Bypass middleware entirely for Payload CMS admin routes and Supabase auth callback
-  if (BYPASS_ROUTES.some((r) => pathname.startsWith(r))) {
-    return supabaseResponse
-  }
 
   const isPublicRoute = PUBLIC_ROUTES.includes(pathname)
   const isAuthOnlyRoute = AUTH_ONLY_ROUTES.includes(pathname)
