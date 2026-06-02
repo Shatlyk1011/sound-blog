@@ -91,6 +91,8 @@ export function RecordClient({ recordId }: RecordClientProps) {
     toast.success('Blog copied successfully!', { position: 'top-center' })
   }
 
+  console.log('blog', blog)
+
   return (
     <section className='space-y-6'>
       <BlogLoading hidden={!isLoading} />
@@ -147,6 +149,7 @@ export function RecordClient({ recordId }: RecordClientProps) {
                       blogId={blog.id}
                       recordId={recordId}
                       existingTtsUrl={blog.ttsVoiceUrl}
+                      isListeningAvailable={blog.language === 'en'}
                     />
                   )
                 }

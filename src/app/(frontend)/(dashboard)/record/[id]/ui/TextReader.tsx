@@ -11,6 +11,7 @@ import AudioPlayer from '@/components/VoiceRecordsGrid/AudioPlayer'
 interface TextReaderProps {
   text: string
   lang: string
+  isListeningAvailable: boolean
   className?: string
   /** Payload blog document ID — forwarded to the TTS hook for URL persistence. */
   blogId?: string
@@ -28,7 +29,15 @@ const STATUS_LABEL: Record<TTSStatus, string> = {
   error: 'Retry audio',
 }
 
-export default function TextReader({ text, lang, className, blogId, recordId, existingTtsUrl }: TextReaderProps) {
+export default function TextReader({
+  text,
+  lang,
+  isListeningAvailable,
+  className,
+  blogId,
+  recordId,
+  existingTtsUrl,
+}: TextReaderProps) {
   const { status, audioUrl, toggle, error } = useTTS(text, lang, {
     blogId,
     recordId,
@@ -41,7 +50,7 @@ export default function TextReader({ text, lang, className, blogId, recordId, ex
   return (
     <div className={cn('flex flex-col gap-2', className)}>
       {/* Trigger button — shown when no audio is ready yet */}
-      {!audioUrl && (
+      {!audioUrl && isListeningAvailable && (
         <Tooltip>
           <TooltipTrigger asChild>
             <Button

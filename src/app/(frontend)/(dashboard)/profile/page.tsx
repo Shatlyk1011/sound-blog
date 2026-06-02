@@ -43,6 +43,8 @@ export default function ProfilePage() {
     }
   }
 
+  const isProPlan = userData?.currentPlan === 'paid'
+
   return (
     <div className='mx-auto w-full max-w-6xl px-8 pt-24 pb-16 max-lg:px-6 max-sm:px-4'>
       {/* Header */}
@@ -66,7 +68,7 @@ export default function ProfilePage() {
           <h2 className='text-2xl font-semibold'>Profile Settings</h2>
         </div>
 
-        <div className='mb-10 flex gap-4 text-sm font-medium'>
+        <div className='font-snas mb-10 flex gap-4 text-sm font-medium'>
           <div className='flex-1'>
             <label className='mb-2 block'>Name</label>
             <p className='text-muted-foreground border-input bg-input/30 flex h-9 items-center rounded-full px-4'>
@@ -83,13 +85,18 @@ export default function ProfilePage() {
         </div>
 
         <div className='mb-5 flex items-center justify-between gap-4'>
-          <h2 className='-tracking-two text-xl font-medium'>
-            <span className=''>Your Current Plan:</span>{' '}
-            <span className='text-primary -tracking-two font-bold'>
-              {userData?.currentPlan === 'free' ? 'Free Plan' : 'Pro Plan'}
-            </span>
+          <h2 className='-tracking-two flex items-center gap-2 text-xl font-medium'>
+            <span>Current Plan:</span>{' '}
+            {isLoading ? (
+              <Skeleton className='inline-block h-6 w-20' />
+            ) : (
+              <span className={cn('text-primary -tracking-two font-bold', isProPlan && 'text-chart-2')}>
+                {isProPlan ? 'Pro Plan' : 'Free Plan'}
+              </span>
+            )}
           </h2>
-          {userData?.currentPlan === 'free' && (
+
+          {!isProPlan && (
             <Button asChild>
               <Link href='/pricing' prefetch={false}>
                 <HugeiconsIcon icon={Crown03Icon} />
@@ -103,7 +110,7 @@ export default function ProfilePage() {
           <div className='mb-2 flex items-center justify-between'>
             <h3 className='text-lg font-semibold'>{userData?.currentPlan === 'free' ? 'Free Plan' : 'Pro Plan'}</h3>
             <span className='text-muted-foreground text-sm'>
-              ~{Math.round((userData?.totalCredits || 0) / 60)} minutes remaining
+              {Math.round((userData?.totalCredits || 0) / 60)} minutes remaining
             </span>
           </div>
           <p className='text-muted-foreground text-sm'>For exploring the platform.</p>

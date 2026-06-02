@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useUserContext } from '@/app/_providers/user-provider'
 import { useVoiceRecordsInfiniteQuery } from '@/services/voice-records'
-import { FileAudioIcon } from '@hugeicons/core-free-icons'
+import { ArrowDown02Icon, FileAudioIcon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { useInView } from 'react-intersection-observer'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -12,6 +12,7 @@ import VoiceRecordCard from './VoiceRecordCard'
 export default function VoiceRecordsGrid() {
   const { user } = useUserContext()
   const { ref, inView } = useInView()
+  const { ref: gridRef, inView: gridInView } = useInView({ triggerOnce: true, threshold: 0.1 })
   const [isRefetch, setRefetch] = useState(false)
 
   const {
@@ -59,7 +60,10 @@ export default function VoiceRecordsGrid() {
         </div>
       ) : (
         <>
-          <div className='grid grid-cols-3 gap-5 max-xl:grid-cols-2 max-xl:gap-5 max-md:grid-cols-1 max-sm:gap-6'>
+          <div
+            ref={gridRef}
+            className='grid grid-cols-3 gap-5 max-xl:grid-cols-2 max-xl:gap-5 max-md:grid-cols-1 max-sm:gap-6'
+          >
             {records.map((record) => (
               <VoiceRecordCard key={record.id} record={record} />
             ))}
@@ -68,6 +72,13 @@ export default function VoiceRecordsGrid() {
           <div ref={ref} className='h-4 w-full' />
         </>
       )}
+      <div
+        className='text-muted-foreground fixed right-8 bottom-10 z-10 flex items-center gap-2 text-sm transition duration-300'
+        style={{ opacity: gridInView ? 0 : 1, pointerEvents: gridInView ? 'none' : 'auto' }}
+      >
+        <HugeiconsIcon icon={ArrowDown02Icon} />
+        Your Records
+      </div>
     </section>
   )
 }

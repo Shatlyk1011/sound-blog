@@ -111,13 +111,6 @@ export function DashboardSidebar({ children }: Props) {
                     <span className={cn('truncate transition-opacity duration-200', isCollapsed && 'sr-only')}>
                       {label}
                     </span>
-                    <span
-                      className={cn(
-                        'ml-auto size-1.5 rounded-full transition-opacity',
-                        isCollapsed && 'absolute top-2 right-2 ml-0',
-                        isActive ? 'bg-sidebar-primary opacity-100' : 'bg-sidebar-primary opacity-0'
-                      )}
-                    />
                   </Link>
                 </li>
               )

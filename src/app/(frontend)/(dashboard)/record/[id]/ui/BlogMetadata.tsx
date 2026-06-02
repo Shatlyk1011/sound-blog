@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { Calendar03Icon, TagsIcon } from '@hugeicons/core-free-icons'
+import { Calendar03Icon, FilterIcon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { ALL_FILTERS, FilterValue } from '@/lib/constants'
 
@@ -33,7 +33,7 @@ const BlogMetadata: FC<Props> = ({ createdAt, filters }: Props) => {
       {filtersArr.length > 0 && (
         <div className='flex min-w-0 flex-wrap items-center gap-2'>
           <span className='text-muted-foreground inline-flex items-center gap-1.5 text-xs font-semibold tracking-[0.14em] uppercase'>
-            <HugeiconsIcon icon={TagsIcon} className='size-3.5' />
+            <HugeiconsIcon icon={FilterIcon} className='size-3.5' />
             Filters
           </span>
           {filtersArr.map((filter: string) => (
