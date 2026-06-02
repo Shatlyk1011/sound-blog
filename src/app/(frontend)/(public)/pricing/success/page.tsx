@@ -28,7 +28,7 @@ export default function PricingSuccessPage() {
 
       <div className='space-y-2'>
         <h1 className='text-3xl font-bold tracking-tight max-sm:text-2xl'>You&apos;re all set! </h1>
-        <p className='text-muted-foreground mx-auto max-w-md text-base'>
+        <p className='text-muted-foreground mx-auto max-w-md text-sm'>
           Thank you for your purchase. Your subscription is now active. Your invoice will be available on your profile
           page.
         </p>

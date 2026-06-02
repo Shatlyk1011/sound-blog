@@ -1,6 +1,15 @@
+'use client'
+
 import Script from 'next/script'
+import { usePersonalDataConsent } from '@/hooks/use-personal-data-consent'
 
 export function Analytics() {
+  const consent = usePersonalDataConsent()
+
+  if (consent !== 'accepted' || !process.env.NEXT_PUBLIC_GA_ID) {
+    return null
+  }
+
   return (
     <>
       {/* Google Analytics */}
