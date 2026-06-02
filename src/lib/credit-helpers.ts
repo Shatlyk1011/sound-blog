@@ -33,7 +33,7 @@ export async function createInitialCredits(userId: string): Promise<void> {
     collection: 'credit-history',
     data: {
       userId,
-      creditAmount: 1000,
+      creditAmount: 500,
       source: 'signup_bonus',
       expirationDate: expirationDate.toISOString(),
       status: 'active',
@@ -41,7 +41,7 @@ export async function createInitialCredits(userId: string): Promise<void> {
     },
   })
 
-  console.log(`✓ Created initial 1000 credits for new user: ${userId}`)
+  console.log(`✓ Created initial 500 credits for new user: ${userId}`)
 }
 
 // Get client record by userId

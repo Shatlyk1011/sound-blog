@@ -3,7 +3,7 @@
 import { FC, useState } from 'react'
 import { useUserContext } from '@/app/_providers/user-provider'
 import { VoiceRecord } from '@/payload-types'
-import { useDeleteVoiceRecordMutation } from '@/services/voice-records'
+import { useDeleteVoiceRecordMutation, useRetryVoiceRecordMutation } from '@/services/voice-records'
 import {
   Calendar04Icon,
   Clock03Icon,
@@ -11,6 +11,7 @@ import {
   Delete01Icon,
   ProfileIcon,
   Loading03Icon,
+  RefreshIcon,
 } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import Link from 'next/link'
@@ -36,9 +37,11 @@ interface Props {
 const VoiceRecordCard: FC<Props> = ({ record }) => {
   const { user } = useUserContext()
   const { mutate: deleteRecord, isPending } = useDeleteVoiceRecordMutation(user?.id)
+  const { mutate: retryRecord, isPending: isRetrying } = useRetryVoiceRecordMutation(user?.id)
   const [showDeleteAlert, setShowDeleteAlert] = useState(false)
 
   const isProcessing = record.status !== 'completed' && record.status !== 'failed'
+  const isBusy = isPending || isRetrying
 
   return (
     <>
@@ -46,11 +49,11 @@ const VoiceRecordCard: FC<Props> = ({ record }) => {
         key={record.id}
         className='group bg-card hover:border-accent/50 relative flex flex-col justify-between overflow-hidden rounded-2xl border px-6 pt-5 pb-4 shadow-sm transition-all hover:shadow-md'
       >
-        {isPending && (
+        {isBusy && (
           <div className='bg-card/80 absolute inset-0 flex items-center justify-center backdrop-blur-[2px]'>
             <span className='flex items-center gap-2'>
               <HugeiconsIcon icon={Loading03Icon} className='size-4 animate-spin delay-200 duration-3000 ease-in-out' />
-              <span className='text-card-foreground/80 text-sm'>deleting...</span>
+              <span className='text-card-foreground/80 text-sm'>{isRetrying ? 'retrying...' : 'deleting...'}</span>
             </span>
           </div>
         )}
@@ -150,6 +153,23 @@ const VoiceRecordCard: FC<Props> = ({ record }) => {
 
         <MiniAudioPlayer fileUrl={record.fileUrl} />
 
+        {record.status === 'failed' && (
+          <Button
+            type='button'
+            variant='outline'
+            size='sm'
+            className='mt-4 w-full rounded-xl'
+            disabled={isBusy}
+            onClick={() => retryRecord(record.id)}
+          >
+            <HugeiconsIcon
+              icon={isRetrying ? Loading03Icon : RefreshIcon}
+              className={isRetrying ? 'animate-spin' : ''}
+            />
+            {isRetrying ? 'Trying again...' : 'Try again'}
+          </Button>
+        )}
+
         <div className='text-muted-foreground mt-2 flex items-center justify-end gap-5 text-xs'>
           <div className='flex items-center gap-1.5'>
             <HugeiconsIcon icon={Clock03Icon} className='size-4' />
@@ -174,10 +194,10 @@ const VoiceRecordCard: FC<Props> = ({ record }) => {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
+            <AlertDialogCancel disabled={isBusy}>Cancel</AlertDialogCancel>
             <AlertDialogAction
               variant={'destructive'}
-              disabled={isPending}
+              disabled={isBusy}
               onClick={(e) => {
                 e.preventDefault()
                 setShowDeleteAlert(false)

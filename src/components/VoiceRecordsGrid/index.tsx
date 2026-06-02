@@ -12,7 +12,7 @@ import VoiceRecordCard from './VoiceRecordCard'
 export default function VoiceRecordsGrid() {
   const { user } = useUserContext()
   const { ref, inView } = useInView()
-  const { ref: gridRef, inView: gridInView } = useInView({ triggerOnce: true, threshold: 0.1 })
+  const { ref: sectionRef, inView: gridInView } = useInView({ triggerOnce: true, threshold: 0.1 })
   const [isRefetch, setRefetch] = useState(false)
 
   const {
@@ -40,7 +40,7 @@ export default function VoiceRecordsGrid() {
   }, [recordsResponse])
 
   return (
-    <section className='mx-auto w-full max-w-7xl px-12 py-10 max-md:px-4'>
+    <section className='mx-auto w-full max-w-7xl px-12 py-10 max-md:px-4' ref={sectionRef}>
       <div className='mb-6 flex flex-col items-start justify-between gap-1'>
         <h2 className='text-3xl font-bold tracking-tight'>Your Recordings</h2>
         <p className='text-muted-foreground text-base'>Explore your voice records</p>
@@ -60,10 +60,7 @@ export default function VoiceRecordsGrid() {
         </div>
       ) : (
         <>
-          <div
-            ref={gridRef}
-            className='grid grid-cols-3 gap-5 max-xl:grid-cols-2 max-xl:gap-5 max-md:grid-cols-1 max-sm:gap-6'
-          >
+          <div className='grid grid-cols-3 gap-5 max-xl:grid-cols-2 max-xl:gap-5 max-md:grid-cols-1 max-sm:gap-6'>
             {records.map((record) => (
               <VoiceRecordCard key={record.id} record={record} />
             ))}

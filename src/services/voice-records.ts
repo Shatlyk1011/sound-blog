@@ -35,7 +35,7 @@ const deleteVoiceRecord = async (id: string): Promise<void> => {
     method: 'DELETE',
   })
   if (!response.ok) {
-    toast.error('Failed to delete your voice record. Please try again')
+    throw new Error('Failed to delete your voice record. Please try again')
   }
 }
 
@@ -46,6 +46,32 @@ export const useDeleteVoiceRecordMutation = (userId: string | undefined) => {
     onSuccess: () => {
       toast.success('Your record deleted. Updating your list')
       queryClient.invalidateQueries({ queryKey: ['voice-records', userId] })
+    },
+  })
+}
+
+const retryVoiceRecord = async (id: string): Promise<void> => {
+  const response = await fetch(`/api/upload-voice-record/try-again/${id}`, {
+    method: 'POST',
+  })
+
+  if (!response.ok) {
+    const result = await response.json().catch(() => null)
+    throw new Error(result?.error || 'Failed to retry voice record generation. Please try again')
+  }
+}
+
+export const useRetryVoiceRecordMutation = (userId: string | undefined) => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: retryVoiceRecord,
+    onSuccess: () => {
+      toast.success('Retry started. Your article is generating again')
+      queryClient.invalidateQueries({ queryKey: ['voice-records', userId] })
+    },
+    onError: (error) => {
+      toast.error(error instanceof Error ? error.message : 'Failed to retry voice record generation')
     },
   })
 }
