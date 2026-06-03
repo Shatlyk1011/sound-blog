@@ -27,9 +27,9 @@ const idleWaveBars = Array.from({ length: 72 }, () => 6)
 const uploadToastId = 'voice-record-upload'
 
 const uploadToastSteps = {
-  optimize: 'Step 1/3: Optimizing audio before upload…',
-  upload: 'Step 2/3: Uploading audio to storage…',
-  process: 'Step 3/3: Starting blog generation…',
+  optimize: '1/3: Optimizing audio before upload…',
+  upload: '2/3: Uploading audio to storage…',
+  process: '3/3: Starting blog generation…',
 } as const
 
 export default function VoiceRecord() {

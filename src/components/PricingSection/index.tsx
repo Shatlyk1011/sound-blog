@@ -11,7 +11,7 @@ const pricingPlans: PricingTier[] = [
     price: '0',
     priceYearly: '0',
     description: 'Perfect to get started',
-    features: ['500 credits', 'Private generations', 'Customer Support'],
+    features: ['500 credits (each month)', 'Private generations', 'Customer Support'],
     ctaText: 'Try for free',
     ctaVariant: 'blue',
     featuresIntro: 'Features include:',
@@ -43,7 +43,7 @@ const pricingPlans: PricingTier[] = [
     features: [
       '50000 monthly credits (~830min)',
       'Private generations',
-      'Credits valid for 12 months',
+      'Credits valid for 2 months',
       'Customer Support',
     ],
     ctaText: 'Upgrade to Pro',

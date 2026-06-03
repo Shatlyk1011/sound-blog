@@ -8,6 +8,7 @@ import {
   UserCircleIcon,
   MessageMultiple01Icon,
   Crown03Icon,
+  BookOpenTextIcon,
   Eye,
   EyeOff,
   SidebarLeftIcon,
@@ -26,6 +27,7 @@ const SIDEBAR_COLLAPSED_STORAGE_KEY = 'dashboard-sidebar-collapsed'
 
 const NAV_ITEMS = [
   { href: '/dashboard', label: 'Dashboard', icon: Home01Icon },
+  { href: '/editorial', label: 'Editorial', icon: BookOpenTextIcon },
   { href: '/profile', label: 'Profile', icon: UserCircleIcon },
 ]
 
