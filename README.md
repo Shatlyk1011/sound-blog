@@ -1,36 +1,34 @@
 # 🎙️ Sound Blog
 
-Sound Blog turns voice recordings or uploaded audio files into structured blog posts. Users can record audio in the browser, apply generation preferences, track processing status, edit the generated article, listen to it with TTS, and manage their recordings from a private dashboard.
+Sound Blog turns voice recordings or uploaded audio files into structured blog posts. Record your audio in the browser, drop an audio file, apply generation preferences, track processing status, edit the generated article, and manage your recordings from a private dashboard.
 
-<p align="center">
+<!-- <p align="center">
   <a href="https://sound-blog.com" target="_blank"><img height="360" src="public/og-image.jpg" alt="Sound blog screenshot"></a>
-</p>
+</p> -->
 
 ## ✨ Features
 
 - 🎙️ Browser voice recording with waveform preview.
 - 📁 Audio file drag-and-drop upload.
 - 🎛️ Generation filters for tone, length, and article enhancements.
-- 🔐 Authenticated dashboard for recordings, profile, credits, and generated articles.
+- 🔐 Private dashboard for your recordings, profile, credits, and generated articles.
 - 📖 Generated blog reader with markdown rendering.
 - 📝 Markdown editor for updating generated articles.
 - 🔍 Raw transcript and original audio playback view.
 - 🔊 Text-to-speech generation for blog content.
 - 💳 Credit tracking and paid plan checkout.
-- ⚙️ Admin area for managing users, recordings, transcripts, blogs, and credit history.
 
 ## 🛠️ Tech Stack
 
-- **Framework:** Next.js App Router, React, TypeScript
-- **Styling:** Tailwind CSS, Radix UI primitives, custom UI components
+- **Framework:** Next.js App Router, TypeScript
+- **Styling:** Tailwind CSS, ShadCN
 - **CMS / Data:** Payload CMS, MongoDB adapter
 - **Auth:** Supabase Auth
 - **Storage:** Cloudflare R2 via AWS S3 SDK
 - **Payments:** Stripe Embedded Checkout
 - **Data fetching:** TanStack Query
-- **Audio:** Wavesurfer.js, `@wavesurfer/react`, browser MediaRecorder API
+- **Audio:** Wavesurfer.js
 - **Editor / Markdown:** `@uiw/react-md-editor`, `react-markdown`
-- **Motion / UX:** Motion, Sonner toasts, Hugeicons
 
 ## 🗺️ Main Routes
 
@@ -67,7 +65,6 @@ Required groups:
 - `DATABASE_URI`, `PAYLOAD_SECRET` for Payload CMS.
 - `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` for Supabase auth.
 - `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_ENDPOINT_URL`, `R2_PUBLIC_URL`, `R2_VOICE_RECORD_BUCKET` for Cloudflare R2.
-- `WORKER_URL` for the external audio/transcription/TTS worker.
 - `NEXT_PUBLIC_APP_URL` for redirects and Stripe return URLs.
 - Stripe keys and price IDs for checkout.
 
@@ -89,25 +86,6 @@ Open `http://localhost:3000`.
 
 Generate Payload types/import map when Payload collections change:
 
-```bash
-pnpm generate:types
-pnpm generate:importmap
-```
-
-## 📜 Scripts
-
-```bash
-pnpm dev                 Start Next.js development server
-pnpm build               Build production app
-pnpm start               Start production server
-pnpm lint                Run ESLint
-pnpm tc                  Run TypeScript checks
-pnpm format              Format project files
-pnpm knip                Check unused files/exports/dependencies
-pnpm generate:types      Generate Payload TypeScript types
-pnpm generate:importmap  Generate Payload admin import map
-```
-
 ## ⚙️ How It Works
 
 1. 👤 A user signs in to the platform.
@@ -116,15 +94,6 @@ pnpm generate:importmap  Generate Payload admin import map
 4. 📊 The dashboard displays the processing status and the final generated articles.
 5. ✍️ Users can edit markdown content, copy it, view the raw transcript, and generate TTS audio.
 6. 💳 Users can manage their credits, subscription plans, and account settings.
-
-## 🛡️ Security Notes
-
-- Keep `.env` files private. Only `.env.example` should be committed.
-- Payload requires `PAYLOAD_SECRET` and `DATABASE_URI` at startup.
-- User dashboard routes require Supabase auth.
-- Uploads are limited by MIME type, file size, and duration.
-- TTS generation requires authenticated ownership of the blog.
-- Review and update dependencies regularly with `pnpm audit --prod`.
 
 ## 📈 Status
 

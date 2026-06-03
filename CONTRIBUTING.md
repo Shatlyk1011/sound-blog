@@ -1,6 +1,6 @@
 # Contributing to Sound Blog
 
-First off, thank you for considering contributing to Sound Blog! Contributions from the community help make this project better for everyone. We welcome and appreciate all forms of contributions.
+First off, thank you for considering contributing to Sound Blog! Contributions from the community help make this project better for everyone.
 
 ## What You Can Contribute
 
@@ -25,7 +25,7 @@ Ready to write some code? Here is the step-by-step process for opening a Pull Re
 1. **Fork the repository** to your own GitHub account.
 2. **Clone the project** to your local machine:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/sound-blog.git
+   git clone https://github.com/Shatlyk1011/sound-blog.git
    cd sound-blog
    ```
 3. **Create a new branch** for your feature or bug fix:
@@ -48,12 +48,7 @@ Ready to write some code? Here is the step-by-step process for opening a Pull Re
 
 - **Describe your changes:** In your PR description, clearly explain what the PR does and why it is needed. Mention any related issues (e.g., "Closes #123").
 - **Keep it focused:** Try to keep your PR focused on a single feature or bug fix. This makes it much easier to review and merge.
-- **Follow coding standards:** Ensure your code follows the existing formatting. We use ESLint and Prettier. Run the following commands to check and format your code before pushing:
-  ```bash
-  pnpm lint
-  pnpm format
-  ```
-- **Update documentation:** If you added a new feature or changed an existing one, please update the `README.md` and any other relevant documentation.
+- **Follow coding standards:** Ensure your code follows the existing formatting. We use ESLint and Prettier.
 
 ## Local Development Setup
 
