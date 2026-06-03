@@ -132,7 +132,7 @@ export async function POST(_: Request, { params }: { params: Promise<{ id: strin
           fileName: record.fileName,
           contentType,
           size,
-          filters: '[]',
+          filters: record.filters ?? '[]',
         }),
       })
 

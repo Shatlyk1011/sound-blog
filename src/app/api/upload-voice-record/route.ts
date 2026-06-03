@@ -185,6 +185,7 @@ export async function POST(req: NextRequest) {
         fileName,
         userId: payloadDocId,
         duration,
+        filters,
         status: 'uploaded',
       },
     })

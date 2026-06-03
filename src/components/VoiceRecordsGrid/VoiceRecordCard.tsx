@@ -15,7 +15,7 @@ import {
 } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import Link from 'next/link'
-import { formatDuration, statusColor } from '@/lib/utils'
+import { cn, formatDuration, statusColor } from '@/lib/utils'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -158,13 +158,13 @@ const VoiceRecordCard: FC<Props> = ({ record }) => {
             type='button'
             variant='outline'
             size='sm'
-            className='mt-4 w-full rounded-xl'
+            className='mt-4 w-full rounded-xl text-xs'
             disabled={isBusy}
             onClick={() => retryRecord(record.id)}
           >
             <HugeiconsIcon
               icon={isRetrying ? Loading03Icon : RefreshIcon}
-              className={isRetrying ? 'animate-spin' : ''}
+              className={cn('size-3.5', isRetrying ? 'animate-spin' : '')}
             />
             {isRetrying ? 'Trying again...' : 'Try again'}
           </Button>
