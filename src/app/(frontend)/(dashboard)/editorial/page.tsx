@@ -32,12 +32,6 @@ const workflowSteps = [
     description:
       'Open the generated record to review the article, compare it with the raw transcript and original audio, edit Markdown, copy, or generate speech.',
   },
-  {
-    eyebrow: '05',
-    title: 'Optimize for SEO + GEO',
-    description:
-      'Before publishing, shape the draft with clear headings, summaries, answer-first sections, and searchable language so both search engines and AI answer engines can understand it.',
-  },
 ]
 
 const quickTips = [
@@ -46,7 +40,6 @@ const quickTips = [
   'Keep the original tone when you want the writing to sound closest to you.',
   'Add headings and summaries when the article needs to be easier to scan.',
   'Rewrite vague spoken phrases into specific names, topics, locations, and keywords.',
-  'If a record fails, retry it from the recordings grid instead of uploading again.',
 ]
 
 export default function EditorialPage() {
@@ -82,8 +75,8 @@ export default function EditorialPage() {
         <div className='border-border/70 bg-card/80 rounded-[1.75rem] border p-6 shadow-sm'>
           <h2 className='text-2xl font-semibold tracking-tight'>Editorial tips</h2>
           <p className='text-muted-foreground mt-2 text-sm leading-6'>
-            A better input usually creates a better draft. Think in sections, speak naturally, and use filters only when
-            you want the article to move away from the raw recording.
+            A better input creates a better draft. Think in sections, speak naturally, and use filters only when you
+            want the article to move away from the raw recording.
           </p>
           <ul className='mt-5 space-y-3'>
             {quickTips.map((tip) => (
