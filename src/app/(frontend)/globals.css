@@ -36,7 +36,7 @@
   --sidebar-border: #ebebeb;
   --sidebar-ring: #000000;
 
-  --font-poppins: var(--font-poppins);
+  --font-geist: var(--font-geist);
   --font-lora: var(--font-lora);
 
   --radius: 0.5rem;
@@ -127,7 +127,7 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  --font-sans: var(--font-poppins);
+  --font-sans: var(--font-geist);
   --font-serif: var(--font-lora);
 
   --radius-sm: calc(var(--radius) - 4px);

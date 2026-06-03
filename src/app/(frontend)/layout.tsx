@@ -2,7 +2,7 @@ import { Providers as PostHogProvider } from '@/app/_providers/post-hog'
 import { siteConfig } from '@/siteConfig'
 import type { Metadata, Viewport } from 'next'
 import { ThemeProvider } from 'next-themes'
-import { Poppins, Lora } from 'next/font/google'
+import { Lora, Geist } from 'next/font/google'
 import { Toaster } from 'sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { CookieConsentBanner } from '@/components/CookieConsentBanner'
@@ -12,10 +12,10 @@ import { UserProvider } from '../_providers/user-provider'
 import './blog.css'
 import './globals.css'
 
-const poppins = Poppins({
+const geist = Geist({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
-  variable: '--font-poppins',
+  variable: '--font-geist',
   display: 'swap',
 })
 
@@ -130,7 +130,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en' suppressHydrationWarning>
-      <body className={`${poppins.variable} ${lora.variable} antialiased`}>
+      <body className={`${geist.variable} ${lora.variable} antialiased`}>
         <UserProvider>
           <PostHogProvider>
             <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
