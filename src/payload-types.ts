@@ -72,6 +72,7 @@ export interface Config {
     blogs: Blog;
     users: User;
     'credit-history': CreditHistory;
+    feedback: Feedback;
     adminUsers: AdminUser;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
@@ -89,6 +90,7 @@ export interface Config {
     blogs: BlogsSelect<false> | BlogsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'credit-history': CreditHistorySelect<false> | CreditHistorySelect<true>;
+    feedback: FeedbackSelect<false> | FeedbackSelect<true>;
     adminUsers: AdminUsersSelect<false> | AdminUsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -319,6 +321,26 @@ export interface Blog {
   createdAt: string;
 }
 /**
+ * Stores user feedback submitted from the dashboard.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "feedback".
+ */
+export interface Feedback {
+  id: string;
+  /**
+   * The authenticated user who submitted the feedback.
+   */
+  userId: string | User;
+  email?: string | null;
+  type: 'improvement' | 'bug' | 'question' | 'other';
+  message: string;
+  source?: string | null;
+  status: 'new' | 'reviewed' | 'closed';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * Manage admin panel users and their access permissions. Configure user roles (admin, moderator, guest) to control who can create, edit, and delete content.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -395,6 +417,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'credit-history';
         value: string | CreditHistory;
+      } | null)
+    | ({
+        relationTo: 'feedback';
+        value: string | Feedback;
       } | null)
     | ({
         relationTo: 'adminUsers';
@@ -517,6 +543,20 @@ export interface CreditHistorySelect<T extends boolean = true> {
   status?: T;
   expirationDate?: T;
   invoiceUrl?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "feedback_select".
+ */
+export interface FeedbackSelect<T extends boolean = true> {
+  userId?: T;
+  email?: T;
+  type?: T;
+  message?: T;
+  source?: T;
+  status?: T;
   updatedAt?: T;
   createdAt?: T;
 }

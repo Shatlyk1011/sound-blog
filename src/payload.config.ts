@@ -5,6 +5,7 @@ import { buildConfig } from 'payload'
 import AdminUsers from './app/(payload)/collections/AdminUsers'
 import Blogs from './app/(payload)/collections/Blogs'
 import CreditHistory from './app/(payload)/collections/CreditHistory'
+import Feedback from './app/(payload)/collections/Feedback'
 import Transcripts from './app/(payload)/collections/Transcripts'
 import Users from './app/(payload)/collections/Users'
 import VoiceRecords from './app/(payload)/collections/VoiceRecords'
@@ -32,7 +33,7 @@ export default buildConfig({
     },
   },
 
-  collections: [VoiceRecords, Transcripts, Blogs, Users, CreditHistory, AdminUsers],
+  collections: [VoiceRecords, Transcripts, Blogs, Users, CreditHistory, Feedback, AdminUsers],
 
   secret: requiredEnv('PAYLOAD_SECRET'),
   db: mongooseAdapter({
