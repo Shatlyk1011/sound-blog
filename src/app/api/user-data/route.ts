@@ -1,6 +1,7 @@
 import { CreditHistory, User } from '@/payload-types'
 import { NextResponse } from 'next/server'
 import { getClientByUserId } from '@/lib/credit-helpers'
+import { createClient } from '@/lib/supabase-server'
 
 export interface UserDataResponse {
   currentPlan: User['plan']
@@ -17,15 +18,21 @@ export interface UserDataResponse {
   }[]
 }
 
-export async function GET(req: Request) {
+export async function GET() {
   try {
-    // Get userId from query params or default to logged-in user
-    const { searchParams } = new URL(req.url)
-    const userId = searchParams.get('userId')!
+    const supabase = await createClient()
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser()
+
+    if (authError || !user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
 
     // Fetch client data and credit history
     // Fetch client data which now includes credit history via join field
-    const client = await getClientByUserId(userId)
+    const client = await getClientByUserId(user.id)
 
     if (!client) {
       return NextResponse.json({ error: 'Client not found' }, { status: 404 })

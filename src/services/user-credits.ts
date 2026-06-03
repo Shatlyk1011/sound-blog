@@ -8,7 +8,10 @@ export const useUserCreditsQuery = (userId: string | undefined) => {
       if (!userId) {
         throw new Error('User ID is required')
       }
-      const response = await fetch(`/api/user-data?userId=${userId}`)
+      const response = await fetch('/api/user-data')
+      if (!response.ok) {
+        throw new Error('Failed to fetch user data')
+      }
       return (await response.json()) as UserDataResponse
     },
     enabled: !!userId,
