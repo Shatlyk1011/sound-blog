@@ -115,7 +115,7 @@ export function RecordClient({ recordId }: RecordClientProps) {
 
               <div className='mb-4 flex flex-wrap items-center gap-2'>
                 {isEditing && (
-                  <span className='bg-chart-1/15 text-foreground rounded-full px-3 py-1 text-xs font-semibold'>
+                  <span className='bg-chart-1/15 text-foreground absolute top-0 right-0 rounded-full px-3 py-1 text-xs font-semibold'>
                     Editing draft
                   </span>
                 )}
@@ -179,7 +179,7 @@ export function RecordClient({ recordId }: RecordClientProps) {
                         />
                       </div>
                     ) : (
-                      <div className='prose prose-sm sm:prose-base dark:prose- font-serif'>
+                      <div className='prose prose-sm sm:prose-base dark:prose font-sans'>
                         <ReactMarkdown>{blog.content}</ReactMarkdown>
                       </div>
                     )}

@@ -11,6 +11,7 @@ export const useBlogQuery = (recordId: string, userId?: string) => {
       }
       return res.json()
     },
+    staleTime: 0,
   })
 }
 

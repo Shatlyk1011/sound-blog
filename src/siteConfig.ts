@@ -10,8 +10,7 @@ export const siteConfig = {
   previewDeploymentUrl: 'https://sound-blog.vercel.app',
   ogImage: 'https://sound-blog.com/og-image.jpg',
   linkedin: 'https://linkedin.com/in/shatlyk1011',
-  // TODO: Add a real support email when available.
-  supportEmail: '',
+  supportEmail: 'shatlykabdullayev1011@gmail.com',
   googleSiteVerification: 'JLeutbOC5NpUadhrkG4NUWg9gF3BSIokRQqQceimdGk',
   targetRegions: ['United States', 'Europe'],
   targetLanguage: 'en',
