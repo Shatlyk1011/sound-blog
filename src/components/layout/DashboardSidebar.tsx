@@ -1,8 +1,9 @@
 'use client'
 
-import { ReactNode, useState } from 'react'
+import { type ReactNode, useState } from 'react'
 import { UserDataResponse } from '@/app/api/user-data/route'
 import { useUserCreditsQuery } from '@/services/user-credits'
+import { siteConfig } from '@/siteConfig'
 import {
   Home01Icon,
   UserCircleIcon,
@@ -15,20 +16,33 @@ import {
   SidebarRightIcon,
 } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { useUser } from '@/hooks/use-user'
 import { Button } from '@/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { Skeleton } from '../ui/skeleton'
 import Header from './header'
 
 const SIDEBAR_COLLAPSED_STORAGE_KEY = 'dashboard-sidebar-collapsed'
 
+const FeedbackDialog = dynamic(() => import('./FeedbackDialog').then((mod) => mod.FeedbackDialog), {
+  ssr: false,
+})
+
 const NAV_ITEMS = [
   { href: '/dashboard', label: 'Dashboard', icon: Home01Icon },
-  { href: '/editorial', label: 'Editorial', icon: BookOpenTextIcon },
   { href: '/profile', label: 'Profile', icon: UserCircleIcon },
+  { href: '/editorial', label: 'Editorial', icon: BookOpenTextIcon },
 ]
 
 interface Props {
@@ -37,13 +51,13 @@ interface Props {
 
 export function DashboardSidebar({ children }: Props) {
   const pathname = usePathname()
+  const { user: SBUser } = useUser()
   const [isCollapsed, setIsCollapsed] = useState(() => {
     if (typeof window === 'undefined') return false
 
     return window.localStorage.getItem(SIDEBAR_COLLAPSED_STORAGE_KEY) === 'true'
   })
-
-  const { user: SBUser } = useUser()
+  const [isFeedbackDialogOpen, setIsFeedbackDialogOpen] = useState(false)
 
   const { data: userData } = useUserCreditsQuery(SBUser?.id)
 
@@ -55,6 +69,15 @@ export function DashboardSidebar({ children }: Props) {
       window.localStorage.setItem(SIDEBAR_COLLAPSED_STORAGE_KEY, String(nextValue))
       return nextValue
     })
+  }
+
+  const openEmailDraft = (subject?: string, body?: string) => {
+    const params = new URLSearchParams()
+    if (subject) params.set('subject', subject)
+    if (body) params.set('body', body)
+
+    const mailtoUrl = `mailto:${siteConfig.supportEmail}${params.toString() ? `?${params.toString()}` : ''}`
+    window.location.href = mailtoUrl
   }
 
   return (
@@ -134,19 +157,45 @@ export function DashboardSidebar({ children }: Props) {
         </nav>
 
         <div className={cn('border-sidebar-border/80 bg-sidebar/80 border-t p-3', isCollapsed && 'px-2')}>
-          <Button
-            variant='ghost'
-            title={isCollapsed ? 'Feedback' : undefined}
-            className={cn(
-              'text-sidebar-foreground/70 hover:bg-sidebar-accent/65 hover:text-sidebar-foreground hover:border-sidebar-border/70 h-11 w-full gap-2.5 rounded-xl border border-transparent text-sm font-medium',
-              isCollapsed ? 'justify-center px-0' : 'justify-start'
-            )}
-          >
-            <span className='bg-sidebar-accent/70 grid size-7 place-items-center rounded-lg'>
-              <HugeiconsIcon icon={MessageMultiple01Icon} className='text-muted-foreground size-4 shrink-0' />
-            </span>
-            <span className={cn(isCollapsed && 'sr-only')}>Feedback</span>
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant='ghost'
+                title={isCollapsed ? 'Feedback' : undefined}
+                className={cn(
+                  'text-sidebar-foreground/70 hover:bg-sidebar-accent/65 hover:text-sidebar-foreground hover:border-sidebar-border/70 h-11 w-full gap-2.5 rounded-xl border border-transparent text-sm font-medium',
+                  isCollapsed ? 'justify-center px-0' : 'justify-start'
+                )}
+              >
+                <span className='bg-sidebar-accent/70 grid size-7 place-items-center rounded-lg'>
+                  <HugeiconsIcon icon={MessageMultiple01Icon} className='text-muted-foreground size-4 shrink-0' />
+                </span>
+                <span className={cn(isCollapsed && 'sr-only')}>Feedback</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align='end' side='top' className='w-80'>
+              <DropdownMenuLabel>Choose how to share feedback</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className='items-start py-3' onSelect={() => setIsFeedbackDialogOpen(true)}>
+                <p className='font-medium'>Open feedback form</p>
+              </DropdownMenuItem>
+
+              <DropdownMenuItem
+                className='items-start py-3'
+                onSelect={() => window.open(siteConfig.linkedin, '_blank', 'noopener,noreferrer')}
+              >
+                <div className='space-y-0.5'>
+                  <p className='font-medium'>Write to me on LinkedIn</p>
+                </div>
+              </DropdownMenuItem>
+
+              <DropdownMenuItem className='items-start py-3' onSelect={() => openEmailDraft('Sound Blog Feedback')}>
+                <div className='space-y-0.5'>
+                  <p className='font-medium'>Send an email</p>
+                </div>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </aside>
       <main
@@ -159,6 +208,10 @@ export function DashboardSidebar({ children }: Props) {
           <div className='h-full overflow-y-auto overscroll-contain [scrollbar-gutter:stable]'>{children}</div>
         </div>
       </main>
+
+      {isFeedbackDialogOpen && (
+        <FeedbackDialog email={SBUser?.email} open={isFeedbackDialogOpen} onOpenChange={setIsFeedbackDialogOpen} />
+      )}
     </>
   )
 }
@@ -172,6 +225,7 @@ interface UserProps {
 
 const UserInfo = ({ name, currentPlan, credits, isCollapsed }: UserProps) => {
   const [showCredits, setShowCredits] = useState(true)
+  const [first] = (name ?? '').split(' ')
 
   const isPaid = currentPlan && currentPlan === 'paid'
 
@@ -181,7 +235,7 @@ const UserInfo = ({ name, currentPlan, credits, isCollapsed }: UserProps) => {
     <div className='border-sidebar-border/80 bg-sidebar-accent/35 space-y-3 rounded-2xl border p-3 shadow-sm'>
       <div className='flex min-w-0 items-center gap-3'>
         <div className='min-w-0'>
-          <p className='text-sidebar-foreground text-sm font-semibold'>{name}&apos;s workspace</p>
+          <p className='text-sidebar-foreground text-sm font-semibold'>{first || 'Your'}&apos;s workspace</p>
         </div>
       </div>
 
@@ -216,7 +270,7 @@ const UserInfo = ({ name, currentPlan, credits, isCollapsed }: UserProps) => {
             )}
           </div>
           {credits !== undefined ? (
-            <div className='text-sidebar-primary flex items-baseline gap-1'>
+            <div className='text-sidebar-primary flex h-5 items-baseline gap-1'>
               <span className='text-lg leading-none font-semibold'>{showCredits ? credits : '******'}</span>
               {showCredits && (
                 <span className='text-muted-foreground text-[0.68rem]'>(~{Math.round(credits / 60)} min)</span>

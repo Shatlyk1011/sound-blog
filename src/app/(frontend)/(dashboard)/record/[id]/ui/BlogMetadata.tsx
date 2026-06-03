@@ -6,11 +6,11 @@ import {
   Calendar03Icon,
   File02Icon,
   FilterIcon,
+  FishingHookIcon,
   Heading01Icon,
   LeftToRightListBulletIcon,
   MessageUser01Icon,
   ParagraphIcon,
-  QuoteUpIcon,
   SmileIcon,
   TextAlignLeftIcon,
   TextFontIcon,
@@ -33,7 +33,7 @@ const FILTER_ICONS: Record<FilterValue, IconSvgElement> = {
   storytelling: BookOpen01Icon,
   headings: Heading01Icon,
   summary: TextNumberSignIcon,
-  intro: QuoteUpIcon,
+  intro: FishingHookIcon,
   bullets: LeftToRightListBulletIcon,
 }
 
@@ -53,20 +53,10 @@ const BlogMetadata: FC<Props> = ({ createdAt, filters }: Props) => {
   }
 
   return (
-    <div className='mt-6 flex flex-wrap items-center gap-3 text-sm font-medium'>
-      <time
-        className='border-border/70 bg-background/70 text-muted-foreground inline-flex items-center gap-2 rounded-full border px-3 py-1.5'
-        dateTime={createdAt}
-      >
-        <HugeiconsIcon icon={Calendar03Icon} className='size-4' />
-        {new Intl.DateTimeFormat('en-US', {
-          dateStyle: 'long',
-        }).format(new Date(createdAt))}
-      </time>
-
+    <div className='mt-6 flex flex-wrap items-center justify-between gap-3 text-sm font-medium'>
       {filtersArr.length > 0 && (
         <div className='flex min-w-0 flex-wrap items-center gap-2'>
-          <span className='text-muted-foreground inline-flex items-center gap-1.5 text-xs font-semibold tracking-[0.14em] uppercase'>
+          <span className='text-muted-foreground tracking-four inline-flex items-center gap-1.5 text-xs font-semibold uppercase'>
             <HugeiconsIcon icon={FilterIcon} className='size-3.5' />
             Filters
           </span>
@@ -93,6 +83,15 @@ const BlogMetadata: FC<Props> = ({ createdAt, filters }: Props) => {
           })}
         </div>
       )}
+      <time
+        className='text-muted-foreground inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm'
+        dateTime={createdAt}
+      >
+        <HugeiconsIcon icon={Calendar03Icon} className='size-4' />
+        {new Intl.DateTimeFormat('en-US', {
+          dateStyle: 'long',
+        }).format(new Date(createdAt))}
+      </time>
     </div>
   )
 }
