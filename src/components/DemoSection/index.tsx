@@ -16,10 +16,10 @@ const DemoSection = () => {
         <span className='border-border bg-background/80 text-muted-foreground mb-4 inline-flex rounded-full border px-4 py-1.5 text-xs font-semibold tracking-[0.18em] uppercase shadow-sm backdrop-blur'>
           Listen, polish, publish
         </span>
-        <h2 className='mb-4 max-w-3xl font-serif text-4xl leading-tight font-extrabold tracking-tight sm:text-6xl'>
+        <h2 className='mb-4 max-w-3xl text-4xl leading-tight font-extrabold tracking-tight sm:text-6xl'>
           Demo Sound Blog
         </h2>
-        <p className='text-muted-foreground max-w-2xl text-lg leading-8'>
+        <p className='text-muted-foreground max-w-2xl text-lg leading-8 text-balance'>
           A quick look at how your raw voice note becomes an organized, playable, ready-to-edit blog draft.
         </p>
       </div>

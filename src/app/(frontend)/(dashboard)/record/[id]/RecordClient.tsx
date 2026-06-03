@@ -148,7 +148,7 @@ export function RecordClient({ recordId }: RecordClientProps) {
 
       {blog && (
         <>
-          <div className='border-border/70 bg-card/80 relative overflow-hidden rounded-[2rem] border p-6 shadow-[0_24px_80px_rgba(0,0,0,0.06)] backdrop-blur max-sm:p-4'>
+          <div className='border-border/70 bg-card/80 relative overflow-hidden rounded-4xl border p-6 shadow-[0_24px_80px_rgba(0,0,0,0.06)] backdrop-blur max-sm:p-4'>
             <div className='relative'>
               <Button
                 asChild
@@ -274,7 +274,7 @@ export function RecordClient({ recordId }: RecordClientProps) {
                         />
                       </div>
                     ) : (
-                      <div className='prose prose-sm sm:prose-base dark:prose font-sans'>
+                      <div className='prose font-sans'>
                         <ReactMarkdown>{blog.content}</ReactMarkdown>
                       </div>
                     )}

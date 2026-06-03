@@ -97,7 +97,7 @@ export default function RecordPreview({ blog, backHref, backLabel, badge }: Reco
                 variants={animationVariants}
                 transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1.0] }}
               >
-                <div className='prose prose-sm sm:prose-base dark:prose font-sans'>
+                <div className='prose sm:prose-base dark:prose font-sans'>
                   <ReactMarkdown>{blog.content ?? ''}</ReactMarkdown>
                 </div>
               </motion.div>

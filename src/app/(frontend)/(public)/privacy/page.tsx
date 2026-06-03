@@ -22,7 +22,7 @@ export default function PrivacyPage() {
   return (
     <main className='bg-background mt-14 min-h-screen'>
       <section className='mx-auto w-full max-w-4xl px-4 py-16 sm:px-8 lg:py-20'>
-        <div className='border-border bg-card/80 rounded-[2rem] border p-6 shadow-sm backdrop-blur sm:p-10'>
+        <div className='border-border bg-card/80 rounded-4xl border p-6 shadow-sm backdrop-blur sm:p-10'>
           <p className='text-muted-foreground text-sm font-medium'>Last updated: {lastUpdated}</p>
           <h1 className='mt-3 text-4xl leading-tight font-bold tracking-tight sm:text-5xl'>Privacy Policy</h1>
           <p className='text-muted-foreground mt-5 text-base leading-7'>
@@ -30,7 +30,7 @@ export default function PrivacyPage() {
             website and application.
           </p>
 
-          <div className='prose prose-neutral dark:prose-invert mt-10 max-w-none'>
+          <div className='prose mt-10 max-w-none'>
             <h2>Information we collect</h2>
             <p>
               We collect account information such as your email address and authentication provider details when you
