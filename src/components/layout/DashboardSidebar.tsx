@@ -180,18 +180,18 @@ export function DashboardSidebar({ children }: Props) {
                 <p className='font-medium'>Open feedback form</p>
               </DropdownMenuItem>
 
+              <DropdownMenuItem className='items-start py-3' onSelect={() => openEmailDraft('Sound Blog Feedback')}>
+                <div className='space-y-0.5'>
+                  <p className='font-medium'>Send an email</p>
+                </div>
+              </DropdownMenuItem>
+
               <DropdownMenuItem
                 className='items-start py-3'
                 onSelect={() => window.open(siteConfig.linkedin, '_blank', 'noopener,noreferrer')}
               >
                 <div className='space-y-0.5'>
                   <p className='font-medium'>Write to me on LinkedIn</p>
-                </div>
-              </DropdownMenuItem>
-
-              <DropdownMenuItem className='items-start py-3' onSelect={() => openEmailDraft('Sound Blog Feedback')}>
-                <div className='space-y-0.5'>
-                  <p className='font-medium'>Send an email</p>
                 </div>
               </DropdownMenuItem>
             </DropdownMenuContent>

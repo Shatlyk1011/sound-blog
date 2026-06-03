@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { Blog, Transcript, VoiceRecord } from '@/payload-types'
 import { useBlogQuery, useUpdateBlogMutation } from '@/services/blogs'
-import { ArrowLeft01Icon, BookOpenTextIcon, FileAudioIcon } from '@hugeicons/core-free-icons'
+import { ArrowLeft01Icon, BookOpenTextIcon, FileAudioIcon, PencilEdit02Icon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { AnimatePresence, motion } from 'motion/react'
 import { useTheme } from 'next-themes'
@@ -38,7 +38,9 @@ export type TabVariants = 'generated' | 'raw' | 'originalAudio'
 export function RecordClient({ recordId }: RecordClientProps) {
   const [activeTab, setActiveTab] = useState<TabVariants>('generated')
   const [isEditing, setIsEditing] = useState(false)
+  const [isTitleEditing, setIsTitleEditing] = useState(false)
   const [blogContent, setBlogContent] = useState<string>('')
+  const [blogTitle, setBlogTitle] = useState<string>('')
 
   const { resolvedTheme } = useTheme()
   const { user } = useUser()
@@ -56,6 +58,50 @@ export function RecordClient({ recordId }: RecordClientProps) {
   }, [blog, isEditing])
 
   const { mutate: updateBlogMutation, isPending } = useUpdateBlogMutation(recordId)
+
+  const hasTitleChanges = blog ? blogTitle.trim() !== blog.title.trim() : false
+
+  const startTitleEditing = () => {
+    if (!blog) return
+
+    setBlogTitle(blog.title)
+    setIsTitleEditing(true)
+  }
+
+  const cancelTitleEditing = () => {
+    if (!blog) return
+
+    setBlogTitle(blog.title)
+    setIsTitleEditing(false)
+  }
+
+  const handleTitleSave = () => {
+    if (!blog || !hasTitleChanges || isPending) return
+
+    const nextTitle = blogTitle.trim()
+
+    if (!nextTitle) {
+      toast.error('Title cannot be empty', { position: 'top-center' })
+      return
+    }
+
+    updateBlogMutation(
+      { blogId: blog.id, title: nextTitle },
+      {
+        onSuccess: () => {
+          toast.success('Title updated successfully!', {
+            position: 'top-center',
+          })
+          setIsTitleEditing(false)
+        },
+        onError: (error) => {
+          toast.error(`Error updating title: ${(error as Error).message}`, {
+            position: 'top-center',
+          })
+        },
+      }
+    )
+  }
 
   const handleSave = () => {
     if (!blog) return
@@ -106,24 +152,75 @@ export function RecordClient({ recordId }: RecordClientProps) {
         <>
           <div className='border-border/70 bg-card/80 relative overflow-hidden rounded-[2rem] border p-6 shadow-[0_24px_80px_rgba(0,0,0,0.06)] backdrop-blur max-sm:p-4'>
             <div className='relative'>
-              <Button asChild variant='ghost' size='sm' className='mb-5 -ml-2 rounded-full'>
-                <Link href='/dashboard'>
-                  <HugeiconsIcon icon={ArrowLeft01Icon} className='size-4' />
-                  Back to recordings
-                </Link>
+              <Button
+                asChild
+                variant={isTitleEditing ? 'destructive' : 'ghost'}
+                onClick={isTitleEditing ? cancelTitleEditing : undefined}
+                size='sm'
+                className='mb-9 rounded-full'
+              >
+                {isTitleEditing ? (
+                  <span>Cancel editing</span>
+                ) : (
+                  <Link href='/dashboard' className='-ml-2'>
+                    <HugeiconsIcon icon={ArrowLeft01Icon} className='size-4' />
+                    Back to recordings
+                  </Link>
+                )}
               </Button>
 
-              <div className='mb-4 flex flex-wrap items-center gap-2'>
-                {isEditing && (
-                  <span className='bg-chart-1/15 text-foreground absolute top-0 right-0 rounded-full px-3 py-1 text-xs font-semibold'>
-                    Editing draft
-                  </span>
-                )}
-              </div>
+              {isEditing && (
+                <span className='bg-chart-1/15 text-foreground absolute top-0 right-0 rounded-full px-3 py-1 text-xs font-semibold'>
+                  Editing draft
+                </span>
+              )}
 
-              <h1 className='max-w-4xl text-5xl leading-[115%] font-bold tracking-tight max-lg:text-4xl max-sm:text-3xl'>
-                {blog.title}
-              </h1>
+              {isTitleEditing ? (
+                <>
+                  <Button
+                    className='ml-2'
+                    size='sm'
+                    type='button'
+                    onClick={handleTitleSave}
+                    disabled={isPending || !blogTitle.trim() || !hasTitleChanges}
+                  >
+                    Save
+                  </Button>
+                  <div className='flex min-h-15 max-w-4xl flex-wrap items-center gap-3'>
+                    <input
+                      autoFocus
+                      className='border-border/70 bg-background/80 text-foreground focus-visible:border-ring focus-visible:ring-ring/50 min-w-0 flex-1 rounded-2xl border px-4 py-2 text-4xl leading-[110%] font-bold tracking-tight outline-none focus-visible:ring-2 max-lg:text-3xl max-sm:text-2xl'
+                      value={blogTitle}
+                      onChange={(event) => setBlogTitle(event.target.value)}
+                      onKeyDown={(event) => {
+                        if (event.key === 'Enter') handleTitleSave()
+                        if (event.key === 'Escape') cancelTitleEditing()
+                      }}
+                      disabled={isPending}
+                      aria-label='Blog title'
+                    />
+                  </div>
+                </>
+              ) : (
+                <div className='group/title flex max-w-4xl items-start gap-3'>
+                  <h1
+                    className='min-h-15 text-5xl leading-[115%] font-bold tracking-tight max-lg:text-4xl max-sm:text-3xl'
+                    onDoubleClick={startTitleEditing}
+                  >
+                    {blog.title}
+                  </h1>
+                  <Button
+                    type='button'
+                    size='icon-sm'
+                    variant='ghost'
+                    className='mt-2 rounded-full opacity-0 transition-opacity group-hover/title:opacity-100 focus-visible:opacity-100'
+                    onClick={startTitleEditing}
+                    aria-label='Edit title'
+                  >
+                    <HugeiconsIcon icon={PencilEdit02Icon} className='size-4' />
+                  </Button>
+                </div>
+              )}
 
               <BlogMetadata createdAt={blog.createdAt} filters={voiceRecord?.filters} />
             </div>
