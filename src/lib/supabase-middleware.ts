@@ -2,7 +2,7 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 // Routes that are publicly accessible (no auth required)
-const PUBLIC_ROUTES = ['/', '/sign-in', '/sign-up', '/pricing']
+const PUBLIC_ROUTES = ['/', '/sign-in', '/sign-up', '/pricing', '/demo', '/privacy']
 
 // Routes that only unauthenticated users should access
 // (authenticated users are redirected away from these)

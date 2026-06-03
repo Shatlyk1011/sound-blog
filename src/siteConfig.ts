@@ -37,6 +37,7 @@ export const siteConfig = {
   ],
   links: {
     pricing: '/pricing',
+    privacy: '/privacy',
     signIn: '/sign-in',
     signUp: '/sign-up',
   },

@@ -18,7 +18,7 @@ import MiniAudioPlayer from '@/components/VoiceRecordsGrid/AudioPlayer'
 import { ActionBar } from './ui/ActionBar'
 import BlogLoading from './ui/BlogLoading'
 import BlogMetadata from './ui/BlogMetadata'
-import TabSwitcher from './ui/TabSwitch'
+import TabSwitcher, { type TabVariants } from './ui/TabSwitch'
 import TextReader from './ui/TextReader'
 
 const MDEditor = dynamic(() => import('@uiw/react-md-editor/nohighlight'), { ssr: false })
@@ -32,8 +32,6 @@ const animationVariants = {
   animate: { opacity: 1, y: 0 },
   exit: { opacity: 0, y: -15 },
 }
-
-export type TabVariants = 'generated' | 'raw' | 'originalAudio'
 
 export function RecordClient({ recordId }: RecordClientProps) {
   const [activeTab, setActiveTab] = useState<TabVariants>('generated')

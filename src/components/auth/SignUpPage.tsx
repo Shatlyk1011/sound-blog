@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { AxiosError } from 'axios'
+import { siteConfig } from '@/siteConfig'
 import { Github01Icon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import Link from 'next/link'
@@ -227,13 +228,12 @@ export default function SignUpPage({ isModal, handleSwitch, redirectTo }: Props)
         {/* Terms */}
         <p className='text-center text-xs text-slate-500'>
           By clicking Sign Up, you agree to our{' '}
-          <a href='#' className='text-blue-600 transition-colors hover:text-blue-500/80 dark:text-blue-400'>
-            Terms of Service
-          </a>{' '}
-          and{' '}
-          <a href='#' className='text-blue-600 transition-colors hover:text-blue-500/80 dark:text-blue-400'>
+          <Link
+            href={siteConfig.links.privacy}
+            className='text-blue-600 transition-colors hover:text-blue-500/80 dark:text-blue-400'
+          >
             Privacy Policy
-          </a>
+          </Link>
         </p>
       </div>
     </div>

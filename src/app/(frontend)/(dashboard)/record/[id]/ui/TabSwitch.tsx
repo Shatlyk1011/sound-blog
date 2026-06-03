@@ -1,5 +1,6 @@
 import { cn } from '@/lib/utils'
-import { TabVariants } from '../RecordClient'
+
+export type TabVariants = 'generated' | 'raw'
 
 interface TabSwitcherProps {
   activeTab: TabVariants
