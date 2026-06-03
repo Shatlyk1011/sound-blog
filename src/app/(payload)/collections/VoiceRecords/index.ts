@@ -79,6 +79,15 @@ const VoiceRecords: CollectionConfig = {
         description: 'The title of the generated blog.',
       },
     },
+    {
+      name: 'filters',
+      label: 'Filters (array strings)',
+      type: 'text',
+      required: false,
+      admin: {
+        description: 'The user-selected filters used to generate the blog post from this voice recording.',
+      },
+    },
 
     {
       name: 'fileName',

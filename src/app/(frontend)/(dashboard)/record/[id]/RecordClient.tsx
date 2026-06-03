@@ -46,6 +46,7 @@ export function RecordClient({ recordId }: RecordClientProps) {
   const { data: blogsData, isLoading, error } = useBlogQuery(recordId, user?.id)
 
   const blog: Blog = blogsData?.docs?.[0]
+  const voiceRecord = blog?.recordId as VoiceRecord | undefined
 
   useEffect(() => {
     if (blog && !isEditing) {
@@ -91,8 +92,6 @@ export function RecordClient({ recordId }: RecordClientProps) {
     toast.success('Blog copied successfully!', { position: 'top-center' })
   }
 
-  console.log('blog', blog)
-
   return (
     <section className='space-y-6'>
       <BlogLoading hidden={!isLoading} />
@@ -126,7 +125,7 @@ export function RecordClient({ recordId }: RecordClientProps) {
                 {blog.title}
               </h1>
 
-              <BlogMetadata createdAt={blog.createdAt} filters={blog.filters} />
+              <BlogMetadata createdAt={blog.createdAt} filters={voiceRecord?.filters} />
             </div>
           </div>
 
@@ -207,7 +206,7 @@ export function RecordClient({ recordId }: RecordClientProps) {
                       </div>
                       <MiniAudioPlayer
                         classes='border border-border/70 bg-background/80 w-full my-0'
-                        fileUrl={(blog.recordId as VoiceRecord).fileUrl}
+                        fileUrl={voiceRecord?.fileUrl ?? ''}
                       />
                     </div>
 

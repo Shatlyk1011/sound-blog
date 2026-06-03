@@ -135,16 +135,6 @@ const Blogs: CollectionConfig = {
     },
 
     {
-      name: 'filters',
-      label: 'Filters (array strings)',
-      type: 'text',
-      required: false,
-      admin: {
-        description: 'The filters used to generate the blog post.',
-      },
-    },
-
-    {
       name: 'language',
       label: 'Language (en, ru, etc...)',
       type: 'text',

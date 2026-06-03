@@ -153,6 +153,10 @@ export interface VoiceRecord {
    */
   title?: string | null;
   /**
+   * The user-selected filters used to generate the blog post from this voice recording.
+   */
+  filters?: string | null;
+  /**
    * The original name of the uploaded audio file.
    */
   fileName: string;
@@ -291,10 +295,6 @@ export interface Blog {
    * The title of the generated blog post.
    */
   title: string;
-  /**
-   * The filters used to generate the blog post.
-   */
-  filters?: string | null;
   /**
    * The language of the generated blog post.
    */
@@ -451,6 +451,7 @@ export interface VoiceRecordsSelect<T extends boolean = true> {
   userId?: T;
   fileUrl?: T;
   title?: T;
+  filters?: T;
   fileName?: T;
   duration?: T;
   status?: T;
@@ -480,7 +481,6 @@ export interface BlogsSelect<T extends boolean = true> {
   recordId?: T;
   transcriptId?: T;
   title?: T;
-  filters?: T;
   language?: T;
   content?: T;
   status?: T;
