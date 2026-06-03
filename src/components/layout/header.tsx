@@ -150,7 +150,7 @@ const Header = ({ isDashboardPage }: Props) => {
                   onClick={() => router.push(`/sign-in?next=${encodeURIComponent(pathname)}`)}
                   className=''
                 >
-                  Sign In
+                  Get Started
                 </Button>
               )}
             </>

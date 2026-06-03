@@ -1,4 +1,5 @@
 import { siteConfig } from '@/siteConfig'
+import Link from 'next/link'
 import { LogoIcon } from '../Logo'
 
 const Footer = () => {
@@ -16,11 +17,14 @@ const Footer = () => {
         </div>
 
         <div className='text-muted-foreground flex flex-wrap items-center gap-x-4 gap-y-2 text-sm'>
+          <Link href={siteConfig.links.privacy} className='hover:text-foreground transition-colors'>
+            Privacy Policy
+          </Link>
           <a
             href={siteConfig.linkedin}
             target='_blank'
             rel='noreferrer'
-            className='hover:text-foreground mr-4 transition-colors'
+            className='hover:text-foreground transition-colors'
           >
             Let&apos;s connect{' '}
           </a>

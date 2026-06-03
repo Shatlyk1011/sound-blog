@@ -32,9 +32,11 @@ import MiniAudioPlayer from './AudioPlayer'
 
 interface Props {
   record: VoiceRecord
+  detailsHref?: string
+  readOnly?: boolean
 }
 
-const VoiceRecordCard: FC<Props> = ({ record }) => {
+const VoiceRecordCard: FC<Props> = ({ record, detailsHref, readOnly = false }) => {
   const { user } = useUserContext()
   const { mutate: deleteRecord, isPending } = useDeleteVoiceRecordMutation(user?.id)
   const { mutate: retryRecord, isPending: isRetrying } = useRetryVoiceRecordMutation(user?.id)
@@ -42,6 +44,7 @@ const VoiceRecordCard: FC<Props> = ({ record }) => {
 
   const isProcessing = record.status !== 'completed' && record.status !== 'failed'
   const isBusy = isPending || isRetrying
+  const recordDetailsHref = detailsHref ?? `/record/${record.id}`
 
   return (
     <>
@@ -120,31 +123,33 @@ const VoiceRecordCard: FC<Props> = ({ record }) => {
                 {record.status}
               </span>
 
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild className='-mr-2'>
-                  <Button variant={'ghost'} size={'icon-sm'}>
-                    <HugeiconsIcon icon={MoreVerticalIcon} className='size-4' />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align='end'>
-                  <DropdownMenuItem asChild>
-                    <Link href={`/record/${record.id}`} className='flex cursor-pointer items-center gap-2'>
-                      <HugeiconsIcon icon={ProfileIcon} className='size-4' />
-                      Details
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    className='text-destructive focus:bg-destructive/10 focus:text-destructive flex cursor-pointer items-center gap-2'
-                    onSelect={() => setShowDeleteAlert(true)}
-                  >
-                    <HugeiconsIcon icon={Delete01Icon} className='size-4' />
-                    Delete
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              {!readOnly && (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild className='-mr-2'>
+                    <Button variant={'ghost'} size={'icon-sm'}>
+                      <HugeiconsIcon icon={MoreVerticalIcon} className='size-4' />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align='end'>
+                    <DropdownMenuItem asChild>
+                      <Link href={recordDetailsHref} className='flex cursor-pointer items-center gap-2'>
+                        <HugeiconsIcon icon={ProfileIcon} className='size-4' />
+                        Details
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      className='text-destructive focus:bg-destructive/10 focus:text-destructive flex cursor-pointer items-center gap-2'
+                      onSelect={() => setShowDeleteAlert(true)}
+                    >
+                      <HugeiconsIcon icon={Delete01Icon} className='size-4' />
+                      Delete
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              )}
             </div>
           </div>
-          <Link href={`/record/${record.id}`}>
+          <Link href={recordDetailsHref}>
             <h3 className='hover:text-primary mb-1 line-clamp-2 text-lg font-semibold transition-colors'>
               {record.title || record.fileName}
             </h3>
@@ -153,7 +158,7 @@ const VoiceRecordCard: FC<Props> = ({ record }) => {
 
         <MiniAudioPlayer fileUrl={record.fileUrl} />
 
-        {record.status === 'failed' && (
+        {!readOnly && record.status === 'failed' && (
           <Button
             type='button'
             variant='outline'
@@ -185,30 +190,32 @@ const VoiceRecordCard: FC<Props> = ({ record }) => {
         </div>
       </div>
 
-      <AlertDialog open={showDeleteAlert} onOpenChange={setShowDeleteAlert}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure you want to delete this?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This will permanently delete your record: <br /> <b>{record.fileName}</b>
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel disabled={isBusy}>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              variant={'destructive'}
-              disabled={isBusy}
-              onClick={(e) => {
-                e.preventDefault()
-                setShowDeleteAlert(false)
-                deleteRecord(record.id)
-              }}
-            >
-              {isPending ? 'Deleting...' : 'Delete'}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      {!readOnly && (
+        <AlertDialog open={showDeleteAlert} onOpenChange={setShowDeleteAlert}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Are you sure you want to delete this?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This will permanently delete your record: <br /> <b>{record.fileName}</b>
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel disabled={isBusy}>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                variant={'destructive'}
+                disabled={isBusy}
+                onClick={(e) => {
+                  e.preventDefault()
+                  setShowDeleteAlert(false)
+                  deleteRecord(record.id)
+                }}
+              >
+                {isPending ? 'Deleting...' : 'Delete'}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      )}
     </>
   )
 }
