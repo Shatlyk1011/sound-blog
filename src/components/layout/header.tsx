@@ -20,7 +20,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import ThemeToggle from '@/components/ui/theme-toggle'
-import { LogoIcon } from '../Logo'
+import { LogoIcon } from '../icons/Logo'
 
 const { pricing, profile } = {
   pricing: '/pricing',

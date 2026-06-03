@@ -12,7 +12,7 @@ import { createClient } from '@/lib/supabase-client'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { LogoIcon } from '../Logo'
+import { LogoIcon } from '../icons/Logo'
 import { AuthProviders } from './SignUpPage'
 
 interface Props {
