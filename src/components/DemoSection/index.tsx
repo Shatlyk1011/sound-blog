@@ -2,6 +2,8 @@ import { DEMO_SOUND_RECORD } from '@/data'
 import { VoiceRecord } from '@/payload-types'
 import { ArrowLeft02Icon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
 import VoiceRecordCard from '../VoiceRecordsGrid/VoiceRecordCard'
 
 const DemoSection = () => {
@@ -25,7 +27,7 @@ const DemoSection = () => {
       <div className='border-border/70 bg-card/80 relative grid items-center gap-10 overflow-hidden rounded-[2rem] border p-4 sm:p-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16'>
         <div className='relative w-full max-w-md justify-self-center max-lg:order-2'>
           <div className='border-border bg-background/95 relative z-10 rounded-3xl border p-2'>
-            <VoiceRecordCard record={DEMO_SOUND_RECORD.recordId as VoiceRecord} />
+            <VoiceRecordCard record={DEMO_SOUND_RECORD.recordId as VoiceRecord} detailsHref='/demo' readOnly />
           </div>
         </div>
 
@@ -60,6 +62,9 @@ const DemoSection = () => {
             <p className='text-muted-foreground/80 text-base leading-relaxed'>
               Click the demo card to see the details view.
             </p>
+            <Button asChild className='rounded-full'>
+              <Link href='/demo'>Open full demo page</Link>
+            </Button>
           </div>
         </div>
       </div>
