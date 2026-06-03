@@ -19,13 +19,13 @@ export const useUpdateBlogMutation = (recordId: string) => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async ({ blogId, content }: { blogId: string; content: string }) => {
+    mutationFn: async ({ blogId, content, title }: { blogId: string; content?: string; title?: string }) => {
       const res = await fetch(`/api/blogs-client/${blogId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ content }),
+        body: JSON.stringify({ content, title }),
       })
       if (!res.ok) throw new Error('Failed to update blog')
       return res.json()

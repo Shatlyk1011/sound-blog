@@ -7,9 +7,19 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   try {
     const { id } = await params
     const body = await req.json()
+    const content = typeof body.content === 'string' ? body.content : undefined
+    const title = typeof body.title === 'string' ? body.title.trim() : undefined
 
     if (!id) {
       return NextResponse.json({ error: 'Missing blog id' }, { status: 400 })
+    }
+
+    if (title !== undefined && !title) {
+      return NextResponse.json({ error: 'Title cannot be empty' }, { status: 400 })
+    }
+
+    if (content === undefined && title === undefined) {
+      return NextResponse.json({ error: 'No blog changes provided' }, { status: 400 })
     }
 
     const supabase = await createClient()
@@ -55,10 +65,24 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
       collection: 'blogs',
       id,
       data: {
-        content: body.content,
+        ...(content !== undefined ? { content } : {}),
+        ...(title !== undefined ? { title } : {}),
       },
       overrideAccess: true,
     })
+
+    if (title !== undefined) {
+      const recordId = typeof existingBlog.recordId === 'object' ? existingBlog.recordId.id : existingBlog.recordId
+
+      await payload.update({
+        collection: 'voice-records',
+        id: recordId,
+        data: {
+          title,
+        },
+        overrideAccess: true,
+      })
+    }
 
     return NextResponse.json({ doc: updatedDoc })
   } catch (err: unknown) {
