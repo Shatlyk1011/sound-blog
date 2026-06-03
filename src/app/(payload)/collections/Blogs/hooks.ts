@@ -10,18 +10,6 @@ export const adminsOrWorker: Access = ({ req }) => {
   return false
 }
 
-export const adminsAndUserById: Access = ({ req }) => {
-  if (checkRole(['admin'], req.user)) {
-    return true
-  }
-
-  return {
-    'userId.userId': {
-      equals: req.query.userId,
-    },
-  }
-}
-
 export const adminsAndUserCreate: Access = ({ req, data }) => {
   const { user } = req
 

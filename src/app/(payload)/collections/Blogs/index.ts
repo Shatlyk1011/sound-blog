@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { deleteR2ObjectFromUrl } from '@/lib/r2'
-import { adminsAndUserById, adminsAndUserCreate } from './hooks'
+import { adminsAndUserCreate } from './hooks'
 
 const Blogs: CollectionConfig = {
   slug: 'blogs',
@@ -70,10 +70,10 @@ const Blogs: CollectionConfig = {
   },
 
   access: {
-    read: adminsAndUserById,
+    read: adminsAndUserCreate,
     create: adminsAndUserCreate,
-    update: adminsAndUserById,
-    delete: adminsAndUserById,
+    update: adminsAndUserCreate,
+    delete: adminsAndUserCreate,
   },
 
   fields: [
