@@ -86,7 +86,7 @@ export function FeedbackDialog({ email, open, onOpenChange }: FeedbackDialogProp
         throw new Error(result?.error || 'Failed to submit feedback')
       }
 
-      toast.success('Feedback sent. Thanks.')
+      toast.success('Thank you. I will contact you shortly.')
       onOpenChange(false)
       setFeedbackForm(getDefaultFeedbackForm(email))
     } catch (error) {

@@ -13,7 +13,7 @@ export function formatDuration(seconds: number) {
 
 export const statusColor = {
   uploaded: 'text-chart-2 bg-chart-2/10',
-  completed: 'text-emerald-600 bg-emerald-200 dark:bg-emerald-500/10',
+  completed: 'text-emerald-800 dark:text-emerald-500 bg-emerald-100/60 dark:bg-emerald-500/10',
   processing: 'text-chart-2 bg-chart-2/10',
   failed: 'text-red-500 bg-red-50 dark:bg-red-500/10',
 }

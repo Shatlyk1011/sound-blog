@@ -1,18 +1,8 @@
+import { DEMO_SOUND_RECORD } from '@/data'
 import { VoiceRecord } from '@/payload-types'
 import { ArrowLeft02Icon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import VoiceRecordCard from '../VoiceRecordsGrid/VoiceRecordCard'
-
-const DEMO_RECORD: VoiceRecord = {
-  createdAt: '2026-04-24T13:11:56.728Z',
-  updatedAt: '2026-04-24T13:12:32.633Z',
-  userId: '69eb55f7c91f77f32f72b7dc',
-  fileUrl: 'https://pub-22d9ce529cfb4b3891eb3bc8dfa9dc22.r2.dev/1777036314037-voice-record-1777036309664.webm',
-  fileName: 'voice-record-1777036309664.webm',
-  duration: 10,
-  status: 'completed',
-  id: 'voice-record-1777036309664-4226',
-}
 
 const DemoSection = () => {
   return (
@@ -35,7 +25,7 @@ const DemoSection = () => {
       <div className='border-border/70 bg-card/80 relative grid items-center gap-10 overflow-hidden rounded-[2rem] border p-4 sm:p-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16'>
         <div className='relative w-full max-w-md justify-self-center max-lg:order-2'>
           <div className='border-border bg-background/95 relative z-10 rounded-3xl border p-2'>
-            <VoiceRecordCard record={DEMO_RECORD} />
+            <VoiceRecordCard record={DEMO_SOUND_RECORD.recordId as VoiceRecord} />
           </div>
         </div>
 
