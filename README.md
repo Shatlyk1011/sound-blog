@@ -2,9 +2,9 @@
 
 Sound Blog turns voice recordings or uploaded audio files into structured blog posts. Record your audio in the browser, drop an audio file, apply generation preferences, track processing status, edit the generated article, and manage your recordings from a private dashboard.
 
-<!-- <p align="center">
+<p align="center">
   <a href="https://sound-blog.com" target="_blank"><img height="360" src="public/og-image.jpg" alt="Sound blog screenshot"></a>
-</p> -->
+</p>
 
 ## ✨ Features
 

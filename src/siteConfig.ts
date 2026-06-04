@@ -1,7 +1,7 @@
 export const siteConfig = {
   name: 'Sound Blog',
   description:
-    'Sound Blog helps creators, founders, writers, marketers, students, and teams in the USA and Europe turn voice recordings into polished, publish-ready blog posts with AI transcription, rewriting, editing, and text-to-speech playback.',
+    'Sound Blog helps creators, founders, writers, marketers, students, and teams in turn voice recordings into polished, publish-ready blog posts with AI transcription, rewriting, editing, and text-to-speech playback.',
   shortDescription: 'Turn voice notes into polished blog posts with AI.',
   productName: 'Sound Blog',
   tagline: 'Speak your ideas. Publish polished blog posts.',

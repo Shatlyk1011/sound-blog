@@ -2,7 +2,7 @@
 
 > Sound Blog turns voice recordings into polished, publish-ready blog posts with AI transcription, rewriting, editing, and text-to-speech playback.
 
-Sound Blog is a web application for creators, founders, writers, marketers, students, and teams in the USA and Europe who prefer speaking their ideas before publishing them as written content.
+Sound Blog is a web application for creators, founders, writers, marketers, students, and teams who prefer speaking their ideas before publishing them as written content.
 
 ## Core Capabilities
 
@@ -17,11 +17,26 @@ Sound Blog is a web application for creators, founders, writers, marketers, stud
 ## Public Pages
 
 - [Home](https://sound-blog.com/): Product overview and demo.
+- [Demo](https://sound-blog.com/demo): Interactive product demo.
 - [Pricing](https://sound-blog.com/pricing): Free, Hobby, and Pro plans.
+- [Privacy Policy](https://sound-blog.com/privacy): Data privacy information.
+- [Sign In](https://sound-blog.com/sign-in): User authentication.
+- [Sign Up](https://sound-blog.com/sign-up): New account registration.
+
+## Authenticated Pages
+
+- [Dashboard](https://sound-blog.com/dashboard): User's blog post overview and management.
+- [Record](https://sound-blog.com/record): Audio recording and upload interface.
+- [Editorial](https://sound-blog.com/editorial): Blog post editing and publishing workflow.
+- [Profile](https://sound-blog.com/profile): Account settings and credit management.
 
 ## Product Positioning
 
 Sound Blog is best described as an AI voice-to-blog generator, AI writing assistant, audio transcription workflow, and content creation tool for turning spoken thoughts into publishable articles.
+
+## Keywords
+
+AI blog generator, voice to blog, voice notes to blog posts, AI voice to blog generator, audio to blog post, audio transcription app, AI writing assistant, speech to text blog generator, content creation tool, blog writing software, transcribe audio to article, text to speech blog reader, AI content creation for creators, AI writing tool for founders, voice note transcription for writers.
 
 ## Ownership
 
@@ -30,15 +45,12 @@ Created by Shatlyk Abdullayev.
 - Website: https://sound-blog.com
 - GitHub: https://github.com/shatlyk1011/sound-blog
 - Creator: https://shatlykabdullayev.com
+- LinkedIn: https://linkedin.com/in/shatlyk1011
 
-## Contact Placeholder
+## Contact
 
-Support email is not public yet. Add it to `siteConfig.supportEmail` when available.
+- Support email: shatlykabdullayev1011@gmail.com
 
-## Search Console Placeholder
+## Social Image
 
-Google Search Console verification is prepared in `siteConfig.googleSiteVerification`.
-
-## Social Image Placeholder
-
-The final social preview image should be a 1200x630 image and can be configured in `siteConfig.ogImage`.
+OG image: https://sound-blog.com/og-image.jpg (1200×630)

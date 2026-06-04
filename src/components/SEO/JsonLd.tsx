@@ -17,7 +17,7 @@ const faqItems = [
   {
     question: 'Who is Sound Blog for?',
     answer:
-      'Sound Blog is built for creators, founders, writers, marketers, students, and teams in the USA and Europe who capture ideas by speaking and want to turn them into written content faster.',
+      'Sound Blog is built for creators, founders, writers, marketers, students, and teams capture ideas by speaking and want to turn them into written content faster.',
   },
   {
     question: 'Can Sound Blog transcribe audio?',
