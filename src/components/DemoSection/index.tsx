@@ -37,9 +37,6 @@ const DemoSection = () => {
           </div>
 
           <div className='space-y-6 text-center lg:text-left'>
-            <span className='bg-primary text-primary-foreground inline-flex items-center justify-center rounded-full px-4 py-1.5 text-sm font-semibold shadow-md'>
-              Interactive Demo
-            </span>
             <div className='space-y-3'>
               <h3 className='text-3xl font-bold tracking-tight sm:text-4xl'>
                 Your voice record gets a beautiful home.

@@ -145,7 +145,6 @@ const Header = ({ isDashboardPage }: Props) => {
                 </DropdownMenu>
               ) : (
                 <Button
-                  variant='outline'
                   size='sm'
                   onClick={() => router.push(`/sign-in?next=${encodeURIComponent(pathname)}`)}
                   className=''

@@ -14,7 +14,7 @@ const pricingPlans: PricingTier[] = [
     features: ['500 credits (each month)', 'Private generations', 'Customer Support'],
     ctaText: 'Try for free',
     ctaVariant: 'blue',
-    featuresIntro: 'Features include:',
+    featuresIntro: 'Features:',
     priceDetail: '/ month',
   },
   {
@@ -28,7 +28,7 @@ const pricingPlans: PricingTier[] = [
       'Credits valid for 2 months',
       'Customer Support',
     ],
-    ctaText: 'Upgrade to Hobby',
+    ctaText: 'Features',
     ctaVariant: 'blue',
     featuresIntro: 'Everything in Free, plus:',
     priceDetail: '/ month',
@@ -46,7 +46,7 @@ const pricingPlans: PricingTier[] = [
       'Credits valid for 2 months',
       'Customer Support',
     ],
-    ctaText: 'Upgrade to Pro',
+    ctaText: 'Features',
     ctaVariant: 'blue',
     featuresIntro: 'Everything in Hobby, plus:',
     priceDetail: '/ month',
@@ -75,13 +75,13 @@ const PricingSection = () => {
         <Switch checked={isAnnual} onCheckedChange={(checked) => setAnnual(checked)} />
         <p className='relative'>
           <span className={cn('transition-colors', !isAnnual && 'text-muted-foreground')}>Annual</span>
-          <span className='tracking-one bg-secondary text-secondary-foreground absolute top-1/2 -right-[15%] flex w-max -translate-y-1/2 items-center rounded-full border px-1.5 py-0.5 text-xs text-[10px] font-medium text-nowrap'>
+          <span className='tracking-one bg-secondary text-secondary-foreground absolute top-1/2 -right-[145%] flex w-max -translate-y-1/2 items-center rounded-full border px-1.5 py-0.5 text-xs text-[10px] font-medium text-nowrap'>
             Save 15%
           </span>
         </p>
       </div>
 
-      <section className='mx-auto grid h-full max-w-max grid-cols-3 justify-center gap-3 px-10 max-lg:px-0 max-md:grid-cols-2 max-sm:grid-cols-1'>
+      <section className='mx-auto grid h-full max-w-max grid-cols-3 justify-center gap-4 px-10 max-lg:px-0 max-md:grid-cols-2 max-sm:grid-cols-1'>
         {pricingPlans.map((plan) => (
           <PricingCard key={plan.name} item={plan} isAnnual={isAnnual} isAuth={isAuth} />
         ))}

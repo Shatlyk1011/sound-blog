@@ -203,7 +203,7 @@ const RecordFilter = ({ selectedFilters, setSelectedFilters }: Props) => {
               </PreferenceGroup>
 
               <div className='border-border/70 flex items-center justify-between gap-3 border-t pt-4 max-sm:flex-col max-sm:items-stretch'>
-                <p className='text-muted-foreground text-xs'>Recommended: Keep the original tone and length .</p>
+                <p className='text-muted-foreground text-xs'>Recommended: Keep the original tone and length.</p>
                 <Button type='button' variant='ghost' size='sm' className='rounded-full' onClick={resetFilters}>
                   Reset defaults
                 </Button>

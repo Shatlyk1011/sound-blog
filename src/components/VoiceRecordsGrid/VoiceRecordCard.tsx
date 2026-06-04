@@ -106,7 +106,7 @@ const VoiceRecordCard: FC<Props> = ({ record, detailsHref, readOnly = false }) =
               )}
             </div>
           </div>
-          <Link href={recordDetailsHref} className='group-hover:text-chart-2'>
+          <Link href={recordDetailsHref}>
             <h3 className='hover:text-primary mb-1 line-clamp-2 text-lg font-semibold transition-colors'>
               {record.title || record.fileName}
             </h3>

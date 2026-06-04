@@ -52,7 +52,7 @@ export function PricingCard({ item, isAnnual, isAuth, classes }: PricingCardProp
     <>
       <div
         className={cn(
-          'border-border bg-background relative flex w-full max-w-sm flex-col overflow-hidden rounded-4xl border p-7 shadow-sm transition-shadow hover:shadow-md',
+          'border-border bg-card/80 relative flex w-full max-w-sm flex-col overflow-hidden rounded-4xl border p-7 shadow-sm transition-shadow hover:shadow-md',
           classes
         )}
       >

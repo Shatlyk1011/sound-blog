@@ -26,6 +26,9 @@ export default function DemoPage() {
           <span className='border-border bg-background/80 text-muted-foreground inline-flex rounded-full border px-4 py-1.5 text-xs font-semibold tracking-[0.18em] uppercase shadow-sm backdrop-blur'>
             demo article
           </span>
+          <p className='text-muted-foreground tracking-two text-sm text-balance subpixel-antialiased'>
+            This is how your final record would look like. <br /> Your dashboard page will have richer functionality.
+          </p>
         </div>
 
         <RecordPreview blog={DEMO_SOUND_RECORD as Blog} backHref='/' backLabel='Back to home' badge='Demo article' />
