@@ -308,11 +308,7 @@ export interface Blog {
   /**
    * The current state of the blog post in the content pipeline.
    */
-  status?: ('draft' | 'generated' | 'edited') | null;
-  /**
-   * The writing tone used when generating this blog post with GPT.
-   */
-  tone?: ('professional' | 'casual' | 'friendly' | 'formal' | 'humorous' | 'inspirational') | null;
+  status?: ('uploaded' | 'processing' | 'completed' | 'failed') | null;
   /**
    * The public URL of the AI-generated TTS audio file stored in Cloudflare R2.
    */
@@ -510,7 +506,6 @@ export interface BlogsSelect<T extends boolean = true> {
   language?: T;
   content?: T;
   status?: T;
-  tone?: T;
   ttsVoiceUrl?: T;
   updatedAt?: T;
   createdAt?: T;

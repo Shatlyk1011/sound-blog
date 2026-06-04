@@ -160,32 +160,15 @@ const Blogs: CollectionConfig = {
       label: 'Status',
       type: 'select',
       required: false,
-      defaultValue: 'draft',
+      defaultValue: 'uploaded',
       options: [
-        { label: 'Draft', value: 'draft' },
-        { label: 'Generated', value: 'generated' },
-        { label: 'Edited', value: 'edited' },
+        { label: 'Uploaded', value: 'uploaded' },
+        { label: 'Processing', value: 'processing' },
+        { label: 'Completed', value: 'completed' },
+        { label: 'Failed', value: 'failed' },
       ],
       admin: {
         description: 'The current state of the blog post in the content pipeline.',
-      },
-    },
-
-    {
-      name: 'tone',
-      label: 'Tone',
-      type: 'select',
-      required: false,
-      options: [
-        { label: 'Professional', value: 'professional' },
-        { label: 'Casual', value: 'casual' },
-        { label: 'Friendly', value: 'friendly' },
-        { label: 'Formal', value: 'formal' },
-        { label: 'Humorous', value: 'humorous' },
-        { label: 'Inspirational', value: 'inspirational' },
-      ],
-      admin: {
-        description: 'The writing tone used when generating this blog post with GPT.',
       },
     },
 
