@@ -75,13 +75,13 @@ export default function Hero() {
   return (
     <section className='relative flex min-h-[80svh] w-full items-center justify-center overflow-hidden py-20'>
       <div className='relative z-10 container mx-auto max-w-7xl px-6'>
-        <div className='grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16'>
+        <div className='grid grid-cols-2 items-center gap-16 max-lg:grid-cols-1 max-lg:items-start max-lg:gap-12'>
           {/* Left Column: Content */}
           <motion.div
             variants={containerVariants}
             initial='hidden'
             animate='visible'
-            className='flex flex-col items-start text-left'
+            className='flex flex-col items-start text-left max-lg:items-center max-lg:text-center'
           >
             <motion.div
               variants={itemVariants}
@@ -100,7 +100,7 @@ export default function Hero() {
 
             <motion.p
               variants={itemVariants}
-              className='mb-8 max-w-lg text-lg leading-relaxed text-gray-400 md:text-xl'
+              className='mb-8 max-w-lg text-xl leading-relaxed text-gray-400 max-lg:mx-auto max-md:text-xl'
             >
               Just speak naturally. SoundBlog&apos;s AI transforms your words into beautifully written, publish-ready
               articles in seconds.
@@ -130,7 +130,7 @@ export default function Hero() {
 
             <motion.div
               variants={itemVariants}
-              className='flex items-center space-x-4 text-sm font-medium text-gray-500'
+              className='flex items-center space-x-4 text-sm font-medium text-nowrap text-gray-500'
             >
               <div className='flex items-center'>
                 <HugeiconsIcon icon={CheckmarkCircle01Icon} className='text-primary mr-1.5 h-4 w-4' />
@@ -142,7 +142,7 @@ export default function Hero() {
               </div>
               <div className='flex items-center'>
                 <HugeiconsIcon icon={CheckmarkCircle01Icon} className='text-primary mr-1.5 h-4 w-4' />
-                1,000 free tokens
+                500 monthly tokens
               </div>
             </motion.div>
           </motion.div>

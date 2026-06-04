@@ -37,7 +37,7 @@ const Footer = () => {
           >
             Let&apos;s connect
           </a>
-          <span>© {year} Sound Blog</span>
+          <span className='ml-6'>© {year} Sound Blog</span>
         </div>
       </div>
     </footer>
