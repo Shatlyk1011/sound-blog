@@ -128,7 +128,7 @@ const VoiceRecordCard: FC<Props> = ({ record, detailsHref, readOnly = false }) =
               icon={isRetrying ? Loading03Icon : RefreshIcon}
               className={cn('size-3.5', isRetrying ? 'animate-spin' : '')}
             />
-            {isRetrying ? 'Trying again...' : 'Try again'}
+            {isRetrying ? 'Loading...' : 'Try again'}
           </Button>
         )}
 

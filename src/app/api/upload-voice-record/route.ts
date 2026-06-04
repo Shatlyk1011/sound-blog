@@ -133,7 +133,7 @@ export async function POST(req: NextRequest) {
     }
 
     const payloadUser = users[0]
-    const payloadDocId = payloadUser.id as string
+    const payloadUserId = payloadUser.id as string
 
     // 4. Validate credits
     const now = new Date()
@@ -183,7 +183,7 @@ export async function POST(req: NextRequest) {
         id: customRecordId,
         fileUrl,
         fileName,
-        userId: payloadDocId,
+        userId: payloadUserId,
         duration,
         filters,
         status: 'uploaded',
@@ -200,7 +200,7 @@ export async function POST(req: NextRequest) {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            userId: payloadDocId,
+            userId: payloadUserId,
             recordId: customRecordId,
             key,
             fileName,
@@ -223,7 +223,7 @@ export async function POST(req: NextRequest) {
     // 7. Deduct credits after the record exists and the worker has been notified
     await payload.update({
       collection: 'users',
-      id: payloadDocId,
+      id: payloadUserId,
       data: {
         creditsSpent: creditsSpent + duration,
       },
