@@ -321,7 +321,7 @@ export interface Blog {
   createdAt: string;
 }
 /**
- * Stores user feedback submitted from the dashboard.
+ * Stores feedback submitted from public and authenticated product surfaces.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "feedback".
@@ -329,9 +329,9 @@ export interface Blog {
 export interface Feedback {
   id: string;
   /**
-   * The authenticated user who submitted the feedback.
+   * The authenticated user who submitted the feedback, when available.
    */
-  userId: string | User;
+  userId?: (string | null) | User;
   email?: string | null;
   type: 'improvement' | 'bug' | 'question' | 'other';
   message: string;

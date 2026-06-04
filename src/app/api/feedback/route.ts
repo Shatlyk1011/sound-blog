@@ -32,33 +32,32 @@ export async function POST(req: Request) {
     const supabase = await createClient()
     const {
       data: { user },
-      error: authError,
     } = await supabase.auth.getUser()
-
-    if (authError || !user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
 
     const payload = await getPayload({ config: configPromise })
 
-    const { docs: users } = await payload.find({
-      collection: 'users',
-      where: {
-        userId: {
-          equals: user.id,
-        },
-      },
-      limit: 1,
-    })
+    let payloadUserId: string | undefined
 
-    if (users.length === 0) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 })
+    if (user) {
+      const { docs: users } = await payload.find({
+        collection: 'users',
+        where: {
+          userId: {
+            equals: user.id,
+          },
+        },
+        limit: 1,
+      })
+
+      if (users.length > 0) {
+        payloadUserId = users[0].id
+      }
     }
 
     const feedback = await payload.create({
       collection: 'feedback',
       data: {
-        userId: users[0].id,
+        userId: payloadUserId,
         email,
         type: feedbackType,
         message,

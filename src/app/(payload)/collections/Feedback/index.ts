@@ -8,7 +8,7 @@ const Feedback: CollectionConfig = {
   admin: {
     defaultColumns: ['type', 'email', 'status', 'createdAt'],
     useAsTitle: 'email',
-    description: 'Stores user feedback submitted from the dashboard.',
+    description: 'Stores feedback submitted from public and authenticated product surfaces.',
   },
 
   access: {
@@ -24,11 +24,11 @@ const Feedback: CollectionConfig = {
       label: 'User',
       type: 'relationship',
       relationTo: 'users',
-      required: true,
+      required: false,
       admin: {
         readOnly: true,
         position: 'sidebar',
-        description: 'The authenticated user who submitted the feedback.',
+        description: 'The authenticated user who submitted the feedback, when available.',
       },
     },
     {
