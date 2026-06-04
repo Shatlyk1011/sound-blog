@@ -1,13 +1,12 @@
+'use client'
+
+import { useState } from 'react'
+import dynamic from 'next/dynamic'
 import { Button } from '../ui/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '../ui/dialog'
+
+const FeedbackDialog = dynamic(() => import('../layout/FeedbackDialog').then((mod) => mod.FeedbackDialog), {
+  ssr: false,
+})
 
 const FAQ_ITEMS = [
   {
@@ -26,54 +25,46 @@ const FAQ_ITEMS = [
 ]
 
 const FAQ = () => {
-  return (
-    <section className='mx-auto w-full max-w-7xl px-4 py-40 sm:px-10'>
-      <div className='grid gap-5 lg:grid-cols-[0.75fr_1.25fr] lg:items-start'>
-        <div className='border-border bg-foreground text-background rounded-[2rem] border p-8 shadow-xl'>
-          <span className='bg-background/10 mb-4 inline-flex rounded-full px-3 py-1 text-xs font-semibold tracking-[0.16em] uppercase'>
-            FAQ
-          </span>
-          <h3 className='font-serif text-3xl font-bold tracking-tight'>Questions before you try it?</h3>
-          <p className='text-background/70 mt-4 text-sm leading-6'>
-            See how the demo fits into the full workflow, then share what you want us to improve next.
-          </p>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button className='bg-background text-foreground hover:bg-background/90 mt-6' size='lg'>
-                Write a review
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Please write your review</DialogTitle>
-                <DialogDescription>
-                  Tell us what you think about the Sound Blog demo. Your feedback helps shape the product.
-                </DialogDescription>
-              </DialogHeader>
-              <textarea
-                className='border-input bg-input/30 focus-visible:border-ring focus-visible:ring-ring/50 min-h-32 w-full resize-none rounded-3xl border px-4 py-3 text-sm transition outline-none focus-visible:ring-[3px]'
-                placeholder='Please write your review...'
-              />
-              <DialogFooter showCloseButton>
-                <Button type='button'>Submit review</Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
-        </div>
+  const [isFeedbackDialogOpen, setIsFeedbackDialogOpen] = useState(false)
 
-        <div className='grid gap-4'>
-          {FAQ_ITEMS.map((item) => (
-            <article
-              key={item.question}
-              className='border-border bg-card rounded-[1.75rem] border p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg'
+  return (
+    <>
+      <section className='mx-auto w-full max-w-7xl px-4 py-40 sm:px-10'>
+        <div className='grid gap-5 lg:grid-cols-[0.75fr_1.25fr] lg:items-start'>
+          <div className='border-border bg-foreground text-background rounded-[2rem] border p-8 shadow-xl'>
+            <span className='bg-background/10 mb-4 inline-flex rounded-full px-3 py-1 text-xs font-semibold tracking-[0.16em] uppercase'>
+              FAQ
+            </span>
+            <h3 className='font-serif text-3xl font-bold tracking-tight'>Questions before you try it?</h3>
+            <p className='text-background/70 mt-4 text-sm leading-6'>
+              See how the demo fits into the full workflow, then share what you want us to improve next.
+            </p>
+            <Button
+              className='bg-background text-foreground hover:bg-background/90 mt-6'
+              size='lg'
+              type='button'
+              onClick={() => setIsFeedbackDialogOpen(true)}
             >
-              <h4 className='text-lg font-bold'>{item.question}</h4>
-              <p className='text-muted-foreground mt-2 font-serif leading-7'>{item.answer}</p>
-            </article>
-          ))}
+              Write a review
+            </Button>
+          </div>
+
+          <div className='grid gap-4'>
+            {FAQ_ITEMS.map((item) => (
+              <article
+                key={item.question}
+                className='border-border bg-card rounded-[1.75rem] border p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg'
+              >
+                <h4 className='text-lg font-bold'>{item.question}</h4>
+                <p className='text-muted-foreground mt-2 font-serif leading-7'>{item.answer}</p>
+              </article>
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      {isFeedbackDialogOpen && <FeedbackDialog open={isFeedbackDialogOpen} onOpenChange={setIsFeedbackDialogOpen} />}
+    </>
   )
 }
 
