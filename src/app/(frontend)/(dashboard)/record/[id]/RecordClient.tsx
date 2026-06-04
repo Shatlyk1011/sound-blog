@@ -3,7 +3,13 @@
 import { useEffect, useState } from 'react'
 import { Blog, Transcript, VoiceRecord } from '@/payload-types'
 import { useBlogQuery, useUpdateBlogMutation } from '@/services/blogs'
-import { ArrowLeft01Icon, BookOpenTextIcon, FileAudioIcon, PencilEdit02Icon } from '@hugeicons/core-free-icons'
+import {
+  ArrowLeft01Icon,
+  BookOpenTextIcon,
+  FileAudioIcon,
+  Loading03Icon,
+  PencilEdit02Icon,
+} from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { AnimatePresence, motion } from 'motion/react'
 import { useTheme } from 'next-themes'
@@ -325,20 +331,17 @@ export function RecordClient({ recordId }: RecordClientProps) {
       )}
 
       {!isLoading && !blog && !error && (
-        <div className='border-border/70 bg-card mx-auto w-full max-w-4xl rounded-[2rem] border p-10 text-center shadow-sm'>
+        <div className='border-border/70 bg-card mx-auto w-full max-w-4xl rounded-4xl border p-10 text-center shadow-sm'>
           <div className='bg-muted mx-auto mb-4 grid size-14 place-items-center rounded-2xl'>
             <HugeiconsIcon icon={BookOpenTextIcon} className='text-muted-foreground size-6' />
           </div>
           <h2 className='text-xl font-semibold'>Article is not ready yet</h2>
-          <p className='text-muted-foreground mx-auto mt-2 max-w-xl text-sm leading-6'>
-            The workflow may still be processing this recording. Give it a few minutes, then refresh this page.
+          <p className='text-muted-foreground mx-auto mt-2 max-w-xl text-sm leading-6 text-balance'>
+            The workflow still be processing this recording. Give it a few seconds - we constantly refetching it.
           </p>
-          <Button asChild className='mt-6 rounded-full'>
-            <Link href='/dashboard'>
-              <HugeiconsIcon icon={ArrowLeft01Icon} className='size-4' />
-              Back to dashboard
-            </Link>
-          </Button>
+          <div className='mt-4 flex justify-center'>
+            <HugeiconsIcon icon={Loading03Icon} size={32} className='animate-spin' />
+          </div>
         </div>
       )}
     </section>

@@ -374,7 +374,7 @@ export default function VoiceRecord() {
               size='lg'
               variant='destructive'
               onClick={stopRecording}
-              className='h-13 w-full rounded-2xl shadow-[0_14px_35px_rgba(229,75,79,0.14)]'
+              className='h-13 w-full rounded-2xl shadow-[0_14px_35px_rgba(229,75,79,0.05)]'
             >
               <HugeiconsIcon icon={StopCircleIcon} className='size-4' />
               Stop Recording

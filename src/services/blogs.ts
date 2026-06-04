@@ -12,6 +12,11 @@ export const useBlogQuery = (recordId: string, userId?: string) => {
       return res.json()
     },
     staleTime: 0,
+    // Poll every 3 s while the blog hasn't appeared yet; stop once it exists.
+    refetchInterval: (query) => {
+      const docs = query.state.data?.docs
+      return Array.isArray(docs) && docs.length > 0 ? false : 3000
+    },
   })
 }
 
