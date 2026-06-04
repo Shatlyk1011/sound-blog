@@ -4,19 +4,39 @@ import { NextResponse, type NextRequest } from 'next/server'
 // Routes that are publicly accessible (no auth required)
 const PUBLIC_ROUTES = ['/', '/sign-in', '/sign-up', '/pricing', '/demo', '/privacy']
 
+// Public custom app APIs that must stay accessible without a Supabase session.
+const PUBLIC_API_ROUTES = ['/api/auth/callback']
+
+// Protected custom app APIs that should return 401 instead of redirecting.
+// Unknown /api routes are allowed through so Payload admin/API internals keep working.
+const PROTECTED_API_ROUTES = [
+  '/api/blogs-client',
+  '/api/delete-voice-record',
+  '/api/feedback',
+  '/api/stripe/create-checkout',
+  '/api/tts',
+  '/api/upload-voice-record',
+  '/api/user-data',
+  '/api/voice-records-client',
+]
+
 // Routes that only unauthenticated users should access
 // (authenticated users are redirected away from these)
 const AUTH_ONLY_ROUTES = ['/sign-in', '/sign-up']
 
-// Routes that bypass all auth checks entirely (Next.js middleware should also exclude these)
-const BYPASS_ROUTES = ['/api/auth/callback', '/admin', '/api']
+// Routes that bypass page auth checks entirely.
+const BYPASS_ROUTES = ['/admin']
 
 export async function updateSession(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  // API, Payload admin, and auth callback routes should not depend on
-  // middleware session refresh before their own route handlers run.
   if (BYPASS_ROUTES.some((r) => pathname.startsWith(r))) {
+    return NextResponse.next({
+      request,
+    })
+  }
+
+  if (PUBLIC_API_ROUTES.some((route) => pathname.startsWith(route))) {
     return NextResponse.next({
       request,
     })
@@ -49,6 +69,17 @@ export async function updateSession(request: NextRequest) {
   const {
     data: { user },
   } = await supabase.auth.getUser()
+
+  if (pathname.startsWith('/api/')) {
+    if (PROTECTED_API_ROUTES.some((route) => pathname.startsWith(route))) {
+      if (!user) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      }
+    }
+
+    // Let Payload's own API surface and any non-app API routes handle auth themselves.
+    return supabaseResponse
+  }
 
   const isPublicRoute = PUBLIC_ROUTES.includes(pathname)
   const isAuthOnlyRoute = AUTH_ONLY_ROUTES.includes(pathname)
