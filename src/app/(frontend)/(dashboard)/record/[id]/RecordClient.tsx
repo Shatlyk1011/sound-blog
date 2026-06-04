@@ -47,11 +47,10 @@ export function RecordClient({ recordId }: RecordClientProps) {
   const [blogTitle, setBlogTitle] = useState<string>('')
 
   const { resolvedTheme } = useTheme()
-  const { user } = useUser()
 
-  const { data: blogsData, isLoading, error } = useBlogQuery(recordId, user?.id)
+  const { data: blogsData, isLoading, error: fetchError } = useBlogQuery(recordId)
 
-  const blog: Blog = blogsData?.docs?.[0]
+  const blog: Blog | undefined = blogsData?.docs?.[0]
   const voiceRecord = blog?.recordId as VoiceRecord | undefined
 
   useEffect(() => {
@@ -134,7 +133,9 @@ export function RecordClient({ recordId }: RecordClientProps) {
 
   const onCancelClick = () => {
     setIsEditing(false)
-    setBlogContent(blog.content!)
+    if (blog?.content) {
+      setBlogContent(blog.content)
+    }
   }
 
   const handleCopy = async (text: string) => {
@@ -146,9 +147,9 @@ export function RecordClient({ recordId }: RecordClientProps) {
     <section className='space-y-6'>
       <BlogLoading hidden={!isLoading} />
 
-      {error && (
+      {fetchError && (
         <div className='border-destructive/20 bg-destructive/5 text-destructive rounded-3xl border p-6'>
-          <p className='text-sm font-medium'>Error loading blog: {(error as Error).message}</p>
+          <p className='text-sm font-medium'>Error loading blog: {(fetchError as Error).message}</p>
         </div>
       )}
 
@@ -330,20 +331,44 @@ export function RecordClient({ recordId }: RecordClientProps) {
         </>
       )}
 
-      {!isLoading && !blog && !error && (
-        <div className='border-border/70 bg-card mx-auto w-full max-w-4xl rounded-4xl border p-10 text-center shadow-sm'>
-          <div className='bg-muted mx-auto mb-4 grid size-14 place-items-center rounded-2xl'>
-            <HugeiconsIcon icon={BookOpenTextIcon} className='text-muted-foreground size-6' />
+      {!isLoading && !blog && !fetchError && (
+        <div
+          className={
+            voiceRecord?.status === 'failed'
+              ? 'border-destructive/20 bg-destructive/5 mx-auto w-full max-w-4xl rounded-4xl border p-10 text-center shadow-sm'
+              : 'border-border/70 bg-card mx-auto w-full max-w-4xl rounded-4xl border p-10 text-center shadow-sm'
+          }
+        >
+          <div
+            className={
+              voiceRecord?.status === 'failed'
+                ? 'bg-destructive/10 mx-auto mb-4 grid size-14 place-items-center rounded-2xl'
+                : 'bg-muted mx-auto mb-4 grid size-14 place-items-center rounded-2xl'
+            }
+          >
+            <HugeiconsIcon
+              icon={BookOpenTextIcon}
+              className={voiceRecord?.status === 'failed' ? 'text-destructive size-6' : 'text-muted-foreground size-6'}
+            />
           </div>
-          <h2 className='text-xl font-semibold'>Article is not ready yet</h2>
+          <h2 className='text-xl font-semibold'>
+            {voiceRecord?.status === 'failed' ? 'Generation failed' : 'Article is not ready yet'}
+          </h2>
           <p className='text-muted-foreground mx-auto mt-2 max-w-xl text-sm leading-6 text-balance'>
-            The workflow still be processing this recording. Give it a few seconds - we constantly refetching it.
+            {voiceRecord?.status === 'failed'
+              ? 'This recording failed while generating the blog draft. Please try again later or contact support if it keeps happening.'
+              : 'The workflow still be processing this recording. Give it a few seconds - we constantly refetching it.'}
           </p>
-          <div className='mt-4 flex justify-center'>
-            <HugeiconsIcon icon={Loading03Icon} size={32} className='animate-spin' />
-          </div>
+          {voiceRecord?.status !== 'failed' && (
+            <div className='mt-4 flex justify-center'>
+              <HugeiconsIcon icon={Loading03Icon} size={32} className='animate-spin' />
+            </div>
+          )}
         </div>
       )}
     </section>
   )
 }
+
+// handle error state
+// analyze retry functionality

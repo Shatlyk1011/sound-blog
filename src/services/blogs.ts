@@ -1,9 +1,16 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { Blog, VoiceRecord } from '@/payload-types'
 
-export const useBlogQuery = (recordId: string, userId?: string) => {
-  return useQuery({
+interface BlogQueryResponse {
+  docs: Blog[]
+  totalDocs: number
+  record: VoiceRecord | null
+}
+
+export const useBlogQuery = (recordId: string) => {
+  return useQuery<BlogQueryResponse>({
     queryKey: ['blog', recordId],
-    enabled: !!recordId && !!userId,
+    enabled: !!recordId,
     queryFn: async () => {
       const res = await fetch(`/api/blogs-client?recordId=${recordId}`)
       if (!res.ok) {
@@ -12,9 +19,11 @@ export const useBlogQuery = (recordId: string, userId?: string) => {
       return res.json()
     },
     staleTime: 0,
-    // Poll every 3 s while the blog hasn't appeared yet; stop once it exists.
+    // Poll while generation is in-flight; stop once the blog exists or the record has failed.
     refetchInterval: (query) => {
       const docs = query.state.data?.docs
+
+      if ((docs?.[0]?.recordId as VoiceRecord)?.status === 'failed') return false
       return Array.isArray(docs) && docs.length > 0 ? false : 3000
     },
   })

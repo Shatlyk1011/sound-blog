@@ -15,6 +15,8 @@ const keyFromR2PublicUrl = (publicUrl: string, fileUrl: string) => {
   return trimSlashes(decodeURIComponent(fileUrl.slice(publicBase.length)))
 }
 
+const workerEndpoint = (workerUrl: string, pathname: string) => `${workerUrl.replace(/\/+$/, '')}${pathname}`
+
 export async function POST(_: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params
@@ -40,6 +42,12 @@ export async function POST(_: Request, { params }: { params: Promise<{ id: strin
 
     if (!workerUrl) {
       return NextResponse.json({ error: 'Worker URL not configured' }, { status: 500 })
+    }
+
+    const workerCallbackSecret = process.env.WORKER_CALLBACK_SECRET
+
+    if (!workerCallbackSecret) {
+      return NextResponse.json({ error: 'Worker callback secret not configured' }, { status: 500 })
     }
 
     const payload = await getPayload({ config: configPromise })
@@ -115,15 +123,17 @@ export async function POST(_: Request, { params }: { params: Promise<{ id: strin
       id: record.id,
       data: {
         status: 'uploaded',
+        title: null,
       },
       overrideAccess: true,
     })
 
     try {
-      const workerResponse = await fetch(`${workerUrl}/upload`, {
+      const workerResponse = await fetch(workerEndpoint(workerUrl, '/retry-blog'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'x-worker-secret': workerCallbackSecret,
         },
         body: JSON.stringify({
           userId: payloadUserId,
@@ -133,6 +143,7 @@ export async function POST(_: Request, { params }: { params: Promise<{ id: strin
           contentType,
           size,
           filters: record.filters ?? '[]',
+          workflow: 'retry-blog',
         }),
       })
 
