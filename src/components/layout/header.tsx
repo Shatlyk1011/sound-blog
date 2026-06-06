@@ -51,8 +51,6 @@ const Header = ({ isDashboardPage }: Props) => {
     await signOut()
   }
 
-  const isAuth = !!user
-
   return (
     <>
       <header
@@ -158,7 +156,7 @@ const Header = ({ isDashboardPage }: Props) => {
           )}
           <Button
             size='icon-sm'
-            className={cn('z-50 hidden max-md:flex', isAuth && 'max-md:hidden')}
+            className={cn('z-50 hidden max-md:flex', isDashboardPage && 'max-md:hidden')}
             variant={'ghost'}
             onClick={() => setMenu(!menu)}
           >

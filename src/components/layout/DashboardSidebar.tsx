@@ -101,12 +101,12 @@ export function DashboardSidebar({ children }: Props) {
             aria-label={isCollapsed ? 'Expand dashboard sidebar' : 'Collapse dashboard sidebar'}
             aria-expanded={!isCollapsed}
             title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-            className='text-sidebar-foreground/60 hover:bg-sidebar-accent/70 hover:text-sidebar-foreground hidden rounded-xl lg:inline-flex'
+            className='text-sidebar-foreground/60 hover:bg-sidebar-accent/70 hover:text-sidebar-foreground hidden rounded-xl md:inline-flex'
           >
             <HugeiconsIcon icon={isCollapsed ? SidebarRightIcon : SidebarLeftIcon} className='size-4' />
           </Button>
         </div>
-        <ul className='mb-6 space-y-1'>
+        <ul className='mb-6 space-y-1 max-sm:mb-0'>
           {NAV_ITEMS.map(({ href, label, icon }) => {
             const isActive = pathname === href
             return (
@@ -117,7 +117,7 @@ export function DashboardSidebar({ children }: Props) {
                   title={isCollapsed ? label : undefined}
                   className={cn(
                     'group relative flex items-center gap-3 overflow-hidden rounded-xl border px-3 py-2.5 text-sm font-medium transition-all duration-200',
-                    isCollapsed && 'lg:justify-center lg:gap-0 lg:px-2',
+                    isCollapsed && 'md:justify-center md:gap-0 md:px-2',
                     isActive
                       ? 'border-sidebar-border bg-sidebar-accent text-sidebar-primary shadow-sm'
                       : 'text-sidebar-foreground/68 hover:border-sidebar-border/70 hover:bg-sidebar-accent/45 hover:text-sidebar-foreground border-transparent'
@@ -131,7 +131,7 @@ export function DashboardSidebar({ children }: Props) {
                   >
                     <HugeiconsIcon icon={icon} className='size-4' />
                   </span>
-                  <span className={cn('truncate transition-opacity duration-200', isCollapsed && 'lg:sr-only')}>
+                  <span className={cn('truncate transition-opacity duration-200', isCollapsed && 'md:sr-only')}>
                     {label}
                   </span>
                 </Link>
@@ -139,7 +139,7 @@ export function DashboardSidebar({ children }: Props) {
             )
           })}
         </ul>
-        <div className={cn('px-1', isCollapsed && 'lg:px-0')}>
+        <div className={cn('px-1', isCollapsed && 'md:px-0')}>
           {!isCollapsed && (
             <span className='text-muted-foreground/70 mb-2 inline-block px-2 text-[0.68rem] font-semibold tracking-[0.18em] uppercase'>
               Workspace
@@ -154,21 +154,21 @@ export function DashboardSidebar({ children }: Props) {
         </div>
       </nav>
 
-      <div className={cn('border-sidebar-border/80 bg-sidebar/80 border-t p-3', isCollapsed && 'lg:px-2')}>
+      <div className={cn('border-sidebar-border/80 bg-sidebar/80 border-t p-3', isCollapsed && 'md:px-2')}>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
               variant='ghost'
-              title={isCollapsed ? 'Feedback' : undefined}
+              title='Feedback'
               className={cn(
-                'text-sidebar-foreground/70 hover:bg-sidebar-accent/65 hover:text-sidebar-foreground hover:border-sidebar-border/70 h-11 w-full gap-2.5 rounded-xl border border-transparent text-sm font-medium',
-                isCollapsed ? 'lg:justify-center lg:px-0' : 'justify-start'
+                'text-sidebar-foreground/70 hover:bg-sidebar-accent/65 hover:text-sidebar-foreground hover:border-sidebar-border/70 h-11 w-full gap-2.5 rounded-xl border border-transparent text-sm font-medium max-sm:justify-start',
+                isCollapsed ? 'md:justify-center md:px-0' : 'justify-start'
               )}
             >
               <span className='bg-sidebar-accent/70 grid size-7 place-items-center rounded-lg'>
                 <HugeiconsIcon icon={MessageMultiple01Icon} className='text-muted-foreground size-4 shrink-0' />
               </span>
-              <span className={cn(isCollapsed && 'lg:sr-only')}>Feedback</span>
+              <span className={cn(isCollapsed && 'md:sr-only')}>Feedback</span>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align='end' side='top' className='w-80'>
@@ -201,7 +201,7 @@ export function DashboardSidebar({ children }: Props) {
   return (
     <>
       <Header isDashboardPage />
-      <div className='fixed top-16 left-4 z-50 lg:hidden'>
+      <div className='fixed top-16 left-4 z-50 md:hidden'>
         <Button
           size='sm'
           type='button'
@@ -216,8 +216,8 @@ export function DashboardSidebar({ children }: Props) {
       </div>
       <aside
         className={cn(
-          'border-sidebar-border/80 bg-sidebar/95 fixed top-14 left-0 z-40 hidden h-[calc(100svh-3.5rem)] flex-col shadow-[12px_0_30px_rgba(0,0,0,0.04)] backdrop-blur-xl transition-all duration-300 ease-out lg:flex',
-          isCollapsed ? 'lg:w-16' : 'lg:w-72'
+          'border-sidebar-border/80 bg-sidebar/95 fixed top-14 left-0 z-40 hidden h-[calc(100svh-3.5rem)] flex-col shadow-[12px_0_30px_rgba(0,0,0,0.04)] backdrop-blur-xl transition-all duration-300 ease-out md:flex',
+          isCollapsed ? 'md:w-16' : 'md:w-72'
         )}
       >
         {sidebarNav}
@@ -225,10 +225,10 @@ export function DashboardSidebar({ children }: Props) {
       <main
         className={cn(
           'h-[calc(100svh-3.5rem)] flex-1 overflow-hidden transition-all duration-300 ease-out',
-          isCollapsed ? 'lg:ml-16' : 'lg:ml-72'
+          isCollapsed ? 'md:ml-16' : 'md:ml-72'
         )}
       >
-        <div className='border-sidebar-border bg-background h-full overflow-hidden border lg:rounded-l-4xl lg:border-l-0'>
+        <div className='border-sidebar-border bg-background h-full overflow-hidden border md:rounded-l-4xl md:border-l-0'>
           <div className='h-full overflow-y-auto overscroll-contain [scrollbar-gutter:stable]'>{children}</div>
         </div>
       </main>
@@ -239,7 +239,7 @@ export function DashboardSidebar({ children }: Props) {
           className='top-auto bottom-0 w-[calc(100vw-1rem)] max-w-none translate-y-0 rounded-t-[2rem] rounded-b-none p-0 sm:w-[28rem]'
         >
           <DialogTitle className='sr-only'>Dashboard navigation</DialogTitle>
-          <div className='bg-sidebar text-sidebar-foreground flex h-[min(80svh,42rem)] flex-col'>
+          <div className='bg-sidebar text-sidebar-foreground flex h-[min(60svh,42rem)] flex-col'>
             <div className='border-sidebar-border/80 flex items-center justify-between border-b px-5 py-4'>
               <div>
                 <p className='text-sm font-semibold'>Pages</p>
