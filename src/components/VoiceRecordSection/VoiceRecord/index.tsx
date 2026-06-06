@@ -199,7 +199,7 @@ export default function VoiceRecord() {
         isDragActive && 'border-chart-2 bg-chart-2/5 scale-[1.01] border-dashed shadow-[0_0_0_6px_rgba(45,98,239,0.08)]'
       )}
     >
-      <input {...getInputProps()} tabIndex={-1} />
+      <input id='voice-file-input' {...getInputProps()} tabIndex={-1} />
       {isDragActive && (
         <div className='bg-background/90 absolute inset-0 z-50 flex flex-col items-center justify-center rounded-[1.75rem] backdrop-blur-md'>
           <div className='bg-chart-2/10 text-chart-2 mb-4 grid size-20 place-items-center rounded-3xl'>
@@ -344,7 +344,14 @@ export default function VoiceRecord() {
         >
           <HugeiconsIcon icon={Upload01Icon} className='text-muted-foreground size-4 shrink-0' />
           <p className='text-muted-foreground text-sm max-sm:text-xs max-sm:subpixel-antialiased'>
-            Drag and drop an audio file here, or use the microphone controls.
+            Drag and drop an audio file here,{' '}
+            <label
+              htmlFor='voice-file-input'
+              className='cursor-pointer underline underline-offset-2 transition-opacity hover:opacity-70'
+            >
+              select
+            </label>{' '}
+            a file, or use the microphone controls.
           </p>
         </div>
 
