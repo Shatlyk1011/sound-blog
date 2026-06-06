@@ -44,22 +44,22 @@ const quickTips = [
 
 export default function EditorialPage() {
   return (
-    <div className='relative min-h-full overflow-hidden px-8 py-10 max-lg:px-6 max-sm:px-4'>
+    <div className='relative min-h-full overflow-hidden px-4 pt-20 pb-10 sm:px-6 sm:pt-24 sm:pb-12 lg:px-8 lg:py-10'>
       <section className='relative'>
         <div className='mb-8 max-w-2xl'>
-          <h2 className='text-3xl font-semibold tracking-tight'>How the Sound Blog works</h2>
+          <h2 className='text-2xl font-semibold tracking-tight sm:text-3xl'>How the Sound Blog works</h2>
         </div>
 
-        <div className='grid grid-cols-2 gap-5 max-lg:grid-cols-1'>
+        <div className='grid gap-4 lg:grid-cols-2 lg:gap-5'>
           {workflowSteps.map((step) => (
             <article
               key={step.title}
-              className='border-border/70 bg-card/90 rounded-[1.75rem] border p-6 shadow-[0_18px_60px_rgba(0,0,0,0.05)] backdrop-blur'
+              className='border-border/70 bg-card/90 rounded-[1.5rem] border p-5 shadow-[0_18px_60px_rgba(0,0,0,0.05)] backdrop-blur sm:rounded-[1.75rem] sm:p-6'
             >
               <div className='flex flex-wrap items-start justify-between gap-4'>
                 <div>
                   <div className='text-chart-2 mb-2 text-xs font-bold tracking-[0.18em]'>{step.eyebrow}</div>
-                  <h3 className='text-2xl font-semibold tracking-tight'>{step.title}</h3>
+                  <h3 className='text-xl font-semibold tracking-tight sm:text-2xl'>{step.title}</h3>
                 </div>
               </div>
               <p
@@ -71,9 +71,9 @@ export default function EditorialPage() {
         </div>
       </section>
 
-      <section className='relative mt-16 grid grid-cols-2 gap-8 max-lg:grid-cols-1'>
-        <div className='border-border/70 bg-card/80 rounded-[1.75rem] border p-6 shadow-sm'>
-          <h2 className='text-2xl font-semibold tracking-tight'>Editorial tips</h2>
+      <section className='relative mt-10 grid gap-5 sm:mt-12 lg:mt-16 lg:grid-cols-2 lg:gap-8'>
+        <div className='border-border/70 bg-card/80 rounded-[1.5rem] border p-5 shadow-sm sm:rounded-[1.75rem] sm:p-6'>
+          <h2 className='text-xl font-semibold tracking-tight sm:text-2xl'>Editorial tips</h2>
           <p className='text-muted-foreground mt-2 text-sm leading-6'>
             A better input creates a better draft. Think in sections, speak naturally, and use filters only when you
             want the article to move away from the raw recording.
@@ -88,16 +88,20 @@ export default function EditorialPage() {
           </ul>
         </div>
 
-        <div className='border-border/70 bg-card/80 rounded-[1.75rem] border p-6 shadow-sm'>
+        <div className='border-border/70 bg-card/80 rounded-[1.5rem] border p-5 shadow-sm sm:rounded-[1.75rem] sm:p-6'>
           <div className='border-border/70 bg-background/70 text-muted-foreground mb-4 inline-flex rounded-full border px-3 py-1 text-xs font-semibold'>
             Pricing note
           </div>
-          <h2 className='text-2xl font-semibold tracking-tight'>Need more generation room?</h2>
+          <h2 className='text-xl font-semibold tracking-tight sm:text-2xl'>Need more generation room?</h2>
           <p className='text-muted-foreground mt-3 text-sm leading-6'>
             Credits are tied to audio duration: one credit equals one second of audio. If you plan to turn longer
             conversations, interviews, or frequent voice notes into posts, visit pricing for more credits/tokens.
           </p>
-          <Button asChild size='sm' className='bg-chart-2 hover:bg-chart-2/90 mt-5 rounded-full text-white'>
+          <Button
+            asChild
+            size='sm'
+            className='bg-chart-2 hover:bg-chart-2/90 mt-5 w-full rounded-full text-white sm:w-auto'
+          >
             <Link href='/pricing' prefetch={false}>
               View pricing
             </Link>
