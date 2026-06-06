@@ -343,7 +343,7 @@ export default function VoiceRecord() {
           className='border-border/70 bg-card/60 flex w-full items-center justify-center gap-2 rounded-2xl border border-dashed px-4 py-3 text-center'
         >
           <HugeiconsIcon icon={Upload01Icon} className='text-muted-foreground size-4 shrink-0' />
-          <p className='text-muted-foreground text-sm'>
+          <p className='text-muted-foreground text-sm max-sm:text-xs max-sm:subpixel-antialiased'>
             Drag and drop an audio file here, or use the microphone controls.
           </p>
         </div>
@@ -390,7 +390,7 @@ export default function VoiceRecord() {
                 variant='outline'
                 onClick={resetRecording}
                 size='lg'
-                className='h-13 flex-1 items-center gap-1.5 rounded-2xl max-sm:w-full'
+                className='h-13 flex-1 items-center gap-1.5 rounded-2xl max-sm:min-h-10 max-sm:w-full'
                 aria-label='Reset recording'
               >
                 <HugeiconsIcon icon={Refresh03Icon} className='size-4' />
@@ -401,7 +401,7 @@ export default function VoiceRecord() {
                 type='submit'
                 disabled={isUploading || totalDuration <= 0}
                 size='lg'
-                className='bg-chart-2 hover:bg-chart-2/90 h-13 min-w-30 flex-1 items-center gap-1.5 rounded-2xl text-white shadow-[0_14px_35px_rgba(45,98,239,0.25)] max-sm:w-full'
+                className='bg-chart-2 hover:bg-chart-2/90 h-13 min-w-30 flex-1 items-center gap-1.5 rounded-2xl text-white shadow-[0_14px_35px_rgba(45,98,239,0.25)] max-sm:min-h-10 max-sm:w-full'
                 aria-label='Use recording'
               >
                 {isUploading ? (
