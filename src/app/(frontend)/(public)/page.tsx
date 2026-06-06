@@ -27,12 +27,14 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main className='bg-background mt-14 flex min-h-screen flex-col items-center justify-start pb-8'>
-      <JsonLd />
-      <Hero />
-      <DemoSection />
-      <FAQ />
+    <>
+      <main className='bg-background mt-14 flex min-h-screen flex-col items-center justify-start pb-8'>
+        <JsonLd />
+        <Hero />
+        <DemoSection />
+        <FAQ />
+      </main>
       <Footer />
-    </main>
+    </>
   )
 }

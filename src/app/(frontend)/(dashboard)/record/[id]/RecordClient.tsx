@@ -3,12 +3,14 @@
 import { useEffect, useState } from 'react'
 import { Blog, Transcript, VoiceRecord } from '@/payload-types'
 import { useBlogQuery, useUpdateBlogMutation } from '@/services/blogs'
+import { useRetryVoiceRecordMutation } from '@/services/voice-records'
 import {
   ArrowLeft01Icon,
   BookOpenTextIcon,
   FileAudioIcon,
   Loading03Icon,
   PencilEdit02Icon,
+  RefreshIcon,
 } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { AnimatePresence, motion } from 'motion/react'
@@ -17,7 +19,7 @@ import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import ReactMarkdown from 'react-markdown'
 import { toast } from 'sonner'
-import { copyToClipboard } from '@/lib/utils'
+import { cn, copyToClipboard } from '@/lib/utils'
 import { useUser } from '@/hooks/use-user'
 import { Button } from '@/components/ui/button'
 import MiniAudioPlayer from '@/components/VoiceRecordsGrid/AudioPlayer'
@@ -31,6 +33,62 @@ const MDEditor = dynamic(() => import('@uiw/react-md-editor/nohighlight'), { ssr
 
 interface RecordClientProps {
   recordId: string
+}
+
+type EmptyBlogState = {
+  tone: 'default' | 'destructive'
+  title: string
+  description: string
+  showRetry: boolean
+  showSpinner: boolean
+}
+
+const getEmptyBlogState = (voiceRecord: VoiceRecord | null | undefined): EmptyBlogState => {
+  switch (voiceRecord?.status) {
+    case 'failed':
+      return {
+        tone: 'destructive',
+        title: 'Generation failed',
+        description:
+          'This recording failed while generating the article. Try again to send it back through the workflow.',
+        showRetry: true,
+        showSpinner: false,
+      }
+    case 'completed':
+      return {
+        tone: 'default',
+        title: 'Article is almost ready',
+        description:
+          'The recording finished successfully, but the article has not appeared here yet. Please wait a bit while we sync the final result.',
+        showRetry: false,
+        showSpinner: true,
+      }
+    case 'processing':
+      return {
+        tone: 'default',
+        title: 'Article is being generated',
+        description:
+          'The workflow is processing this recording. This page refreshes automatically while generation continues.',
+        showRetry: false,
+        showSpinner: true,
+      }
+    case 'uploaded':
+      return {
+        tone: 'default',
+        title: 'Recording is queued',
+        description: 'Your upload is saved and waiting for the generator to start. This page refreshes automatically.',
+        showRetry: false,
+        showSpinner: true,
+      }
+    default:
+      return {
+        tone: 'default',
+        title: 'Recording not found',
+        description: 'We could not find a recording or article for this page. Go back to recordings and open it again.',
+        showRetry: false,
+        showSpinner: false,
+      }
+  }
 }
 
 const animationVariants = {
@@ -48,10 +106,11 @@ export function RecordClient({ recordId }: RecordClientProps) {
 
   const { resolvedTheme } = useTheme()
 
+  const { user } = useUser()
   const { data: blogsData, isLoading, error: fetchError } = useBlogQuery(recordId)
 
   const blog: Blog | undefined = blogsData?.docs?.[0]
-  const voiceRecord = blog?.recordId as VoiceRecord | undefined
+  const voiceRecord = (blog?.recordId as VoiceRecord | undefined) ?? blogsData?.record
 
   useEffect(() => {
     if (blog && !isEditing) {
@@ -61,6 +120,8 @@ export function RecordClient({ recordId }: RecordClientProps) {
   }, [blog, isEditing])
 
   const { mutate: updateBlogMutation, isPending } = useUpdateBlogMutation(recordId)
+  const { mutate: retryVoiceRecord, isPending: isRetrying } = useRetryVoiceRecordMutation(user?.id)
+  const emptyBlogState = getEmptyBlogState(voiceRecord)
 
   const hasTitleChanges = blog ? blogTitle.trim() !== blog.title.trim() : false
 
@@ -333,33 +394,49 @@ export function RecordClient({ recordId }: RecordClientProps) {
 
       {!isLoading && !blog && !fetchError && (
         <div
-          className={
-            voiceRecord?.status === 'failed'
-              ? 'border-destructive/20 bg-destructive/5 mx-auto w-full max-w-4xl rounded-4xl border p-10 text-center shadow-sm'
-              : 'border-border/70 bg-card mx-auto w-full max-w-4xl rounded-4xl border p-10 text-center shadow-sm'
-          }
+          className={cn(
+            'mx-auto w-full max-w-4xl rounded-4xl border p-10 text-center shadow-sm',
+            emptyBlogState.tone === 'destructive'
+              ? 'border-destructive/20 bg-destructive/5'
+              : 'border-border/70 bg-card'
+          )}
         >
           <div
-            className={
-              voiceRecord?.status === 'failed'
-                ? 'bg-destructive/10 mx-auto mb-4 grid size-14 place-items-center rounded-2xl'
-                : 'bg-muted mx-auto mb-4 grid size-14 place-items-center rounded-2xl'
-            }
+            className={cn(
+              'mx-auto mb-4 grid size-14 place-items-center rounded-2xl',
+              emptyBlogState.tone === 'destructive' ? 'bg-destructive/10' : 'bg-muted'
+            )}
           >
             <HugeiconsIcon
               icon={BookOpenTextIcon}
-              className={voiceRecord?.status === 'failed' ? 'text-destructive size-6' : 'text-muted-foreground size-6'}
+              className={cn(
+                'size-6',
+                emptyBlogState.tone === 'destructive' ? 'text-destructive' : 'text-muted-foreground'
+              )}
             />
           </div>
-          <h2 className='text-xl font-semibold'>
-            {voiceRecord?.status === 'failed' ? 'Generation failed' : 'Article is not ready yet'}
-          </h2>
+          <h2 className='text-xl font-semibold'>{emptyBlogState.title}</h2>
           <p className='text-muted-foreground mx-auto mt-2 max-w-xl text-sm leading-6 text-balance'>
-            {voiceRecord?.status === 'failed'
-              ? 'This recording failed while generating the blog draft. Please try again later or contact support if it keeps happening.'
-              : 'The workflow still be processing this recording. Give it a few seconds - we constantly refetching it.'}
+            {emptyBlogState.description}
           </p>
-          {voiceRecord?.status !== 'failed' && (
+          {emptyBlogState.showRetry && voiceRecord && (
+            <div className='mt-5 flex justify-center'>
+              <Button
+                type='button'
+                variant='destructive'
+                size='sm'
+                disabled={isRetrying}
+                onClick={() => retryVoiceRecord(voiceRecord.id)}
+              >
+                <HugeiconsIcon
+                  icon={isRetrying ? Loading03Icon : RefreshIcon}
+                  className={cn('size-4', isRetrying && 'animate-spin')}
+                />
+                {isRetrying ? 'Retrying...' : 'Try again'}
+              </Button>
+            </div>
+          )}
+          {emptyBlogState.showSpinner && (
             <div className='mt-4 flex justify-center'>
               <HugeiconsIcon icon={Loading03Icon} size={32} className='animate-spin' />
             </div>
@@ -369,6 +446,3 @@ export function RecordClient({ recordId }: RecordClientProps) {
     </section>
   )
 }
-
-// handle error state
-// analyze retry functionality

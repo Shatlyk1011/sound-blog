@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { VoiceRecord } from '@/payload-types'
 import { toast } from 'sonner'
 
@@ -46,6 +46,7 @@ export const useDeleteVoiceRecordMutation = (userId: string | undefined) => {
     onSuccess: () => {
       toast.success('Your record deleted. Updating your list')
       queryClient.invalidateQueries({ queryKey: ['voice-records', userId] })
+      queryClient.invalidateQueries({ queryKey: ['voice-record'] })
     },
   })
 }
@@ -69,6 +70,8 @@ export const useRetryVoiceRecordMutation = (userId: string | undefined) => {
     onSuccess: () => {
       toast.success('Retry started. Your article is generating again')
       queryClient.invalidateQueries({ queryKey: ['voice-records', userId] })
+      queryClient.invalidateQueries({ queryKey: ['voice-record'] })
+      queryClient.invalidateQueries({ queryKey: ['blog'] })
     },
     onError: (error) => {
       toast.error(error instanceof Error ? error.message : 'Failed to retry voice record generation')
