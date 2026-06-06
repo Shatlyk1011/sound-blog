@@ -10,6 +10,8 @@ import {
   MessageMultiple01Icon,
   Crown03Icon,
   BookOpenTextIcon,
+  Cancel01Icon,
+  Menu02Icon,
   Eye,
   EyeOff,
   SidebarLeftIcon,
@@ -22,6 +24,7 @@ import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { useUser } from '@/hooks/use-user'
 import { Button } from '@/components/ui/button'
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -58,6 +61,7 @@ export function DashboardSidebar({ children }: Props) {
     return window.localStorage.getItem(SIDEBAR_COLLAPSED_STORAGE_KEY) === 'true'
   })
   const [isFeedbackDialogOpen, setIsFeedbackDialogOpen] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const { data: userData } = useUserCreditsQuery(SBUser?.id)
 
@@ -80,134 +84,181 @@ export function DashboardSidebar({ children }: Props) {
     window.location.href = mailtoUrl
   }
 
+  const sidebarNav = (
+    <>
+      <nav className={cn('flex-1 py-4 transition-all duration-300', isCollapsed ? 'px-2' : 'px-3')}>
+        <div className={cn('mb-2 flex items-center gap-2 px-1', isCollapsed ? 'justify-center' : 'justify-between')}>
+          {!isCollapsed && (
+            <span className='text-muted-foreground/70 inline-block px-2 text-[0.68rem] font-semibold tracking-[0.18em] uppercase'>
+              Menu
+            </span>
+          )}
+          <Button
+            size='icon-sm'
+            variant='ghost'
+            type='button'
+            onClick={handleToggleSidebar}
+            aria-label={isCollapsed ? 'Expand dashboard sidebar' : 'Collapse dashboard sidebar'}
+            aria-expanded={!isCollapsed}
+            title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+            className='text-sidebar-foreground/60 hover:bg-sidebar-accent/70 hover:text-sidebar-foreground hidden rounded-xl lg:inline-flex'
+          >
+            <HugeiconsIcon icon={isCollapsed ? SidebarRightIcon : SidebarLeftIcon} className='size-4' />
+          </Button>
+        </div>
+        <ul className='mb-6 space-y-1'>
+          {NAV_ITEMS.map(({ href, label, icon }) => {
+            const isActive = pathname === href
+            return (
+              <li key={href}>
+                <Link
+                  href={href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  title={isCollapsed ? label : undefined}
+                  className={cn(
+                    'group relative flex items-center gap-3 overflow-hidden rounded-xl border px-3 py-2.5 text-sm font-medium transition-all duration-200',
+                    isCollapsed && 'lg:justify-center lg:gap-0 lg:px-2',
+                    isActive
+                      ? 'border-sidebar-border bg-sidebar-accent text-sidebar-primary shadow-sm'
+                      : 'text-sidebar-foreground/68 hover:border-sidebar-border/70 hover:bg-sidebar-accent/45 hover:text-sidebar-foreground border-transparent'
+                  )}
+                >
+                  <span
+                    className={cn(
+                      'grid size-7 shrink-0 place-items-center rounded-lg transition-colors',
+                      isActive ? 'bg-sidebar text-sidebar-primary' : 'bg-sidebar-accent/45 text-muted-foreground'
+                    )}
+                  >
+                    <HugeiconsIcon icon={icon} className='size-4' />
+                  </span>
+                  <span className={cn('truncate transition-opacity duration-200', isCollapsed && 'lg:sr-only')}>
+                    {label}
+                  </span>
+                </Link>
+              </li>
+            )
+          })}
+        </ul>
+        <div className={cn('px-1', isCollapsed && 'lg:px-0')}>
+          {!isCollapsed && (
+            <span className='text-muted-foreground/70 mb-2 inline-block px-2 text-[0.68rem] font-semibold tracking-[0.18em] uppercase'>
+              Workspace
+            </span>
+          )}
+          <UserInfo
+            name={SBUser?.user_metadata?.full_name || 'No name'}
+            currentPlan={userData?.currentPlan}
+            credits={remainingCredits}
+            isCollapsed={isCollapsed}
+          />
+        </div>
+      </nav>
+
+      <div className={cn('border-sidebar-border/80 bg-sidebar/80 border-t p-3', isCollapsed && 'lg:px-2')}>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant='ghost'
+              title={isCollapsed ? 'Feedback' : undefined}
+              className={cn(
+                'text-sidebar-foreground/70 hover:bg-sidebar-accent/65 hover:text-sidebar-foreground hover:border-sidebar-border/70 h-11 w-full gap-2.5 rounded-xl border border-transparent text-sm font-medium',
+                isCollapsed ? 'lg:justify-center lg:px-0' : 'justify-start'
+              )}
+            >
+              <span className='bg-sidebar-accent/70 grid size-7 place-items-center rounded-lg'>
+                <HugeiconsIcon icon={MessageMultiple01Icon} className='text-muted-foreground size-4 shrink-0' />
+              </span>
+              <span className={cn(isCollapsed && 'lg:sr-only')}>Feedback</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align='end' side='top' className='w-80'>
+            <DropdownMenuLabel>Choose how to share feedback</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem className='items-start py-3' onSelect={() => setIsFeedbackDialogOpen(true)}>
+              <p className='font-medium'>Open feedback form</p>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem className='items-start py-3' onSelect={() => openEmailDraft('Sound Blog Feedback')}>
+              <div className='space-y-0.5'>
+                <p className='font-medium'>Send an email</p>
+              </div>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem
+              className='items-start py-3'
+              onSelect={() => window.open(siteConfig.linkedin, '_blank', 'noopener,noreferrer')}
+            >
+              <div className='space-y-0.5'>
+                <p className='font-medium'>Write to me on LinkedIn</p>
+              </div>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+    </>
+  )
+
   return (
     <>
       <Header isDashboardPage />
+      <div className='fixed top-16 left-4 z-50 lg:hidden'>
+        <Button
+          size='sm'
+          type='button'
+          variant='outline'
+          onClick={() => setIsMobileMenuOpen(true)}
+          className='bg-background/95 shadow-sm backdrop-blur'
+          aria-label='Open dashboard navigation'
+        >
+          <HugeiconsIcon icon={Menu02Icon} className='size-4' />
+          Pages
+        </Button>
+      </div>
       <aside
         className={cn(
-          'border-sidebar-border/80 bg-sidebar/95 fixed top-14 left-0 z-40 flex h-[calc(100svh-3.5rem)] flex-col shadow-[12px_0_30px_rgba(0,0,0,0.04)] backdrop-blur-xl transition-all duration-300 ease-out',
-          isCollapsed ? 'w-16' : 'w-72'
+          'border-sidebar-border/80 bg-sidebar/95 fixed top-14 left-0 z-40 hidden h-[calc(100svh-3.5rem)] flex-col shadow-[12px_0_30px_rgba(0,0,0,0.04)] backdrop-blur-xl transition-all duration-300 ease-out lg:flex',
+          isCollapsed ? 'lg:w-16' : 'lg:w-72'
         )}
       >
-        <nav className={cn('flex-1 py-4 transition-all duration-300', isCollapsed ? 'px-2' : 'px-3')}>
-          <div className={cn('mb-2 flex items-center gap-2 px-1', isCollapsed ? 'justify-center' : 'justify-between')}>
-            {!isCollapsed && (
-              <span className='text-muted-foreground/70 inline-block px-2 text-[0.68rem] font-semibold tracking-[0.18em] uppercase'>
-                Menu
-              </span>
-            )}
-            <Button
-              size='icon-sm'
-              variant='ghost'
-              type='button'
-              onClick={handleToggleSidebar}
-              aria-label={isCollapsed ? 'Expand dashboard sidebar' : 'Collapse dashboard sidebar'}
-              aria-expanded={!isCollapsed}
-              title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-              className='text-sidebar-foreground/60 hover:bg-sidebar-accent/70 hover:text-sidebar-foreground rounded-xl'
-            >
-              <HugeiconsIcon icon={isCollapsed ? SidebarRightIcon : SidebarLeftIcon} className='size-4' />
-            </Button>
-          </div>
-          <ul className='mb-6 space-y-1'>
-            {NAV_ITEMS.map(({ href, label, icon }) => {
-              const isActive = pathname === href
-              return (
-                <li key={href}>
-                  <Link
-                    href={href}
-                    title={isCollapsed ? label : undefined}
-                    className={cn(
-                      'group relative flex items-center gap-3 overflow-hidden rounded-xl border px-3 py-2.5 text-sm font-medium transition-all duration-200',
-                      isCollapsed && 'justify-center gap-0 px-2',
-                      isActive
-                        ? 'border-sidebar-border bg-sidebar-accent text-sidebar-primary shadow-sm'
-                        : 'text-sidebar-foreground/68 hover:border-sidebar-border/70 hover:bg-sidebar-accent/45 hover:text-sidebar-foreground border-transparent'
-                    )}
-                  >
-                    <span
-                      className={cn(
-                        'grid size-7 shrink-0 place-items-center rounded-lg transition-colors',
-                        isActive ? 'bg-sidebar text-sidebar-primary' : 'bg-sidebar-accent/45 text-muted-foreground'
-                      )}
-                    >
-                      <HugeiconsIcon icon={icon} className='size-4' />
-                    </span>
-                    <span className={cn('truncate transition-opacity duration-200', isCollapsed && 'sr-only')}>
-                      {label}
-                    </span>
-                  </Link>
-                </li>
-              )
-            })}
-          </ul>
-          <div className={cn('px-1', isCollapsed && 'px-0')}>
-            {!isCollapsed && (
-              <span className='text-muted-foreground/70 mb-2 inline-block px-2 text-[0.68rem] font-semibold tracking-[0.18em] uppercase'>
-                Workspace
-              </span>
-            )}
-            <UserInfo
-              name={SBUser?.user_metadata?.full_name || 'No name'}
-              currentPlan={userData?.currentPlan}
-              credits={remainingCredits}
-              isCollapsed={isCollapsed}
-            />
-          </div>
-        </nav>
-
-        <div className={cn('border-sidebar-border/80 bg-sidebar/80 border-t p-3', isCollapsed && 'px-2')}>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant='ghost'
-                title={isCollapsed ? 'Feedback' : undefined}
-                className={cn(
-                  'text-sidebar-foreground/70 hover:bg-sidebar-accent/65 hover:text-sidebar-foreground hover:border-sidebar-border/70 h-11 w-full gap-2.5 rounded-xl border border-transparent text-sm font-medium',
-                  isCollapsed ? 'justify-center px-0' : 'justify-start'
-                )}
-              >
-                <span className='bg-sidebar-accent/70 grid size-7 place-items-center rounded-lg'>
-                  <HugeiconsIcon icon={MessageMultiple01Icon} className='text-muted-foreground size-4 shrink-0' />
-                </span>
-                <span className={cn(isCollapsed && 'sr-only')}>Feedback</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align='end' side='top' className='w-80'>
-              <DropdownMenuLabel>Choose how to share feedback</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className='items-start py-3' onSelect={() => setIsFeedbackDialogOpen(true)}>
-                <p className='font-medium'>Open feedback form</p>
-              </DropdownMenuItem>
-
-              <DropdownMenuItem className='items-start py-3' onSelect={() => openEmailDraft('Sound Blog Feedback')}>
-                <div className='space-y-0.5'>
-                  <p className='font-medium'>Send an email</p>
-                </div>
-              </DropdownMenuItem>
-
-              <DropdownMenuItem
-                className='items-start py-3'
-                onSelect={() => window.open(siteConfig.linkedin, '_blank', 'noopener,noreferrer')}
-              >
-                <div className='space-y-0.5'>
-                  <p className='font-medium'>Write to me on LinkedIn</p>
-                </div>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+        {sidebarNav}
       </aside>
       <main
         className={cn(
           'h-[calc(100svh-3.5rem)] flex-1 overflow-hidden transition-all duration-300 ease-out',
-          isCollapsed ? 'ml-16' : 'ml-72'
+          isCollapsed ? 'lg:ml-16' : 'lg:ml-72'
         )}
       >
-        <div className='border-sidebar-border bg-background h-full overflow-hidden rounded-l-4xl border'>
+        <div className='border-sidebar-border bg-background h-full overflow-hidden border lg:rounded-l-4xl lg:border-l-0'>
           <div className='h-full overflow-y-auto overscroll-contain [scrollbar-gutter:stable]'>{children}</div>
         </div>
       </main>
+
+      <Dialog open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+        <DialogContent
+          showCloseButton={false}
+          className='top-auto bottom-0 w-[calc(100vw-1rem)] max-w-none translate-y-0 rounded-t-[2rem] rounded-b-none p-0 sm:w-[28rem]'
+        >
+          <DialogTitle className='sr-only'>Dashboard navigation</DialogTitle>
+          <div className='bg-sidebar text-sidebar-foreground flex h-[min(80svh,42rem)] flex-col'>
+            <div className='border-sidebar-border/80 flex items-center justify-between border-b px-5 py-4'>
+              <div>
+                <p className='text-sm font-semibold'>Pages</p>
+                <p className='text-sidebar-foreground/60 text-xs'>Open dashboard sections on mobile.</p>
+              </div>
+              <Button
+                size='icon-sm'
+                variant='ghost'
+                type='button'
+                onClick={() => setIsMobileMenuOpen(false)}
+                aria-label='Close dashboard navigation'
+              >
+                <HugeiconsIcon icon={Cancel01Icon} className='size-4' />
+              </Button>
+            </div>
+            <div className='min-h-0 flex-1 overflow-y-auto'>{sidebarNav}</div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {isFeedbackDialogOpen && (
         <FeedbackDialog email={SBUser?.email} open={isFeedbackDialogOpen} onOpenChange={setIsFeedbackDialogOpen} />

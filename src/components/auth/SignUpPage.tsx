@@ -106,26 +106,24 @@ export default function SignUpPage({ isModal, handleSwitch, redirectTo }: Props)
   return (
     <div
       className={cn(
-        'relative flex min-h-screen items-center justify-center overflow-hidden max-sm:items-start max-sm:pt-12',
-        isModal && 'max-h-max min-h-auto py-6'
+        'relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-10 sm:px-6 lg:px-8',
+        !isModal && 'sm:py-14 lg:py-20',
+        isModal && 'min-h-auto px-0 py-6'
       )}
     >
       <div
         className={cn(
-          'max-w- relative z-10 w-full max-w-md space-y-8 rounded-4xl px-6 py-8 max-md:space-y-5 max-sm:p-5',
+          'relative z-10 w-full max-w-md space-y-6 rounded-[2rem] px-5 py-6 sm:space-y-8 sm:px-6 sm:py-8 lg:rounded-4xl',
           !isModal && 'border shadow-md'
         )}
       >
-        <Link
-          href='/'
-          className='mb-2 flex items-center justify-center text-center font-bold opacity-80 max-md:text-2xl'
-        >
-          <LogoIcon className='max-h-18 min-h-18 max-w-18 min-w-18' />
+        <Link href='/' className='mb-2 flex items-center justify-center text-center font-bold opacity-80'>
+          <LogoIcon className='max-h-16 min-h-16 max-w-16 min-w-16 sm:max-h-18 sm:min-h-18 sm:max-w-18 sm:min-w-18' />
           <span>Sound Blog</span>
         </Link>
 
         <div className='space-y-2 text-center'>
-          <h2 className='text-2xl font-semibold max-md:text-xl'>Create your account</h2>
+          <h2 className='text-xl font-semibold sm:text-2xl'>Create your account</h2>
           <p className='text-foreground/70 text-sm'>
             Already have an account?{' '}
             {isModal ? (
@@ -152,7 +150,7 @@ export default function SignUpPage({ isModal, handleSwitch, redirectTo }: Props)
             onClick={() => handleOAuthSignIn('google')}
             disabled={loading}
             size='lg'
-            className='bg-foreground text-background hover:bg-foreground h-10 w-full cursor-pointer rounded-full border'
+            className='bg-foreground text-background hover:bg-foreground h-11 w-full cursor-pointer rounded-full border px-4'
           >
             <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='50' height='50'>
               <path
@@ -178,7 +176,7 @@ export default function SignUpPage({ isModal, handleSwitch, redirectTo }: Props)
           <Button
             onClick={() => handleOAuthSignIn('github')}
             disabled={loading}
-            className='bg-card text-foreground hover:bg-background h-10 w-full cursor-pointer rounded-full border'
+            className='bg-card text-foreground hover:bg-background h-11 w-full cursor-pointer rounded-full border px-4'
           >
             <HugeiconsIcon icon={Github01Icon} />
             Continue with GitHub
