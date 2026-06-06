@@ -46,17 +46,15 @@ export default function ProfilePage() {
   const isProPlan = userData?.currentPlan === 'paid'
 
   return (
-    <div className='mx-auto w-full max-w-6xl px-8 pt-24 pb-16 max-lg:px-6 max-sm:px-4'>
-      {/* Header */}
-      <div className='mb-8'>
-        <h1 className='mb-2 text-4xl font-bold'>Profile</h1>
+    <div className='mx-auto w-full max-w-6xl px-4 pt-20 pb-10 sm:px-6 sm:pt-24 sm:pb-14 lg:px-8 lg:pt-24 lg:pb-16'>
+      <div className='mb-6 sm:mb-8'>
+        <h1 className='mb-2 text-3xl font-bold sm:text-4xl'>Profile</h1>
         <p className='text-muted-foreground'>View credit history, download invoices.</p>
       </div>
 
-      {/* Profile Settings Card */}
-      <div className='bg-card text-card-foreground mb-6 rounded-4xl border p-8'>
+      <div className='bg-card text-card-foreground mb-6 rounded-[2rem] border p-5 sm:p-6 lg:rounded-4xl lg:p-8'>
         <div className='mb-6 flex items-center gap-4'>
-          <Avatar className='size-12'>
+          <Avatar className='size-11 sm:size-12'>
             <AvatarImage
               src={SBUser?.user_metadata?.avatar_url}
               alt={SBUser?.user_metadata?.full_name || 'avatar image'}
@@ -65,27 +63,27 @@ export default function ProfilePage() {
               {getUserInitials(SBUser)}
             </AvatarFallback>
           </Avatar>
-          <h2 className='text-2xl font-semibold'>Profile Settings</h2>
+          <h2 className='text-xl font-semibold sm:text-2xl'>Profile Settings</h2>
         </div>
 
-        <div className='font-snas mb-10 flex gap-4 text-sm font-medium'>
-          <div className='flex-1'>
+        <div className='font-snas mb-8 grid gap-4 text-sm font-medium lg:mb-10 lg:grid-cols-2'>
+          <div className='min-w-0'>
             <label className='mb-2 block'>Name</label>
-            <p className='text-muted-foreground border-input bg-input/30 flex h-9 items-center rounded-full px-4'>
+            <p className='text-muted-foreground border-input bg-input/30 flex min-h-11 items-center rounded-2xl px-4 break-all sm:rounded-full'>
               {SBUser?.user_metadata?.full_name || 'No name'}
             </p>
           </div>
 
-          <div className='flex-1'>
+          <div className='min-w-0'>
             <label className='mb-2 block'>Email</label>
-            <p className='text-muted-foreground border-input bg-input/30 flex h-9 items-center rounded-full px-4'>
+            <p className='text-muted-foreground border-input bg-input/30 flex min-h-11 items-center rounded-2xl px-4 break-all sm:rounded-full'>
               {SBUser?.user_metadata?.email || 'No email'}
             </p>
           </div>
         </div>
 
-        <div className='mb-5 flex items-center justify-between gap-4'>
-          <h2 className='-tracking-two flex items-center gap-2 text-xl font-medium'>
+        <div className='mb-5 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center'>
+          <h2 className='-tracking-two flex flex-wrap items-center gap-2 text-lg font-medium sm:text-xl'>
             <span>Current Plan:</span>{' '}
             {isLoading ? (
               <Skeleton className='inline-block h-6 w-20' />
@@ -97,7 +95,7 @@ export default function ProfilePage() {
           </h2>
 
           {!isProPlan && (
-            <Button asChild>
+            <Button asChild className='w-full sm:w-auto'>
               <Link href='/pricing' prefetch={false}>
                 <HugeiconsIcon icon={Crown03Icon} />
                 Upgrade
@@ -106,8 +104,8 @@ export default function ProfilePage() {
           )}
         </div>
 
-        <div className='bg-input/30 rounded-3xl p-6'>
-          <div className='mb-2 flex items-center justify-between'>
+        <div className='bg-input/30 rounded-[1.5rem] p-4 sm:rounded-3xl sm:p-6'>
+          <div className='mb-3 flex flex-col gap-2 sm:mb-2 sm:flex-row sm:items-center sm:justify-between'>
             <h3 className='text-lg font-semibold'>{userData?.currentPlan === 'free' ? 'Free Plan' : 'Pro Plan'}</h3>
             <span className='text-muted-foreground text-sm'>
               {Math.round((userData?.totalCredits || 0) / 60)} minutes remaining
@@ -115,7 +113,6 @@ export default function ProfilePage() {
           </div>
           <p className='text-muted-foreground text-sm'>For exploring the platform.</p>
 
-          {/* Credits Progress Bar */}
           <div className='mt-4'>
             <div className='mb-2 flex items-center justify-between text-sm'>
               <span className='font-medium'>Credits Used</span>
@@ -137,11 +134,11 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      <div className='bg-card mb-6 rounded-4xl border p-8 shadow-sm'>
+      <div className='bg-card mb-6 rounded-[2rem] border p-5 shadow-sm sm:p-6 lg:rounded-4xl lg:p-8'>
         <h2 className='mb-6 text-xl font-semibold'>Credit History</h2>
 
-        <div className='overflow-hidden rounded-3xl border'>
-          <Table className='w-full overflow-y-auto text-nowrap'>
+        <div className='overflow-x-auto rounded-[1.5rem] border sm:rounded-3xl'>
+          <Table className='min-w-[46rem] text-nowrap'>
             <TableHeader className='bg-input/30 text-left text-sm font-medium'>
               <TableRow>
                 <TableHead className='w-[35%] px-6 py-3'>Source</TableHead>
