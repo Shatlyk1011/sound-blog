@@ -16,10 +16,10 @@ const DemoSection = () => {
         <span className='border-border bg-background/80 text-muted-foreground mb-4 inline-flex rounded-full border px-4 py-1.5 text-xs font-semibold tracking-[0.18em] uppercase shadow-sm backdrop-blur'>
           Listen, polish, publish
         </span>
-        <h2 className='mb-4 max-w-3xl text-4xl leading-tight font-extrabold tracking-tight sm:text-6xl'>
+        <h2 className='mb-4 max-w-3xl text-6xl leading-tight font-extrabold tracking-tight max-sm:text-4xl'>
           Demo Sound Blog
         </h2>
-        <p className='text-muted-foreground max-w-2xl text-lg leading-8 text-balance'>
+        <p className='text-muted-foreground max-w-2xl text-lg leading-8 text-balance max-sm:text-sm max-sm:leading-relaxed'>
           A quick look at how your raw voice note becomes an organized, playable, ready-to-edit blog draft.
         </p>
       </div>
@@ -38,10 +38,10 @@ const DemoSection = () => {
 
           <div className='space-y-6 text-center lg:text-left'>
             <div className='space-y-3'>
-              <h3 className='text-3xl font-bold tracking-tight sm:text-4xl'>
+              <h3 className='text-4xl font-bold tracking-tight max-sm:text-2xl max-sm:text-balance'>
                 Your voice record gets a beautiful home.
               </h3>
-              <p className='text-muted-foreground text-lg leading-relaxed'>
+              <p className='text-muted-foreground text-lg leading-relaxed max-sm:text-sm max-sm:text-balance'>
                 Every recording is displayed with its <strong>title</strong>, <strong>status</strong>, and built-in{' '}
                 <strong>audio player</strong>, so your ideas stay easy to review.
               </p>

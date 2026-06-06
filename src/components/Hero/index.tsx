@@ -73,7 +73,7 @@ export default function Hero() {
   // Staggered animation variants
 
   return (
-    <section className='relative flex min-h-[80svh] w-full items-center justify-center overflow-hidden py-20'>
+    <section className='relative flex min-h-[80svh] w-full items-center justify-center overflow-hidden py-20 max-sm:pt-16 max-sm:pb-8'>
       <div className='relative z-10 container mx-auto max-w-7xl px-6'>
         <div className='grid grid-cols-2 items-center gap-16 max-lg:grid-cols-1 max-lg:items-start max-lg:gap-12'>
           {/* Left Column: Content */}
@@ -93,14 +93,14 @@ export default function Hero() {
 
             <motion.h1
               variants={itemVariants}
-              className='font-heading mb-6 text-6xl leading-[1.1] font-extrabold tracking-tight text-balance'
+              className='font-heading mb-6 text-6xl leading-[1.1] font-extrabold tracking-tight text-balance max-sm:text-4xl'
             >
               Turn Your Voice Into Polished Blog Posts
             </motion.h1>
 
             <motion.p
               variants={itemVariants}
-              className='mb-8 max-w-lg text-xl leading-relaxed text-gray-400 max-lg:mx-auto max-md:text-xl'
+              className='mb-8 max-w-lg text-xl leading-relaxed text-gray-400 max-lg:mx-auto max-sm:text-sm max-sm:text-balance max-sm:subpixel-antialiased'
             >
               Just speak naturally. SoundBlog&apos;s AI transforms your words into beautifully written, publish-ready
               articles in seconds.
@@ -130,13 +130,13 @@ export default function Hero() {
 
             <motion.div
               variants={itemVariants}
-              className='flex items-center space-x-4 text-sm font-medium text-nowrap text-gray-500'
+              className='flex items-center space-x-4 text-sm font-medium text-nowrap text-gray-500 max-sm:flex-col max-sm:gap-2'
             >
               <div className='flex items-center'>
                 <HugeiconsIcon icon={CheckmarkCircle01Icon} className='text-primary mr-1.5 h-4 w-4' />
                 No credit card required
               </div>
-              <div className='hidden items-center sm:flex'>
+              <div className='flex items-center max-sm:order-3'>
                 <HugeiconsIcon icon={CheckmarkCircle01Icon} className='text-primary mr-1.5 h-4 w-4' />
                 Free to start
               </div>

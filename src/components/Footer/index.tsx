@@ -16,7 +16,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className='text-muted-foreground flex flex-wrap items-center gap-x-4 gap-y-2 text-sm'>
+        <div className='text-muted-foreground flex flex-wrap items-center gap-x-4 gap-y-2 text-sm max-sm:gap-y-3'>
           <Link prefetch={false} href={siteConfig.links.privacy} className='hover:text-foreground transition-colors'>
             Privacy Policy
           </Link>
@@ -37,7 +37,7 @@ const Footer = () => {
           >
             Let&apos;s connect
           </a>
-          <span className='ml-6'>© {year} Sound Blog</span>
+          <span className='ml-6 max-sm:ml-0'>© {year} Sound Blog</span>
         </div>
       </div>
     </footer>
