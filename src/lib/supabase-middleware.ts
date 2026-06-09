@@ -12,7 +12,6 @@ const PUBLIC_API_ROUTES = ['/api/auth/callback']
 const PROTECTED_API_ROUTES = [
   '/api/blogs-client',
   '/api/delete-voice-record',
-  '/api/stripe/cancel-subscription',
   '/api/stripe/create-checkout',
   '/api/tts',
   '/api/upload-voice-record',
