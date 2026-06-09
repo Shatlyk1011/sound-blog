@@ -278,8 +278,6 @@ const UserInfo = ({ name, currentPlan, credits, isCollapsed }: UserProps) => {
   const [showCredits, setShowCredits] = useState(true)
   const [first] = (name ?? '').split(' ')
 
-  const isPaid = currentPlan && currentPlan === 'paid'
-
   if (isCollapsed) return null
 
   return (
@@ -335,7 +333,7 @@ const UserInfo = ({ name, currentPlan, credits, isCollapsed }: UserProps) => {
 
       <p className='text-sidebar-foreground/55 px-1 text-[0.68rem]'>1 credit equals 1 second of audio.</p>
 
-      {!isPaid && (
+      {currentPlan === 'free' && (
         <Button
           size='sm'
           asChild
