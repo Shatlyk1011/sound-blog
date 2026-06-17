@@ -152,6 +152,23 @@ export default function Hero() {
             <WaveformVisual />
           </div>
         </div>
+
+        {/* <!-- Launchpadly — Sound Blog (listed-on) --> */}
+        <a
+          href='https://launchpadly.co/startup/sound-blog'
+          className='mt-5 inline-block max-sm:flex max-sm:w-full max-sm:justify-center'
+          target='_blank'
+          rel='noopener noreferrer'
+          data-launchpadly-badge='sound-blog'
+          data-launchpadly-badge-variant='listed-on'
+        >
+          <img
+            src='https://launchpadly.co/embed/badges/startup/sound-blog.svg?variant=listed-on'
+            alt='Launchpadly Startup Directory'
+            width='260'
+            height='48'
+          />
+        </a>
       </div>
     </section>
   )
