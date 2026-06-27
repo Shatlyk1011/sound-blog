@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { siteConfig } from '@/siteConfig'
-import { LogoutSquare01Icon, Menu05Icon, UserIcon } from '@hugeicons/core-free-icons'
+import { LogoutSquare01Icon, Menu05Icon, StarIcon, UserIcon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { useScroll, useMotionValueEvent } from 'motion/react'
 import Link from 'next/link'
@@ -105,9 +105,10 @@ const Header = ({ isDashboardPage }: Props) => {
                 rel='noreferrer'
                 onClick={closeMenu}
                 className={cn(
-                  'hover:text-foreground min-h-10 rounded-md px-3 py-2 text-nowrap transition ease-out max-sm:px-2'
+                  'hover:text-foreground inline-flex min-h-10 items-center gap-2 rounded-md px-3 py-2 text-nowrap transition ease-out max-sm:px-2'
                 )}
               >
+                <HugeiconsIcon icon={StarIcon} />
                 Star us
               </a>
             </li>
@@ -161,6 +162,7 @@ const Header = ({ isDashboardPage }: Props) => {
                 <div className='flex items-center gap-2'>
                   <Button asChild size='sm' variant='outline' className='hidden sm:inline-flex'>
                     <a href={siteConfig.githubRepo} target='_blank' rel='noreferrer'>
+                      <HugeiconsIcon icon={StarIcon} />
                       Star us
                     </a>
                   </Button>
