@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { siteConfig } from '@/siteConfig'
 import { LogoutSquare01Icon, Menu05Icon, UserIcon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { useScroll, useMotionValueEvent } from 'motion/react'
@@ -97,6 +98,19 @@ const Header = ({ isDashboardPage }: Props) => {
                 Profile
               </Link>
             </li>
+            <li>
+              <a
+                href={siteConfig.githubRepo}
+                target='_blank'
+                rel='noreferrer'
+                onClick={closeMenu}
+                className={cn(
+                  'hover:text-foreground min-h-10 rounded-md px-3 py-2 text-nowrap transition ease-out max-sm:px-2'
+                )}
+              >
+                Star us
+              </a>
+            </li>
           </ul>
         </nav>
 
@@ -144,13 +158,20 @@ const Header = ({ isDashboardPage }: Props) => {
                   </DropdownMenuContent>
                 </DropdownMenu>
               ) : (
-                <Button
-                  size='sm'
-                  onClick={() => router.push(`/sign-in?next=${encodeURIComponent(pathname)}`)}
-                  className=''
-                >
-                  Get Started
-                </Button>
+                <div className='flex items-center gap-2'>
+                  <Button asChild size='sm' variant='outline' className='hidden sm:inline-flex'>
+                    <a href={siteConfig.githubRepo} target='_blank' rel='noreferrer'>
+                      Star us
+                    </a>
+                  </Button>
+                  <Button
+                    size='sm'
+                    onClick={() => router.push(`/sign-in?next=${encodeURIComponent(pathname)}`)}
+                    className=''
+                  >
+                    Get Started
+                  </Button>
+                </div>
               )}
             </>
           )}

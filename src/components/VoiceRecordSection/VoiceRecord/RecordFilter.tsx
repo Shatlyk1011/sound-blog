@@ -21,10 +21,10 @@ interface Props {
   setSelectedFilters: Dispatch<SetStateAction<FilterValue[]>>
 }
 
-const DEFAULT_ENHANCEMENTS: EnhancementValue[] = ['summary']
+const DEFAULT_ENHANCEMENTS: EnhancementValue[] = ['headings', 'summary']
 
 const RecordFilter = ({ selectedFilters, setSelectedFilters }: Props) => {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(true)
 
   const [tone, setTone] = useState<ToneValue>(TONES[0].value)
   const [blogLength, setBlogLength] = useState<LengthValue>(LENGTHS[0].value)
@@ -135,7 +135,7 @@ const RecordFilter = ({ selectedFilters, setSelectedFilters }: Props) => {
                       type='button'
                       onClick={() => setTone(value)}
                       className={cn(
-                        'h-10 rounded-2xl border px-3 text-sm shadow-none sm:h-11',
+                        'h-8 rounded-2xl border px-3 text-sm shadow-none',
                         tone === value
                           ? 'border-chart-2 bg-chart-2 hover:bg-chart-2/90 text-white'
                           : 'bg-background/70 text-muted-foreground hover:bg-muted/70 hover:text-foreground'
@@ -157,7 +157,7 @@ const RecordFilter = ({ selectedFilters, setSelectedFilters }: Props) => {
                       type='button'
                       onClick={() => setBlogLength(value)}
                       className={cn(
-                        'h-10 rounded-2xl border px-3 text-sm shadow-none sm:h-11',
+                        'h-8 rounded-2xl border px-3 text-sm shadow-none',
                         blogLength === value
                           ? 'border-chart-2 bg-chart-2 hover:bg-chart-2/90 text-white'
                           : 'bg-background/70 text-muted-foreground hover:bg-muted/70 hover:text-foreground'
@@ -173,7 +173,7 @@ const RecordFilter = ({ selectedFilters, setSelectedFilters }: Props) => {
                 label='Enhancements'
                 description='Add extra structure so the draft is easier to read and publish.'
               >
-                <ul className='grid grid-cols-1 gap-2 lg:grid-cols-2'>
+                <ul className='grid grid-cols-1 gap-3 lg:grid-cols-2'>
                   {ENHANCEMENTS.map(({ title, value, tooltip }) => {
                     const checked = selectedEnhancements.includes(value)
 
@@ -181,7 +181,7 @@ const RecordFilter = ({ selectedFilters, setSelectedFilters }: Props) => {
                       <li
                         key={value}
                         className={cn(
-                          'border-border/70 bg-background/70 rounded-2xl border p-3 transition-colors sm:p-3.5',
+                          'border-border/70 bg-background/70 rounded-xl border px-3 py-2 transition-colors sm:px-3.5',
                           checked && 'border-chart-2/40 bg-chart-2/5'
                         )}
                       >
@@ -227,7 +227,7 @@ const RecordFilter = ({ selectedFilters, setSelectedFilters }: Props) => {
                       <div className='border-input bg-background group-hover:border-chart-2/50 peer-checked:border-chart-2 peer-checked:bg-chart-2 flex size-5 items-center justify-center rounded-md border text-white shadow-sm transition-all'>
                         <HugeiconsIcon
                           icon={Tick01Icon}
-                          className='size-3.5 opacity-0 transition-opacity peer-checked:opacity-100'
+                          className='size-3.5 transition-opacity peer-checked:opacity-100'
                           strokeWidth={3}
                         />
                       </div>
