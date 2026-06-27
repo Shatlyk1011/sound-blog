@@ -12,6 +12,7 @@ import {
   MessageUser01Icon,
   ParagraphIcon,
   SmileIcon,
+  Sparkle,
   TextAlignLeftIcon,
   TextFontIcon,
   TextNumberSignIcon,
@@ -35,6 +36,7 @@ const FILTER_ICONS: Record<FilterValue, IconSvgElement> = {
   summary: TextNumberSignIcon,
   intro: FishingHookIcon,
   bullets: LeftToRightListBulletIcon,
+  'gpt-analysis': Sparkle,
 }
 
 interface Props {

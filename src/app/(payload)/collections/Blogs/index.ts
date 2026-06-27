@@ -183,6 +183,17 @@ const Blogs: CollectionConfig = {
         description: 'The public URL of the AI-generated TTS audio file stored in Cloudflare R2.',
       },
     },
+
+    {
+      name: 'gptAnalysis',
+      label: 'GPT Analysis',
+      type: 'textarea',
+      required: false,
+      admin: {
+        description:
+          'GPT-generated assessment of the blog: evaluates whether the reasoning is sound or the author may be misleading readers.',
+      },
+    },
   ],
 
   timestamps: true,

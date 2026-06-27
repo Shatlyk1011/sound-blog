@@ -11,6 +11,7 @@ import {
   Loading03Icon,
   PencilEdit02Icon,
   RefreshIcon,
+  Sparkle,
 } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { AnimatePresence, motion } from 'motion/react'
@@ -287,9 +288,29 @@ export function RecordClient({ recordId }: RecordClientProps) {
                         />
                       </div>
                     ) : (
-                      <div className='prose font-sans'>
-                        <ReactMarkdown>{blog.content}</ReactMarkdown>
-                      </div>
+                      <>
+                        <div className='prose font-sans'>
+                          <ReactMarkdown>{blog.content}</ReactMarkdown>
+                        </div>
+                        {blog.gptAnalysis && (
+                          <div className='border-border/70 dark:bg-card/30 mt-8 rounded-3xl border bg-[#fafafa]/50 p-6 shadow-sm backdrop-blur-sm'>
+                            <div className='mb-4 flex items-center gap-3'>
+                              <span className='bg-primary/10 text-primary grid size-10 place-items-center rounded-2xl'>
+                                <HugeiconsIcon icon={Sparkle} className='size-5' />
+                              </span>
+                              <div>
+                                <h3 className='text-foreground text-base font-semibold'>GPT Analysis</h3>
+                                <p className='text-muted-foreground text-xs'>
+                                  Assessment of logic, credibility, and thoughts alignment.
+                                </p>
+                              </div>
+                            </div>
+                            <div className='prose prose-sm dark:prose-invert text-foreground/80 border-border/40 max-w-none border-t pt-4 font-sans leading-relaxed'>
+                              <ReactMarkdown>{blog.gptAnalysis}</ReactMarkdown>
+                            </div>
+                          </div>
+                        )}
+                      </>
                     )}
                   </motion.div>
                 ) : (

@@ -83,7 +83,7 @@ export const ENHANCEMENTS = [
 
 export type EnhancementValue = (typeof ENHANCEMENTS)[number]['value']
 
-export type FilterValue = ToneValue | LengthValue | EnhancementValue
+export type FilterValue = ToneValue | LengthValue | EnhancementValue | 'gpt-analysis'
 
 export const ALL_FILTERS: Record<FilterValue, string> = {
   'as-it-is-tone': 'Tone: As is',
@@ -101,4 +101,5 @@ export const ALL_FILTERS: Record<FilterValue, string> = {
   summary: 'Summary',
   intro: 'Intro hook',
   bullets: 'Bullet points',
+  'gpt-analysis': 'GPT Analysis',
 }

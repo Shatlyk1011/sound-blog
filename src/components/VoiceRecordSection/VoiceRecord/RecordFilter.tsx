@@ -1,5 +1,5 @@
 import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react'
-import { ChevronDown, Info } from '@hugeicons/core-free-icons'
+import { ChevronDown, Info, Tick01Icon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import {
   ALL_FILTERS,
@@ -29,6 +29,7 @@ const RecordFilter = ({ selectedFilters, setSelectedFilters }: Props) => {
   const [tone, setTone] = useState<ToneValue>(TONES[0].value)
   const [blogLength, setBlogLength] = useState<LengthValue>(LENGTHS[0].value)
   const [selectedEnhancements, setSelectedEnhancements] = useState<EnhancementValue[]>(DEFAULT_ENHANCEMENTS)
+  const [includeGptAnalysis, setIncludeGptAnalysis] = useState(false)
 
   const filters = selectedFilters.length ? selectedFilters : [tone, blogLength, ...selectedEnhancements]
 
@@ -40,11 +41,16 @@ const RecordFilter = ({ selectedFilters, setSelectedFilters }: Props) => {
     setTone(TONES[0].value)
     setBlogLength(LENGTHS[0].value)
     setSelectedEnhancements(DEFAULT_ENHANCEMENTS)
+    setIncludeGptAnalysis(false)
   }
 
   useEffect(() => {
-    setSelectedFilters([tone, blogLength, ...selectedEnhancements])
-  }, [tone, blogLength, selectedEnhancements, setSelectedFilters])
+    const filtersToSet: FilterValue[] = [tone, blogLength, ...selectedEnhancements]
+    if (includeGptAnalysis) {
+      filtersToSet.push('gpt-analysis')
+    }
+    setSelectedFilters(filtersToSet)
+  }, [tone, blogLength, selectedEnhancements, includeGptAnalysis, setSelectedFilters])
 
   return (
     <div className='w-full space-y-3'>
@@ -201,6 +207,52 @@ const RecordFilter = ({ selectedFilters, setSelectedFilters }: Props) => {
                   })}
                 </ul>
               </PreferenceGroup>
+
+              <div className='border-border/70 border-t pt-4 sm:pt-5'>
+                <div
+                  className={cn(
+                    'border-border/70 bg-background/70 rounded-2xl border p-3.5 transition-colors',
+                    includeGptAnalysis && 'border-chart-2/40 bg-chart-2/5'
+                  )}
+                >
+                  <label className='group flex cursor-pointer items-start gap-3.5' htmlFor='gpt-analysis-checkbox'>
+                    <div className='relative mt-0.5 flex items-center'>
+                      <input
+                        type='checkbox'
+                        id='gpt-analysis-checkbox'
+                        checked={includeGptAnalysis}
+                        onChange={(e) => setIncludeGptAnalysis(e.target.checked)}
+                        className='peer sr-only'
+                      />
+                      <div className='border-input bg-background group-hover:border-chart-2/50 peer-checked:border-chart-2 peer-checked:bg-chart-2 flex size-5 items-center justify-center rounded-md border text-white shadow-sm transition-all'>
+                        <HugeiconsIcon
+                          icon={Tick01Icon}
+                          className='size-3.5 opacity-0 transition-opacity peer-checked:opacity-100'
+                          strokeWidth={3}
+                        />
+                      </div>
+                    </div>
+                    <div className='min-w-0 flex-1'>
+                      <span className='text-foreground flex items-center gap-1.5 text-sm font-semibold'>
+                        GPT Analysis
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <span className='text-muted-foreground hover:text-foreground inline-flex cursor-help'>
+                              <HugeiconsIcon icon={Info} size={15} />
+                            </span>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            Include a GPT evaluation of whether the blog reasoning is sound or potentially misleading.
+                          </TooltipContent>
+                        </Tooltip>
+                      </span>
+                      <p className='text-muted-foreground mt-0.5 text-xs leading-relaxed'>
+                        Analyze the overall logic, identify whether the blog is true, or if thoughts are misleading.
+                      </p>
+                    </div>
+                  </label>
+                </div>
+              </div>
 
               <div className='border-border/70 flex flex-col items-stretch justify-between gap-3 border-t pt-4 sm:flex-row sm:items-center'>
                 <p className='text-muted-foreground text-xs'>Recommended: Keep the original tone and length.</p>

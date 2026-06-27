@@ -313,6 +313,10 @@ export interface Blog {
    * The public URL of the AI-generated TTS audio file stored in Cloudflare R2.
    */
   ttsVoiceUrl?: string | null;
+  /**
+   * GPT-generated assessment of the blog: evaluates whether the reasoning is sound or the author may be misleading readers.
+   */
+  gptAnalysis?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -507,6 +511,7 @@ export interface BlogsSelect<T extends boolean = true> {
   content?: T;
   status?: T;
   ttsVoiceUrl?: T;
+  gptAnalysis?: T;
   updatedAt?: T;
   createdAt?: T;
 }
